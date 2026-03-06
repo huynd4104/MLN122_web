@@ -400,16 +400,39 @@ export default function LaborDayPage() {
                             </div>
 
                             {/* Hours breakdown */}
-                            <div className="flex flex-col gap-3 justify-center p-3 rounded-2xl" style={{ background: "rgba(251,191,36,0.06)", border: "1px solid rgba(251,191,36,0.2)" }}>
-                                <div>
-                                    <div className="text-amber-300 text-xs font-bold uppercase tracking-widest mb-0.5">⏰ Giờ tất yếu / ngày</div>
-                                    <div className="text-white font-black text-2xl">{necessaryHours.toFixed(2)}<span className="text-sm font-normal text-amber-400">h</span></div>
-                                    <div className="text-white/40 text-xs">Làm cho bản thân</div>
+                            <div className="flex flex-col gap-3 justify-center p-4 rounded-2xl relative overflow-hidden group transition-all duration-300 hover:shadow-2xl hover:shadow-amber-500/10" style={{ background: "linear-gradient(160deg, rgba(20,25,45,0.7) 0%, rgba(30,20,30,0.8) 100%)", border: "1px solid rgba(255,255,255,0.08)", backdropFilter: "blur(12px)" }}>
+                                {/* Animated glow backgrounds */}
+                                <div className="absolute -top-12 -right-12 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl group-hover:bg-amber-500/20 transition-all duration-500 pointer-events-none"></div>
+                                <div className="absolute -bottom-12 -left-12 w-32 h-32 bg-red-500/10 rounded-full blur-2xl group-hover:bg-red-500/20 transition-all duration-500 pointer-events-none"></div>
+
+                                {/* Tất yếu */}
+                                <div className="relative z-10 flex flex-col p-3 rounded-xl bg-white/5 border border-amber-500/10 hover:border-amber-500/30 transition-colors">
+                                    <div className="flex items-center gap-2 mb-1.5">
+                                        <div className="w-6 h-6 rounded-full bg-amber-500/20 flex items-center justify-center text-xs shadow-inner shadow-amber-500/40">⏰</div>
+                                        <div className="text-amber-300 text-[10px] sm:text-xs font-bold uppercase tracking-widest">Giờ tất yếu / ngày</div>
+                                    </div>
+                                    <div className="flex items-baseline pl-1">
+                                        <div className="text-white font-black text-3xl tracking-tight drop-shadow-md">
+                                            {necessaryHours.toFixed(2)}
+                                        </div>
+                                        <span className="text-base font-semibold text-amber-400 ml-1.5 opacity-80">h</span>
+                                    </div>
+                                    <div className="text-white/40 text-[11px] font-medium mt-1 pl-1">Làm cho bản thân</div>
                                 </div>
-                                <div>
-                                    <div className="text-red-400 text-xs font-bold uppercase tracking-widest mb-0.5">🔥 Giờ thặng dư / ngày</div>
-                                    <div className="text-white font-black text-2xl">{surplusHours.toFixed(2)}<span className="text-sm font-normal text-red-400">h</span></div>
-                                    <div className="text-white/40 text-xs">Làm không công cho chủ</div>
+
+                                {/* Thặng dư */}
+                                <div className="relative z-10 flex flex-col p-3 rounded-xl bg-white/5 border border-red-500/10 hover:border-red-500/30 transition-colors">
+                                    <div className="flex items-center gap-2 mb-1.5">
+                                        <div className="w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center text-xs shadow-inner shadow-red-500/40">🔥</div>
+                                        <div className="text-red-400 text-[10px] sm:text-xs font-bold uppercase tracking-widest">Giờ thặng dư / ngày</div>
+                                    </div>
+                                    <div className="flex items-baseline pl-1">
+                                        <div className="text-white font-black text-3xl tracking-tight drop-shadow-md">
+                                            {surplusHours.toFixed(2)}
+                                        </div>
+                                        <span className="text-base font-semibold text-red-400 ml-1.5 opacity-80">h</span>
+                                    </div>
+                                    <div className="text-white/40 text-[11px] font-medium mt-1 pl-1">Làm không công cho chủ</div>
                                 </div>
                             </div>
 

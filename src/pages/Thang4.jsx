@@ -82,16 +82,13 @@ export default function Industry40Page() {
     const [humanScore, setHumanScore] = useState(0);
     const [robotScore, setRobotScore] = useState(0);
     const [products, setProducts] = useState([]);
-
     // Event states
     const [activeEvent, setActiveEvent] = useState(null);
-    const [humanSpeed, setHumanSpeed] = useState(1200);
+    const [humanSpeed, setHumanSpeed] = useState(1200); // Not used for clicker, but for events
     const [robotSpeed, setRobotSpeed] = useState(400);
-
+    const [lastClick, setLastClick] = useState(0); // For debounce
     const simulationDuration = 10;
-
-    // Refs for precise intervals
-    const humanTimerRef = useRef(null);
+    // Refs for intervals
     const robotTimerRef = useRef(null);
     const eventTimerRef = useRef(null);
 
@@ -105,25 +102,13 @@ export default function Industry40Page() {
         } else if (timeLeft === 0 && running) {
             setRunning(false);
             setActiveEvent(null);
-            clearInterval(humanTimerRef.current);
             clearInterval(robotTimerRef.current);
             clearInterval(eventTimerRef.current);
         }
         return () => clearInterval(timer);
     }, [running, timeLeft]);
 
-    // Human production loop
-    useEffect(() => {
-        if (running && humanSpeed !== null) {
-            humanTimerRef.current = setInterval(() => {
-                setHumanScore((prev) => prev + 1);
-                spawnProduct("human");
-            }, humanSpeed);
-        }
-        return () => clearInterval(humanTimerRef.current);
-    }, [running, humanSpeed]);
-
-    // Robot production loop
+    // Robot production loop (auto)
     useEffect(() => {
         if (running && robotSpeed !== null) {
             robotTimerRef.current = setInterval(() => {
@@ -139,45 +124,41 @@ export default function Industry40Page() {
         if (running) {
             eventTimerRef.current = setInterval(() => {
                 triggerRandomEvent();
-            }, 3500); // Check for events every 3.5s
+            }, 3500);
         }
         return () => clearInterval(eventTimerRef.current);
     }, [running]);
 
     const triggerRandomEvent = () => {
         const events = [
-            { id: "human_fatigue", icon: "👷", label: "Mệt mỏi", desc: "Tạm dừng 2s" },
+            { id: "human_fatigue", icon: "👷", label: "Mệt mỏi", desc: "Không click được 2s" },
             { id: "robot_error", icon: "⚙️", label: "Robot lỗi", desc: "Tạm dừng 1s" },
             { id: "human_creativity", icon: "🧠", label: "Sáng tạo", desc: "+1 sản phẩm" },
             { id: "robot_overdrive", icon: "🔋", label: "Tăng tốc", desc: "X2 tốc độ (2s)" },
         ];
-
         const randomEvent = events[Math.floor(Math.random() * events.length)];
         setActiveEvent(randomEvent);
-
         if (randomEvent.id === "human_fatigue") {
-            setHumanSpeed(null); // Pause
+            setHumanSpeed(null); // Disable click
             setTimeout(() => { setHumanSpeed(1200); setActiveEvent(null); }, 2000);
         } else if (randomEvent.id === "robot_error") {
-            setRobotSpeed(null); // Pause
+            setRobotSpeed(null);
             setTimeout(() => { setRobotSpeed(400); setActiveEvent(null); }, 1000);
         } else if (randomEvent.id === "human_creativity") {
             setHumanScore(prev => prev + 1);
             spawnProduct("human");
             setTimeout(() => setActiveEvent(null), 1500);
         } else if (randomEvent.id === "robot_overdrive") {
-            setRobotSpeed(200); // Faster
+            setRobotSpeed(200);
             setTimeout(() => { setRobotSpeed(400); setActiveEvent(null); }, 2000);
         }
     };
 
     const spawnProduct = (type) => {
         const id = Date.now() + Math.random();
-        // Calculate random X position depending on type to keep them in their respective columns somewhat
         const baseMin = type === "human" ? 10 : 55;
         const baseMax = type === "human" ? 45 : 90;
         const xPos = baseMin + Math.random() * (baseMax - baseMin);
-
         setProducts((prev) => [...prev, { id, type, x: xPos }]);
         setTimeout(() => {
             setProducts((prev) => prev.filter((p) => p.id !== id));
@@ -197,7 +178,6 @@ export default function Industry40Page() {
 
     const resetGame = () => {
         setRunning(false);
-        clearInterval(humanTimerRef.current);
         clearInterval(robotTimerRef.current);
         clearInterval(eventTimerRef.current);
         setHumanScore(0);
@@ -209,7 +189,14 @@ export default function Industry40Page() {
         setRobotSpeed(400);
     };
 
-    // Calculate progress (max estimate: Robot ~25 products in 10s without events)
+    const handleHumanClick = () => {
+        if (!running || humanSpeed === null || Date.now() - lastClick < 500) return; // Debounce 500ms
+        setLastClick(Date.now());
+        setHumanScore((prev) => prev + 1);
+        spawnProduct("human");
+    };
+
+    // Calculate progress
     const MAX_EXPECTED = 30;
     const humanProgress = Math.min(100, (humanScore / MAX_EXPECTED) * 100);
     const robotProgress = Math.min(100, (robotScore / MAX_EXPECTED) * 100);
@@ -222,7 +209,7 @@ export default function Industry40Page() {
         <div
             className="min-h-screen text-white overflow-x-hidden"
             style={{
-                background: "linear-gradient(135deg,#0f172a 0%,#1e40af 40%,#1e293b 100%)", // Blue-tech gradient for industry 4.0 theme
+                background: "linear-gradient(135deg,#0f172a 0%,#1e40af 40%,#1e293b 100%)",
                 fontFamily: "'Segoe UI',system-ui,sans-serif",
             }}
         >
@@ -236,16 +223,13 @@ export default function Industry40Page() {
                     />
                 ))}
             </div>
-
             <div className="relative z-10 max-w-4xl mx-auto px-4 pb-16">
-
                 {/* ── RETURN BUTTON ── */}
                 <div className="pt-6 mb-2">
                     <Link to="/" className="inline-flex items-center gap-2 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl transition-all text-sm font-medium backdrop-blur-sm">
                         ← Về Trang Chủ
                     </Link>
                 </div>
-
                 {/* ── HEADER ── */}
                 <motion.header className="text-center pt-10 pb-8" initial={{ opacity: 0, y: -40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
                     <motion.div className="inline-flex items-center gap-2 bg-yellow-400/20 border border-yellow-400/40 rounded-full px-4 py-1 text-yellow-300 text-sm font-semibold mb-4 tracking-widest uppercase" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
@@ -258,8 +242,7 @@ export default function Industry40Page() {
                         </span>
                     </motion.h1>
                 </motion.header>
-
-                {/* ── EVENT CARD ── (Chi tiết về sự kiện) */}
+                {/* ── EVENT CARD ── */}
                 <motion.section className="rounded-2xl border border-blue-500/30 p-6 mb-8 relative overflow-hidden" style={{ background: "rgba(13,27,75,0.7)", backdropFilter: "blur(12px)" }} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.7 }}>
                     <div className="absolute top-0 left-0 w-1 h-full rounded-l-2xl" style={{ background: "linear-gradient(180deg,#FFD700,#FFA500)" }} />
                     <div className="flex flex-col sm:flex-row gap-4 items-start">
@@ -276,7 +259,6 @@ export default function Industry40Page() {
                         </div>
                     </div>
                 </motion.section>
-
                 {/* ── CORE IDEAS ── */}
                 <motion.section className="mb-10" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
                     <h2 className="text-center text-lg font-bold text-yellow-300 uppercase tracking-widest mb-5">✦ Tư tưởng cốt lõi ✦</h2>
@@ -292,7 +274,6 @@ export default function Industry40Page() {
                         ))}
                     </div>
                 </motion.section>
-
                 {/* ── VIDEO EMBED ── */}
                 <motion.section className="mb-10" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
                     <div className="flex justify-center">
@@ -308,7 +289,6 @@ export default function Industry40Page() {
                         ></iframe>
                     </div>
                 </motion.section>
-
                 {/* ── MINI-GAME: Robot vs Con người ── */}
                 <motion.section initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}>
                     <div className="rounded-2xl border border-blue-500/30 overflow-hidden bg-[rgba(13,27,75,0.7)] backdrop-blur-md relative">
@@ -326,13 +306,12 @@ export default function Industry40Page() {
                                 </motion.div>
                             )}
                         </AnimatePresence>
-
                         {/* Header bar */}
                         <div className="p-4 sm:p-5" style={{ background: "linear-gradient(90deg,#1d4ed8,#3b82f6)" }}>
                             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                                 <div>
                                     <h2 className="text-lg sm:text-xl font-black text-white">Robot vs Con người</h2>
-                                    <p className="text-blue-300 text-xs mt-0.5">Simulation sản xuất trong 10 giây</p>
+                                    <p className="text-blue-300 text-xs mt-0.5">Click để human sản xuất - Robot auto</p>
                                 </div>
                                 <div className="flex items-center gap-2 text-white font-bold text-lg bg-blue-900/40 px-3 py-1.5 rounded-xl border border-blue-400/30">
                                     ⏱ {timeLeft}s
@@ -341,13 +320,12 @@ export default function Industry40Page() {
                                     <button onClick={startGame} disabled={running} className="bg-yellow-500 hover:bg-yellow-400 text-blue-900 disabled:opacity-50 disabled:bg-blue-800 disabled:text-white/50 text-xs font-bold px-4 py-2 rounded-xl transition-colors shadow-sm">
                                         Start
                                     </button>
-                                    <button onClick={resetGame} className="bg-blue-800/60 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2 rounded-xl border border-blue-500/30 transition-colors">
+                                    <button onClick={resetGame} className="bg-blue-800/60 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition-colors">
                                         Reset
                                     </button>
                                 </div>
                             </div>
                         </div>
-
                         {/* Game Area */}
                         <div className="p-6 relative min-h-[300px] flex flex-col items-center justify-end overflow-hidden border-b border-blue-800/50">
                             {/* Products Animation */}
@@ -370,8 +348,7 @@ export default function Industry40Page() {
                                     </motion.div>
                                 ))}
                             </AnimatePresence>
-
-                            {/* Production Visuals above scorecards */}
+                            {/* Production Visuals */}
                             <div className="w-full max-w-lg grid grid-cols-2 gap-10 mb-4 z-10 px-4">
                                 <div className="text-center h-8 flex items-center justify-center gap-1 text-xl">
                                     {running && humanSpeed !== null && <motion.div animate={{ rotate: [0, -20, 0, 20, 0] }} transition={{ repeat: Infinity, duration: 1.2 }}>🔨</motion.div>}
@@ -382,17 +359,14 @@ export default function Industry40Page() {
                                     {running && robotSpeed === null && <span className="text-red-400 text-sm">⚠️</span>}
                                 </div>
                             </div>
-
                             <div className="grid grid-cols-2 gap-6 w-full max-w-2xl z-10 relative">
-                                {/* Human Card */}
-                                <div className="bg-blue-900/40 border border-blue-400/30 p-4 rounded-xl flex flex-col justify-between">
+                                {/* Human Card - Clickable */}
+                                <div className="bg-blue-900/40 border border-blue-400/30 p-4 rounded-xl flex flex-col justify-between cursor-pointer" onClick={handleHumanClick}>
                                     <div className="flex items-center gap-2 mb-2">
                                         <div className="text-2xl">👷</div>
                                         <h3 className="text-white font-bold text-sm">Con người</h3>
                                     </div>
                                     <div className="text-4xl font-black text-yellow-300 mb-3">{humanScore}</div>
-
-                                    {/* Progress Bar Container */}
                                     <div className="space-y-1">
                                         <div className="flex justify-between text-[10px] text-blue-300 uppercase tracking-wider">
                                             <span>Sản lượng</span>
@@ -408,21 +382,16 @@ export default function Industry40Page() {
                                         </div>
                                     </div>
                                 </div>
-
                                 {/* Robot Card */}
                                 <div className="bg-blue-900/40 border border-emerald-500/30 p-4 rounded-xl flex flex-col justify-between relative overflow-hidden">
-                                    {/* Subtle glow for robot side */}
                                     {running && robotSpeed === 200 && (
                                         <div className="absolute inset-0 bg-emerald-500/10 animate-pulse pointer-events-none" />
                                     )}
-
                                     <div className="flex items-center gap-2 mb-2">
                                         <div className="text-2xl">🤖</div>
                                         <h3 className="text-white font-bold text-sm">Robot</h3>
                                     </div>
                                     <div className="text-4xl font-black text-emerald-400 mb-3">{robotScore}</div>
-
-                                    {/* Progress Bar Container */}
                                     <div className="space-y-1">
                                         <div className="flex justify-between text-[10px] text-emerald-300/70 uppercase tracking-wider">
                                             <span>Sản lượng</span>
@@ -440,7 +409,6 @@ export default function Industry40Page() {
                                 </div>
                             </div>
                         </div>
-
                         {/* Result Panel Overlay */}
                         <AnimatePresence>
                             {timeLeft === 0 && !running && (
@@ -458,7 +426,6 @@ export default function Industry40Page() {
                                                 Robot tăng năng suất: <span className="font-black text-emerald-400 text-2xl">+{productivityIncrease}%</span>
                                             </p>
                                         </div>
-
                                         {/* Bar Chart Comparison */}
                                         <div className="space-y-4 mb-8 bg-blue-950/50 p-4 rounded-xl border border-blue-800/50">
                                             {/* Robot Bar */}
@@ -475,7 +442,6 @@ export default function Industry40Page() {
                                                     </motion.div>
                                                 </div>
                                             </div>
-
                                             {/* Human Bar */}
                                             <div className="flex items-center gap-3">
                                                 <div className="w-24 text-right text-sm font-bold text-yellow-300">👷 Con người</div>
@@ -491,7 +457,6 @@ export default function Industry40Page() {
                                                 </div>
                                             </div>
                                         </div>
-
                                         {/* Educational Conclusion */}
                                         <div className="border-l-4 border-yellow-400 pl-4 py-1">
                                             <p className="text-blue-300 text-xs uppercase tracking-wider font-bold mb-1">
@@ -507,7 +472,6 @@ export default function Industry40Page() {
                         </AnimatePresence>
                     </div>
                 </motion.section>
-
             </div>
         </div>
     );

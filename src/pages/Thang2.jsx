@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 
@@ -93,22 +93,145 @@ const QUOTES = [
     "Phong trào vô sản là phong trào độc lập của đại đa số vì lợi ích của đại đa số."
 ];
 
+// ── CARD DRAW COMPONENT ────────────────────────────────────────────────────────
+function GieoQue() {
+    const [drawing, setDrawing] = useState(false);
+    const [result, setResult] = useState(null);
+
+    const draw = () => {
+        if (drawing) return;
+        setDrawing(true);
+        setResult(null);
+
+        // Simulate drawing delay
+        setTimeout(() => {
+            const selectedIndex = Math.floor(Math.random() * CORE_IDEAS.length);
+            const selected = CORE_IDEAS[selectedIndex];
+
+            let filteredQuotes = QUOTES;
+            if (selected.id === "hinh_thanh") {
+                filteredQuotes = QUOTES.filter(q => q.includes("lịch sử") || q.includes("xã hội") || q.includes("giai cấp"));
+            } else if (selected.id === "doi_tuong") {
+                filteredQuotes = QUOTES.filter(q => q.includes("sản xuất") || q.includes("công nhân"));
+            }
+            if (filteredQuotes.length === 0) filteredQuotes = QUOTES;
+            const relatedQuote = filteredQuotes[Math.floor(Math.random() * filteredQuotes.length)];
+
+            setResult({ ...selected, quote: relatedQuote });
+            setDrawing(false);
+        }, 1200);
+    };
+
+    return (
+        <div className="flex flex-col items-center justify-center p-4 sm:p-8 min-h-[380px]">
+            <AnimatePresence mode="wait">
+                {!result ? (
+                    <motion.div
+                        key="draw-btn"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.9, filter: "blur(5px)" }}
+                        className="flex flex-col items-center gap-6"
+                    >
+                        <motion.button
+                            onClick={draw}
+                            disabled={drawing}
+                            className={`relative group w-44 h-60 rounded-xl border-2 border-yellow-500/40 bg-gradient-to-b from-red-800 to-red-950 flex flex-col items-center justify-center shadow-[0_0_20px_rgba(220,38,38,0.3)] transition-all overflow-hidden ${drawing ? 'cursor-not-allowed' : 'hover:shadow-[0_0_40px_rgba(250,204,21,0.4)] cursor-pointer hover:border-yellow-400'}`}
+                            animate={drawing ? {
+                                x: [-3, 3, -3, 3, -1, 1, 0],
+                                y: [-1, 1, -1, 1, 0],
+                                rotate: [-2, 2, -2, 2, 0]
+                            } : {
+                                y: [-5, 5, -5]
+                            }}
+                            transition={drawing ? {
+                                duration: 0.4,
+                                repeat: Infinity,
+                                repeatType: "mirror"
+                            } : {
+                                duration: 3,
+                                repeat: Infinity,
+                                ease: "easeInOut"
+                            }}
+                        >
+                            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 mix-blend-overlay"></div>
+                            <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-yellow-400 to-transparent opacity-50"></div>
+                            <div className="text-6xl mb-4 group-hover:scale-110 transition-transform duration-300 relative z-10">
+                                🧧
+                            </div>
+                            <div className="text-yellow-400 font-bold text-lg uppercase tracking-widest text-center px-4 relative z-10">
+                                {drawing ? "Đang rút..." : "Xin Quẻ"}
+                            </div>
+                            <div className="text-red-300 border border-red-500/30 bg-red-900/50 rounded-full px-3 py-1 text-[10px] uppercase tracking-wider mt-3 relative z-10">
+                                Click để rút
+                            </div>
+                        </motion.button>
+                    </motion.div>
+                ) : (
+                    <motion.div
+                        key="result"
+                        initial={{ opacity: 0, rotateY: -90, scale: 0.8 }}
+                        animate={{ opacity: 1, rotateY: 0, scale: 1 }}
+                        transition={{ type: "spring", damping: 20, stiffness: 100 }}
+                        className="relative w-full max-w-xl bg-gradient-to-br from-[#450a0a] via-[#7f1d1d] to-[#450a0a] border border-yellow-500/40 rounded-2xl p-6 sm:p-8 shadow-[0_10px_40px_rgba(0,0,0,0.5)] text-left"
+                    >
+                        {/* Decorative corners */}
+                        <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-yellow-500/50 rounded-tl-2xl m-2 opacity-50 pointer-events-none"></div>
+                        <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-yellow-500/50 rounded-tr-2xl m-2 opacity-50 pointer-events-none"></div>
+                        <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-yellow-500/50 rounded-bl-2xl m-2 opacity-50 pointer-events-none"></div>
+                        <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-yellow-500/50 rounded-br-2xl m-2 opacity-50 pointer-events-none"></div>
+
+                        <div className="flex flex-col sm:flex-row gap-6 items-center sm:items-start text-center sm:text-left">
+                            <motion.div
+                                initial={{ scale: 0, rotate: -45 }}
+                                animate={{ scale: 1, rotate: 0 }}
+                                transition={{ delay: 0.2, type: "spring" }}
+                                className="w-24 h-24 shrink-0 bg-gradient-to-br from-yellow-500/20 to-yellow-600/10 rounded-full flex items-center justify-center text-5xl border-2 border-yellow-500/30 shadow-[0_0_20px_rgba(250,204,21,0.15)]"
+                            >
+                                {result.icon}
+                            </motion.div>
+
+                            <div className="flex-1">
+                                <h3 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-500 uppercase tracking-widest mb-1">
+                                    {result.label}
+                                </h3>
+                                <div className="h-px w-full max-w-[200px] bg-gradient-to-r from-yellow-500/50 to-transparent mb-3 mx-auto sm:mx-0"></div>
+                                <p className="text-red-100/90 text-sm sm:text-base leading-relaxed mb-4">
+                                    {result.desc}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="relative bg-black/30 rounded-xl p-5 w-full mt-4 border border-red-900/80">
+                            <div className="absolute -top-3 left-6 bg-red-950 px-3 border border-red-800 text-yellow-500 text-[10px] font-bold tracking-widest uppercase rounded-full">
+                                Lời dạy kinh điển
+                            </div>
+                            <div className="text-4xl text-yellow-600/20 absolute -top-1 left-2 font-serif leading-none hidden sm:block">"</div>
+                            <p className="text-yellow-100 italic font-serif text-base sm:text-lg leading-relaxed relative z-10 sm:px-6 inline-block">
+                                "{result.quote}"
+                            </p>
+                            <div className="text-4xl text-yellow-600/20 absolute -bottom-4 right-2 font-serif rotate-180 leading-none hidden sm:block">"</div>
+                        </div>
+
+                        <div className="mt-8 flex justify-center">
+                            <motion.button
+                                onClick={() => setResult(null)}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                className="px-6 py-2.5 bg-gradient-to-r from-red-800 to-red-900 hover:from-red-700 hover:to-red-800 border border-yellow-500/30 rounded-full text-yellow-200 text-sm font-bold tracking-wider uppercase transition-all flex items-center gap-2 shadow-lg"
+                            >
+                                <span className="text-lg leading-none">↺</span> Rút quẻ khác
+                            </motion.button>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </div>
+    );
+}
+
 // ── Main Page ────────────────────────────────────────────────────────────────
-export default function ManifestoPage() {
-    const [quote, setQuote] = useState("");
-    const [showQuote, setShowQuote] = useState(false);
-
-    const generateQuote = () => {
-        const randomQuote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
-        setQuote(randomQuote);
-        setShowQuote(true);
-    };
-
-    const reset = () => {
-        setQuote("");
-        setShowQuote(false);
-    };
-
+export default function Thang2Page() {
     return (
         <div
             className="min-h-screen text-white overflow-x-hidden"
@@ -127,16 +250,13 @@ export default function ManifestoPage() {
                     />
                 ))}
             </div>
-
             <div className="relative z-10 max-w-4xl mx-auto px-4 pb-16">
-
                 {/* ── RETURN BUTTON ── */}
                 <div className="pt-6 mb-2">
                     <Link to="/" className="inline-flex items-center gap-2 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl transition-all text-sm font-medium backdrop-blur-sm">
                         ← Về Trang Chủ
                     </Link>
                 </div>
-
                 {/* ── HEADER ── */}
                 <motion.header className="text-center pt-10 pb-8" initial={{ opacity: 0, y: -40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
                     <motion.div className="inline-flex items-center gap-2 bg-yellow-400/20 border border-yellow-400/40 rounded-full px-4 py-1 text-yellow-300 text-sm font-semibold mb-4 tracking-widest uppercase" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
@@ -149,7 +269,6 @@ export default function ManifestoPage() {
                         </span>
                     </motion.h1>
                 </motion.header>
-
                 {/* ── EVENT CARD ── (Chi tiết về sự kiện) */}
                 <motion.section className="rounded-2xl border border-red-500/30 p-6 mb-8 relative overflow-hidden" style={{ background: "rgba(13,27,75,0.7)", backdropFilter: "blur(12px)" }} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.7 }}>
                     <div className="absolute top-0 left-0 w-1 h-full rounded-l-2xl" style={{ background: "linear-gradient(180deg,#FFD700,#FFA500)" }} />
@@ -167,7 +286,6 @@ export default function ManifestoPage() {
                         </div>
                     </div>
                 </motion.section>
-
                 {/* ── CORE IDEAS ── */}
                 <motion.section className="mb-10" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
                     <h2 className="text-center text-lg font-bold text-yellow-300 uppercase tracking-widest mb-5">✦ Tư tưởng cốt lõi ✦</h2>
@@ -183,7 +301,6 @@ export default function ManifestoPage() {
                         ))}
                     </div>
                 </motion.section>
-
                 {/* ── VIDEO EMBED ── */}
                 <motion.section className="mb-10" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
                     <div className="flex justify-center">
@@ -199,48 +316,22 @@ export default function ManifestoPage() {
                         ></iframe>
                     </div>
                 </motion.section>
-
-                {/* ── MINI-GAME: Gieo quẻ tư tưởng ── */}
+                {/* ── MINI-GAME: Gieo quẻ tư tưởng nâng cấp ── */}
                 <motion.section initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}>
-
                     {/* Header bar */}
                     <div className="rounded-t-2xl p-4 sm:p-5" style={{ background: "linear-gradient(90deg,#b91c1c,#ef4444)" }}>
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                             <div>
                                 <h2 className="text-lg sm:text-xl font-black text-white">Gieo quẻ tư tưởng</h2>
-                                <p className="text-blue-300 text-xs mt-0.5">Nhấn nút để nhận trích dẫn ngẫu nhiên từ Tuyên ngôn</p>
-                            </div>
-                            <div className="flex items-center gap-2 flex-wrap">
-                                <button onClick={generateQuote} className="bg-red-700 hover:bg-red-600 active:bg-red-800 text-white text-xs font-bold px-3 py-2 rounded-xl transition-colors">
-                                    Gieo quẻ
-                                </button>
-                                <button onClick={reset} className="bg-blue-700 hover:bg-blue-600 active:bg-blue-800 text-white text-xs font-bold px-3 py-2 rounded-xl transition-colors">
-                                    Làm mới
-                                </button>
+                                <p className="text-red-100/90 text-sm mt-0.5">Rút thẻ để nhận ý tưởng cốt lõi và trích dẫn kinh điển</p>
                             </div>
                         </div>
                     </div>
-
                     {/* Quote area */}
-                    <div className="p-4 border-x border-red-800/50 rounded-b-2xl" style={{ background: "rgba(5,15,50,0.85)" }}>
-                        <p className="text-blue-400 text-xs text-center mb-3 font-medium">— Trích dẫn truyền cảm hứng —</p>
-                        <AnimatePresence>
-                            {showQuote && (
-                                <motion.div
-                                    className="text-center py-4 bg-red-900/40 border border-yellow-400/40 rounded-xl"
-                                    initial={{ opacity: 0, scale: 0.8 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0.8 }}
-                                    transition={{ duration: 0.5 }}
-                                >
-                                    <div className="text-yellow-300 font-bold text-sm px-4">"{quote}"</div>
-                                    <div className="text-blue-300 text-xs mt-1">— C. Mác & Ph. Ăngghen</div>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
+                    <div className="border border-t-0 border-red-800/50 rounded-b-2xl overflow-hidden relative" style={{ background: "rgba(20, 5, 5, 0.6)", backdropFilter: "blur(12px)" }}>
+                        <GieoQue />
                     </div>
                 </motion.section>
-
             </div>
         </div>
     );

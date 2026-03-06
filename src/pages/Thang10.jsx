@@ -329,7 +329,7 @@ export default function Thang10Page() {
 
             <div className="max-w-4xl mx-auto px-6 py-24 pb-48 relative z-10">
                 <div className="mb-12">
-                    <Link to="/" className="text-neutral-500 hover:text-white text-sm font-bold uppercase tracking-widest transition-colors">
+                    <Link to="/" className="inline-block bg-red-900/30 text-red-500 border border-red-900/50 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase transition-colors hover:bg-red-900/50 hover:text-red-400">
                         ← Trở về dòng thời gian
                     </Link>
                 </div>

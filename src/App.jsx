@@ -10,7 +10,8 @@ import Thang7 from "./pages/Thang7";
 import Thang8 from "./pages/Thang8";
 import Thang9 from "./pages/Thang9";
 import Thang10 from "./pages/Thang10";
-
+import Thang11 from "./pages/Thang11";
+import Thang12 from "./pages/Thang12";
 function App() {
     return (
         <Router>
@@ -26,14 +27,8 @@ function App() {
                 <Route path="/thang8" element={<Thang8 />} />
                 <Route path="/thang9" element={<Thang9 />} />
                 <Route path="/thang10" element={<Thang10 />} />
-                {/* Placeholder for other months */}
-                {[11, 12].map(m => (
-                    <Route key={m} path={`/thang${m}`} element={
-                        <div className="min-h-screen flex items-center justify-center text-white text-2xl font-bold" style={{ background: "linear-gradient(135deg,#020617 0%,#0f172a 100%)" }}>
-                            Tháng {m} chưa có nội dung.
-                        </div>
-                    } />
-                ))}
+                <Route path="/thang11" element={<Thang11 />} />
+                <Route path="/thang12" element={<Thang12 />} />
             </Routes>
         </Router>
     );

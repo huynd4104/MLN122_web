@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 
@@ -15,7 +15,7 @@ const CORE_IDEAS = [
     {
         id: "doc_quyen",
         label: "Độc quyền",
-        icon: "�",
+        icon: "👑",
         border: "border-amber-400",
         bg: "bg-amber-900/40",
         desc: "Tập trung sản xuất dẫn đến độc quyền, kiểm soát thị trường (theo giáo trình: Độc quyền thay thế cạnh tranh tự do trong chủ nghĩa tư bản).",
@@ -50,68 +50,187 @@ const CORE_IDEAS = [
     },
 ];
 
-const SITUATIONS = [
-    {
-        id: 1,
-        question: "Ngân hàng đang gặp khủng hoảng rút tiền hàng loạt. Bạn làm gì?",
-        options: ["Đóng cửa tạm thời", "Mở cửa bình thường"],
-        correct: "Đóng cửa tạm thời",
-        feedback: "Đúng! Đóng cửa (Bank Holiday) để kiểm tra và ổn định hệ thống, như Roosevelt đã làm.",
-    },
-    {
-        id: 2,
-        question: "Lạm phát tăng cao do in tiền quá mức. Bạn chọn?",
-        options: ["Mở rộng tín dụng", "Đóng hạn chế cho vay"],
-        correct: "Đóng hạn chế cho vay",
-        feedback: "Đúng! Hạn chế cho vay để kiểm soát lạm phát và ổn định kinh tế.",
-    },
-    {
-        id: 3,
-        question: "Doanh nghiệp độc quyền nâng giá. Nhà nước nên?",
-        options: ["Mở tự do thị trường", "Đóng kiểm soát độc quyền"],
-        correct: "Đóng kiểm soát độc quyền",
-        feedback: "Đúng! Can thiệp để chống độc quyền, bảo vệ người tiêu dùng.",
-    },
-    {
-        id: 4,
-        question: "Khủng hoảng sản xuất dư thừa. Giải pháp?",
-        options: ["Đóng giảm sản xuất", "Mở tăng sản xuất"],
-        correct: "Đóng giảm sản xuất",
-        feedback: "Sai! Trong khủng hoảng, cần can thiệp để cân bằng cung cầu, không tăng sản xuất.",
-    },
-    {
-        id: 5,
-        question: "Thất nghiệp tăng cao. Chính sách?",
-        options: ["Mở cắt giảm chi tiêu", "Đóng tăng đầu tư công"],
-        correct: "Đóng tăng đầu tư công",
-        feedback: "Đúng! Tăng đầu tư công để tạo việc làm, như New Deal.",
-    },
-];
-
 // ── Main Page ────────────────────────────────────────────────────────────────
 export default function BankCrisisPage() {
-    const [currentSituation, setCurrentSituation] = useState(0);
-    const [score, setScore] = useState(0);
-    const [feedback, setFeedback] = useState("");
-    const [showFeedback, setShowFeedback] = useState(false);
+    // ── Giai đoạn & Game State cho Bank Run Simulation ─────────────
+    const [gameStatus, setGameStatus] = useState("start"); // 'start', 'playing', 'won', 'lost'
+    const [timeElapsed, setTimeElapsed] = useState(0);
 
-    const handleChoice = (choice) => {
-        const situation = SITUATIONS[currentSituation];
-        const correct = choice === situation.correct;
-        setFeedback(situation.feedback);
-        setShowFeedback(true);
-        if (correct) setScore(score + 20);
+    // ── Chỉ số Bank Run ─────────────
+    const [bankReserve, setBankReserve] = useState(100);
+    const [panicLevel, setPanicLevel] = useState(0);
+
+    // ── Chỉ số Kinh tế (Dashboard) ─────────────
+    const [gdp, setGdp] = useState(100);
+    const [unemployment, setUnemployment] = useState(5.0);
+    const [inflation, setInflation] = useState(2.0);
+    const [bankStability, setBankStability] = useState(100);
+    const [breadPrice, setBreadPrice] = useState(1.0);
+    const [printMoneyCount, setPrintMoneyCount] = useState(0);
+
+    // ── Can thiệp thị trường ─────────────
+    const [marketRegulation, setMarketRegulation] = useState(50); // 0 = Free Market, 100 = Full Control
+
+    // ── Tin tức ─────────────
+    const [newsAlert, setNewsAlert] = useState(null);
+
+    // ── Hiệu ứng bay ra ─────────────
+    const [particles, setParticles] = useState([]);
+
+    const spawnParticles = useCallback((emoji, count = 1) => {
+        const newParticles = Array.from({ length: count }).map(() => ({
+            id: Math.random().toString(36).substr(2, 9),
+            x: Math.random() * 60 - 30, // Random drift
+            emoji,
+        }));
+        setParticles((prev) => [...prev, ...newParticles].slice(-20)); // Keep max 20 particles
+
         setTimeout(() => {
-            setShowFeedback(false);
-            setCurrentSituation((prev) => (prev + 1) % SITUATIONS.length);
-        }, 3000);
-    };
+            setParticles((prev) => prev.filter(p => !newParticles.find(n => n.id === p.id)));
+        }, 2000);
+    }, []);
 
-    const reset = () => {
-        setCurrentSituation(0);
-        setScore(0);
-        setFeedback("");
-        setShowFeedback(false);
+    // ── Main Game Loop ─────────────
+    useEffect(() => {
+        let timer;
+        if (gameStatus === "playing") {
+            timer = setInterval(() => {
+                setTimeElapsed((prev) => {
+                    const newTime = prev + 1;
+                    if (newTime >= 60 && bankReserve > 0) setGameStatus("won");
+                    return newTime;
+                });
+
+                // Random News (5% chance every second)
+                if (Math.random() < 0.05 && !newsAlert) {
+                    const events = [
+                        "Tin nóng: Ngân hàng lớn tại Chicago vừa sụp đổ!",
+                        "Tin nóng: Người dân biểu tình đòi rút tiền mặt!",
+                        "Tin nóng: Thị trường chứng khoán bốc hơi mạnh!",
+                    ];
+                    setNewsAlert(events[Math.floor(Math.random() * events.length)]);
+                    setPanicLevel((p) => Math.min(100, p + 25));
+                    spawnParticles("😱", 3);
+                    setTimeout(() => setNewsAlert(null), 5000);
+                }
+
+                // Tiền chảy ra (Bank Run)
+                setBankReserve((r) => {
+                    // Càng hoảng loạn rút càng nhanh, nếu Nhà nước không cản (Regulation thấp)
+                    const regulationMitigation = marketRegulation / 100;
+                    const drop = 1 + (panicLevel / 20) * (1 - regulationMitigation * 0.5);
+                    const newReserve = r - drop;
+
+                    if (newReserve <= 0) {
+                        setGameStatus("lost");
+                        return 0;
+                    }
+                    if (drop > 1.5) spawnParticles("💵", Math.floor(drop));
+                    return newReserve;
+                });
+
+                setPanicLevel((p) => {
+                    // Dự trữ < 40% -> Hoảng loạn tăng
+                    let delta = 0;
+                    if (bankReserve < 40) delta += 2;
+                    if (marketRegulation < 20) delta += 1.5; // Quá ít can thiệp -> dễ hoảng
+                    if (marketRegulation > 80) delta -= 1; // Can thiệp mạnh -> yên tâm hơn
+                    return Math.max(0, Math.min(100, p + delta));
+                });
+
+                setBankStability((s) => {
+                    return Math.max(0, Math.min(100, bankReserve - panicLevel * 0.5));
+                });
+
+                // Kinh tế vĩ mô biến động chậm
+                if (marketRegulation < 30) setGdp((g) => Math.max(50, g - 0.5));
+                if (marketRegulation > 80) setGdp((g) => Math.min(150, g + 0.2));
+
+            }, 1000);
+        }
+        return () => clearInterval(timer);
+    }, [gameStatus, panicLevel, marketRegulation, bankReserve, newsAlert, spawnParticles]);
+
+
+    // ── Chính sách (Policy Cards) ─────────────
+    const policies = [
+        {
+            id: "bank_holiday",
+            name: "Bank Holiday",
+            desc: "Tạm đóng cửa ngân hàng để kiểm tra.",
+            action: () => {
+                setBankStability((s) => Math.min(100, s + 30));
+                setPanicLevel((p) => Math.max(0, p - 15));
+                setUnemployment((u) => u + 1.5);
+                setBankReserve((r) => Math.min(100, r + 5));
+                spawnParticles("🔒", 2);
+            },
+            color: "bg-blue-600 hover:bg-blue-500",
+        },
+        {
+            id: "print_money",
+            name: "Print Money",
+            desc: "Bơm thanh khoản khẩn cấp.",
+            action: () => {
+                setBankReserve((r) => Math.min(100, r + 20));
+                setInflation((i) => i + 4);
+                setPrintMoneyCount((c) => {
+                    const next = c + 1;
+                    if (next >= 4) {
+                        setBreadPrice((p) => p * 10); // Hyperinflation Easter Egg
+                        setNewsAlert("Tin nóng: Lạm phát phi mã! Giá bánh mì tăng vọt!!");
+                        setTimeout(() => setNewsAlert(null), 4000);
+                    } else {
+                        setBreadPrice((p) => p + 0.5);
+                    }
+                    return next;
+                });
+                spawnParticles("🖨️", 3);
+            },
+            color: "bg-emerald-600 hover:bg-emerald-500",
+        },
+        {
+            id: "interest_cut",
+            name: "Interest Rate Cut",
+            desc: "Giảm lãi suất kích thích vay vốn.",
+            action: () => {
+                setGdp((g) => g + 5);
+                setUnemployment((u) => Math.max(2, u - 0.8));
+                setInflation((i) => i + 1.5);
+                setBankReserve((r) => Math.max(1, r - 5)); // Dân rút tiền đi đầu tư
+                spawnParticles("📉", 2);
+            },
+            color: "bg-amber-600 hover:bg-amber-500",
+        },
+        {
+            id: "new_deal",
+            name: "New Deal Stimulus",
+            desc: "Đầu tư công quy mô lớn.",
+            action: () => {
+                setGdp((g) => g + 10);
+                setUnemployment((u) => Math.max(2, u - 2.5));
+                setInflation((i) => i + 2);
+                setBankStability((s) => Math.min(100, s + 10));
+                setPanicLevel((p) => Math.max(0, p - 20));
+                spawnParticles("🏗️", 2);
+            },
+            color: "bg-purple-600 hover:bg-purple-500",
+        },
+    ];
+
+    const resetGame = () => {
+        setGameStatus("start");
+        setTimeElapsed(0);
+        setBankReserve(100);
+        setPanicLevel(0);
+        setGdp(100);
+        setUnemployment(5.0);
+        setInflation(2.0);
+        setBankStability(100);
+        setBreadPrice(1.0);
+        setPrintMoneyCount(0);
+        setMarketRegulation(50);
+        setNewsAlert(null);
     };
 
     return (
@@ -205,58 +324,220 @@ export default function BankCrisisPage() {
                     </div>
                 </motion.section>
 
-                {/* ── MINI-GAME: Thử tài Thống đốc ── */}
+                {/* ── BANK RUN SIMULATION : THAY THẾ CHO MINI-GAME CŨ ── */}
                 <motion.section initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}>
+                    <div className="mt-6 border-t border-red-500/30 pt-10">
+                        <h2 className="text-center text-2xl font-black text-yellow-300 uppercase tracking-widest mb-6 drop-shadow-md">
+                            ✦ Bộ Mô Phỏng Bank Run ✦
+                        </h2>
 
-                    {/* Header bar */}
-                    <div className="rounded-t-2xl p-4 sm:p-5" style={{ background: "linear-gradient(90deg,#6b7280,#ef4444)" }}>
-                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                            <div>
-                                <h2 className="text-lg sm:text-xl font-black text-white">Thử tài Thống đốc</h2>
-                                <p className="text-blue-300 text-xs mt-0.5">Chọn "Đóng" hoặc "Mở" để giải quyết tình huống kinh tế</p>
-                            </div>
-                            <div className="flex items-center gap-2 flex-wrap">
-                                <div className="text-center bg-yellow-400/10 border border-yellow-400/30 rounded-xl px-3 py-1.5 min-w-14">
-                                    <div className="text-yellow-300 font-black text-xl leading-none">{score}</div>
-                                    <div className="text-yellow-600 text-xs mt-0.5">điểm</div>
-                                </div>
-                                <button onClick={reset} className="bg-blue-700 hover:bg-blue-600 active:bg-blue-800 text-white text-xs font-bold px-3 py-2 rounded-xl transition-colors">
-                                    Chơi lại
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Game area */}
-                    <div className="p-4 border-x border-red-800/50 rounded-b-2xl" style={{ background: "rgba(5,15,50,0.85)" }}>
-                        <p className="text-blue-400 text-xs text-center mb-3 font-medium">— Tình huống kinh tế —</p>
-                        <div className="text-center py-4 bg-gray-900/40 border border-yellow-400/40 rounded-xl mb-4">
-                            <div className="text-white font-bold text-sm px-4">{SITUATIONS[currentSituation].question}</div>
-                        </div>
-                        <div className="flex justify-center gap-4">
-                            {SITUATIONS[currentSituation].options.map((option) => (
+                        {/* ── MÀN HÌNH BẮT ĐẦU ── */}
+                        {gameStatus === "start" && (
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="text-center bg-black/40 backdrop-blur-md rounded-2xl border border-red-900/50 p-8"
+                            >
+                                <div className="text-6xl mb-4">🏦</div>
+                                <h3 className="text-3xl font-black mb-4 text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-yellow-400">
+                                    BANK RUN 1933
+                                </h3>
+                                <p className="text-md text-gray-300 max-w-xl mx-auto mb-8 leading-relaxed">
+                                    Mô phỏng tháo chạy ngân hàng. Thị trường tự do có những khuyết tật dẫn đến khủng hoảng chu kỳ. Bạn có thể sử dụng <strong className="text-white">sự can thiệp của Nhà nước</strong> để cứu vãn hệ thống tư bản hay không?
+                                </p>
                                 <button
-                                    key={option}
-                                    onClick={() => handleChoice(option)}
-                                    className="bg-red-700 hover:bg-red-600 active:bg-red-800 text-white text-xs font-bold px-4 py-2 rounded-xl transition-colors"
+                                    onClick={() => setGameStatus("playing")}
+                                    className="text-lg font-bold bg-gradient-to-r from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 px-8 py-3 rounded-xl shadow-[0_0_15px_rgba(220,38,38,0.5)] transition-all transform hover:scale-105"
                                 >
-                                    {option}
+                                    Bắt Đầu Mô Phỏng
                                 </button>
-                            ))}
-                        </div>
-                        <AnimatePresence>
-                            {showFeedback && (
-                                <motion.div
-                                    className="text-center mt-4 text-blue-300 text-sm"
-                                    initial={{ opacity: 0, scale: 0.8 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0.8 }}
-                                    transition={{ duration: 0.5 }}
-                                >
-                                    {feedback}
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
+                            </motion.div>
+                        )}
+
+                        {/* ── MÀN HÌNH GAME ── */}
+                        {gameStatus === "playing" && (
+                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+
+                                {/* Khu vực Animation Ngân Hàng */}
+                                <div className="relative bg-black/40 backdrop-blur-md rounded-2xl border border-red-900/50 p-6 flex flex-col items-center justify-center min-h-[160px] overflow-hidden">
+                                    <AnimatePresence>
+                                        {newsAlert && (
+                                            <motion.div
+                                                initial={{ opacity: 0, y: -50 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: -50 }}
+                                                className="absolute top-4 z-20 bg-red-600 text-white px-4 py-2 rounded-lg font-bold text-sm tracking-wider uppercase border text-center shadow-[0_0_15px_rgba(255,0,0,0.8)]"
+                                            >
+                                                📰 {newsAlert}
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+
+                                    <div className="text-6xl z-10 relative mt-4">
+                                        🏦
+                                        {particles.map(p => (
+                                            <motion.div
+                                                key={p.id}
+                                                initial={{ opacity: 1, y: 0, x: 0 }}
+                                                animate={{ opacity: 0, y: 100, x: p.x }}
+                                                transition={{ duration: 1.5, ease: "easeIn" }}
+                                                className="absolute top-1/2 left-1/2 text-2xl"
+                                            >
+                                                {p.emoji}
+                                            </motion.div>
+                                        ))}
+                                    </div>
+
+                                    {/* Dòng người */}
+                                    <motion.div
+                                        className="mt-4 flex gap-1 text-2xl h-8 overflow-hidden justify-center"
+                                        animate={{ x: [-10, 10, -10] }}
+                                        transition={{ duration: 0.5, repeat: Infinity, ease: "linear" }}
+                                    >
+                                        {Array.from({ length: Math.floor(panicLevel / 5) }).map((_, i) => (
+                                            <span key={i}>{i % 2 === 0 ? "👨" : "👩"}</span>
+                                        ))}
+                                    </motion.div>
+
+                                    {panicLevel > 70 && (
+                                        <div className="absolute bottom-2 right-4 text-xs font-bold animate-pulse text-red-400">
+                                            📉 HỖN LOẠN!
+                                        </div>
+                                    )}
+
+                                    {/* Timer */}
+                                    <div className="absolute top-4 right-4 text-gray-400 font-mono font-bold bg-black/50 px-2 py-1 rounded">
+                                        ⏱️ {timeElapsed}/60s
+                                    </div>
+                                </div>
+
+                                {/* Thanh Progress Dự Trữ & Hoảng Loạn */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <motion.div
+                                        className="bg-black/30 rounded-xl p-4 border border-gray-700"
+                                        animate={panicLevel > 80 ? { x: [-3, 3, -3] } : {}}
+                                        transition={{ duration: 0.2, repeat: Infinity }}
+                                    >
+                                        <div className="flex justify-between mb-1 text-sm">
+                                            <span className="font-bold text-green-400">Dự Trữ Ngân Hàng</span>
+                                            <span className="font-bold">{bankReserve.toFixed(1)}%</span>
+                                        </div>
+                                        <div className="h-3 bg-gray-800 rounded-full overflow-hidden">
+                                            <div className="h-full bg-green-500 transition-all duration-300" style={{ width: `${Math.max(0, bankReserve)}%` }}></div>
+                                        </div>
+                                    </motion.div>
+                                    <div className="bg-black/30 rounded-xl p-4 border border-gray-700">
+                                        <div className="flex justify-between mb-1 text-sm">
+                                            <span className="font-bold text-red-500">Mức Độ Hoảng Loạn</span>
+                                            <span className="font-bold">{panicLevel.toFixed(1)}%</span>
+                                        </div>
+                                        <div className="h-3 bg-gray-800 rounded-full overflow-hidden">
+                                            <div className="h-full bg-red-600 transition-all duration-300" style={{ width: `${Math.max(0, panicLevel)}%` }}></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Slider Thị trường vs Nhà nước */}
+                                <div className="bg-gray-900/60 rounded-xl p-5 border border-purple-500/30">
+                                    <h3 className="text-center font-bold text-purple-300 mb-4 tracking-wide text-sm">ĐIỀU TIẾT VĨ MÔ</h3>
+                                    <div className="flex items-center gap-4">
+                                        <span className="text-xs text-sky-400 font-bold uppercase w-24 text-right">Thị trường</span>
+                                        <input
+                                            type="range"
+                                            min="0" max="100"
+                                            value={marketRegulation}
+                                            onChange={(e) => setMarketRegulation(Number(e.target.value))}
+                                            className="flex-1 h-3 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
+                                        />
+                                        <span className="text-xs text-red-400 font-bold uppercase w-24">Nhà nước</span>
+                                    </div>
+                                    <p className="text-center text-xs text-gray-400 mt-2">
+                                        {marketRegulation}% can thiệp. (0% = Hỗn loạn, 100% = Kiểm soát tuyệt đối)
+                                    </p>
+                                </div>
+
+                                {/* Chỉ số Kinh tế */}
+                                <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                                    <div className="bg-gray-800/80 p-3 rounded-lg border border-gray-600 text-center">
+                                        <div className="text-[10px] text-gray-400 uppercase">GDP Index</div>
+                                        <div className="text-lg font-bold text-white">{gdp.toFixed(1)}</div>
+                                    </div>
+                                    <div className="bg-gray-800/80 p-3 rounded-lg border border-gray-600 text-center">
+                                        <div className="text-[10px] text-gray-400 uppercase">Thất nghiệp</div>
+                                        <div className="text-lg font-bold text-amber-400">{unemployment.toFixed(1)}%</div>
+                                    </div>
+                                    <div className="bg-gray-800/80 p-3 rounded-lg border border-gray-600 text-center">
+                                        <div className="text-[10px] text-gray-400 uppercase">Lạm phát</div>
+                                        <div className="text-lg font-bold text-red-400">{inflation.toFixed(1)}%</div>
+                                    </div>
+                                    <div className="bg-gray-800/80 p-3 rounded-lg border border-gray-600 text-center">
+                                        <div className="text-[10px] text-gray-400 uppercase">Ổn Định NH</div>
+                                        <div className="text-lg font-bold text-blue-400">{bankStability.toFixed(1)}%</div>
+                                    </div>
+                                    <div className="bg-gray-800/80 p-3 rounded-lg border border-yellow-600/50 text-center">
+                                        <div className="text-[10px] text-yellow-500 uppercase">Giá Bánh Mì</div>
+                                        <div className="text-lg font-bold text-yellow-400">${breadPrice.toFixed(2)}</div>
+                                    </div>
+                                </div>
+
+                                {/* Thẻ Chính Sách */}
+                                <div>
+                                    <h3 className="font-bold text-gray-300 mb-3 uppercase tracking-wider text-xs">Policy Cards (Chính sách cứu trợ)</h3>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                        {policies.map(Card => (
+                                            <button
+                                                key={Card.id}
+                                                onClick={Card.action}
+                                                className={`p-3 rounded-xl text-left transition-all transform active:scale-95 ${Card.color}`}
+                                            >
+                                                <div className="font-bold text-white text-sm mb-1">{Card.name}</div>
+                                                <div className="text-xs text-white/80">{Card.desc}</div>
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                            </motion.div>
+                        )}
+
+                        {/* ── MÀN HÌNH KẾT THÚC (THUA/THẮNG) ── */}
+                        {gameStatus === "lost" && (
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="text-center bg-red-950/80 backdrop-blur-lg p-8 rounded-2xl border-2 border-red-500"
+                            >
+                                <h2 className="text-4xl font-black text-red-500 mb-4 animate-pulse">SYSTEM COLLAPSE</h2>
+                                <p className="text-lg text-red-200 mb-4 font-semibold">Ngân hàng cạn kiệt dự trữ. Hệ thống sụp đổ tài chính!</p>
+                                <p className="text-sm text-gray-300 max-w-lg mx-auto mb-6">
+                                    Khi thị trường hoàn toàn tự do và niềm tin sụp đổ, Bank Run có thể đánh sập cả một nền kinh tế nếu không có sự can thiệp từ Nhà nước.
+                                </p>
+                                <button onClick={resetGame} className="px-6 py-2 bg-red-600 hover:bg-red-500 rounded-full font-bold text-sm">Chơi Lại</button>
+                            </motion.div>
+                        )}
+
+                        {gameStatus === "won" && (
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="text-center bg-emerald-950/80 backdrop-blur-lg p-8 rounded-2xl border-2 border-emerald-500"
+                            >
+                                <h2 className="text-4xl font-black text-emerald-400 mb-4">CRISIS STABILIZED</h2>
+                                <p className="text-lg text-emerald-200 mb-4 font-semibold">Khủng hoảng đã được kiểm soát!</p>
+
+                                <div className="bg-black/40 p-5 rounded-xl border border-emerald-800 my-4 max-w-lg mx-auto italic text-gray-300 relative">
+                                    <span className="text-3xl absolute top-1 left-3 text-emerald-700">"</span>
+                                    <p className="text-sm">Điều duy nhất chúng ta phải sợ hãi chính là nỗi sợ hãi.</p>
+                                    <span className="text-xs font-bold text-gray-400 mt-2 block">— Franklin D. Roosevelt, 1933</span>
+                                </div>
+
+                                <p className="text-sm text-gray-200 max-w-lg mx-auto mb-6">
+                                    Bạn đã chứng minh được sự cần thiết của <strong>Bàn tay Hữu hình</strong> (Nhà nước) trong việc điều tiết nền kinh tế vĩ mô, khắc phục những khuyết tật của thị trường tự do.
+                                </p>
+
+                                <button onClick={resetGame} className="px-6 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-full font-bold text-sm">Chơi Lại</button>
+                            </motion.div>
+                        )}
                     </div>
                 </motion.section>
 

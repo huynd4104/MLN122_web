@@ -11,9 +11,9 @@ const MONTHS = [
     { id: 7, title: "Hệ thống Bretton Woods", emoji: "🏛️", color: "from-slate-600 to-blue-900" },
     { id: 8, title: "Cú sốc Nixon", emoji: "📺", color: "from-amber-700 to-amber-950" },
     { id: 9, title: "Sụp đổ Lehman Brothers", emoji: "🏦", color: "from-red-700 to-red-950" },
-    { id: 10, title: "Thứ Năm Đen Tối 1929", emoji: "📉", color: "from-red-800 to-red-950" },
-    { id: 11, title: "Sắp ra mắt...", emoji: "⏳", color: "from-gray-600 to-gray-800" },
-    { id: 12, title: "Sắp ra mắt...", emoji: "⏳", color: "from-gray-600 to-gray-800" },
+    { id: 10, title: "Thứ Năm Đen Tối 1929", emoji: "💥", color: "from-red-800 to-red-950" },
+    { id: 11, title: "Ngày Độc thân Alibaba", emoji: "🛍️", color: "from-blue-500 to-blue-900" },
+    { id: 12, title: "Việt Nam gia nhập WTO", emoji: "🇻🇳", color: "from-green-600 to-green-900" },
 ];
 
 export default function Home() {

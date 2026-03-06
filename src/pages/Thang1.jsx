@@ -61,6 +61,8 @@ const CARDS_DATA = [
     { id: 8, text: "Bảng giá phở: Phở tái 50.000đ", answer: "thuoc_do", emoji: "🍜" },
     { id: 9, text: "Đổi EUR lấy USD khi đi du lịch châu Âu", answer: "the_gioi", emoji: "✈️" },
     { id: 10, text: "Dùng tiền mặt trả tiền taxi sau chuyến đi", answer: "luu_thong", emoji: "🚕" },
+    { id: 11, text: "Định giá một căn nhà: 3 tỷ đồng", answer: "thuoc_do", emoji: "🏠" },
+    { id: 12, text: "Chuyển khoản tiền lương cho nhân viên", answer: "thanh_toan", emoji: "💵" },
 ];
 
 // ── Touch + Desktop Draggable Card ──────────────────────────────────────────
@@ -164,32 +166,32 @@ export default function EuroPage() {
     const [dragOverBucket, setDragOverBucket] = useState(null);
 
     const handleDropped = useCallback((cardId, bucketId) => {
-        setCards((prev) => {
-            const card = prev.find((c) => c.id === cardId);
-            if (!card) return prev;
-            const correct = card.answer === bucketId;
-            setResults((r) => ({ ...r, [cardId]: correct ? "correct" : "wrong" }));
+        const card = cards.find((c) => c.id === cardId);
+        if (!card) return;
 
-            if (correct) {
-                setScore((s) => s + 10);
-                setBucketCounts((bc) => ({ ...bc, [bucketId]: bc[bucketId] + 1 }));
-                setCelebrateBucket(bucketId);
-                setTimeout(() => setCelebrateBucket(null), 800);
-                setTimeout(() => {
-                    setCards((p) => p.filter((c) => c.id !== cardId));
-                    setResults((r) => { const n = { ...r }; delete n[cardId]; return n; });
-                }, 550);
-            } else {
-                setWrongCount((w) => w + 1);
-                setShakeBucket(bucketId);
-                setTimeout(() => {
-                    setShakeBucket(null);
-                    setResults((r) => { const n = { ...r }; delete n[cardId]; return n; });
-                }, 700);
-            }
-            return prev;
-        });
-    }, []);
+        if (results[cardId]) return; // Prevent double trigger while animating
+
+        const correct = card.answer === bucketId;
+        setResults((r) => ({ ...r, [cardId]: correct ? "correct" : "wrong" }));
+
+        if (correct) {
+            setScore((s) => s + 10);
+            setBucketCounts((bc) => ({ ...bc, [bucketId]: bc[bucketId] + 1 }));
+            setCelebrateBucket(bucketId);
+            setTimeout(() => setCelebrateBucket(null), 800);
+            setTimeout(() => {
+                setCards((p) => p.filter((c) => c.id !== cardId));
+                setResults((r) => { const n = { ...r }; delete n[cardId]; return n; });
+            }, 550);
+        } else {
+            setWrongCount((w) => w + 1);
+            setShakeBucket(bucketId);
+            setTimeout(() => {
+                setShakeBucket(null);
+                setResults((r) => { const n = { ...r }; delete n[cardId]; return n; });
+            }, 700);
+        }
+    }, [cards, results]);
 
     const handleDrop = (e, bucketId) => {
         e.preventDefault();
