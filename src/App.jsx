@@ -244,9 +244,6 @@ export default function EuroPage() {
                             Kỷ nguyên đồng Euro
                         </span>
                     </motion.h1>
-                    <motion.p className="text-blue-300 text-sm sm:text-base mt-2" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
-                        Kinh tế chính trị Mác–Lênin · 5 chức năng của tiền tệ
-                    </motion.p>
                 </motion.header>
 
                 {/* ── EVENT CARD ── */}
@@ -388,9 +385,6 @@ export default function EuroPage() {
                     </div>
                 </motion.section>
 
-                <motion.footer className="text-center mt-10 text-blue-700 text-xs" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}>
-                    Kinh tế chính trị Mác–Lênin · Tháng 1 · Đồng Euro & 5 chức năng tiền tệ
-                </motion.footer>
             </div>
         </div>
     );
