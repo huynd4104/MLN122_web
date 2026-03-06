@@ -280,23 +280,6 @@ export default function EuroPage() {
                     </div>
                 </motion.section>
 
-                {/* ── VIDEO EMBED ── (Mới thêm) */}
-                <motion.section className="mb-10" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
-                    <h2 className="text-center text-lg font-bold text-yellow-300 uppercase tracking-wide mb-5">Video minh họa về đồng Euro</h2>
-                    <div className="flex justify-center">
-                        <iframe
-                            width="560"
-                            height="315"
-                            src="https://www.youtube.com/embed/Vo3-AbcD75s"
-                            title="YouTube video player"
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowFullScreen
-                            className="rounded-lg shadow-md w-full max-w-lg"
-                        ></iframe>
-                    </div>
-                </motion.section>
-
                 {/* ── MINI-GAME ── */}
                 <motion.section initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}>
 
@@ -341,7 +324,7 @@ export default function EuroPage() {
                                     </div>
                                 </motion.div>
                             ) : (
-                                <div className="flex flex-wrap gap-2 justify-center">
+                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 justify-center">
                                     {cards.map((card) => (
                                         <DraggableCard key={card.id} card={card} status={results[card.id]} onDropped={handleDropped} />
                                     ))}
