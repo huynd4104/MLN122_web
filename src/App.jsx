@@ -277,6 +277,22 @@ export default function EuroPage() {
                     </div>
                 </motion.section>
 
+                {/* ── VIDEO EMBED ── */}
+                <motion.section className="mb-10" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
+                    <div className="flex justify-center">
+                        <iframe
+                            width="560"
+                            height="315"
+                            src="https://www.youtube.com/embed/Vo3-AbcD75s"
+                            title="YouTube video player"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowFullScreen
+                            className="rounded-lg shadow-md w-full max-w-lg"
+                        ></iframe>
+                    </div>
+                </motion.section>
+
                 {/* ── MINI-GAME ── */}
                 <motion.section initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}>
 
