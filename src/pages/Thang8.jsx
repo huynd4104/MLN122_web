@@ -566,7 +566,7 @@ export default function NixonShockPage() {
                         {TIMELINE_EVENTS.map((t, i) => (
                             <div key={t.year} className="relative flex flex-col items-center flex-1 min-w-[80px] z-10">
                                 <button
-                                    onClick={() => setActiveTimeline(activeTimeline === i ? null : i)}
+                                    onMouseEnter={() => setActiveTimeline(i)}
                                     className="w-10 h-10 rounded-full border-2 flex items-center justify-center text-sm font-black transition-all duration-300 focus:outline-none"
                                     style={{
                                         borderColor: t.color,

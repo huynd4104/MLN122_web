@@ -163,20 +163,36 @@ function ThreeTierFlow() {
     const [goldOunces, setGoldOunces] = useState(100);
     const [flowTrigger, setFlowTrigger] = useState(0);
     const [animating, setAnimating] = useState(false);
+    const [simStep, setSimStep] = useState(0);
+    const [displayedUsd, setDisplayedUsd] = useState(0);
+    const [displayedWorldUsd, setDisplayedWorldUsd] = useState(0);
 
-    const usd = goldOunces * 35;
-    const usdNow = usd * 15; // estimated modern equivalent
+    const usdNow = displayedUsd * 15; // estimated modern equivalent
 
     const handleFlow = () => {
+        if (animating) return;
         setAnimating(true);
-        setFlowTrigger(t => t + 1);
-        setTimeout(() => setAnimating(false), 2000);
-    };
+        setSimStep(1); // Gold phase
 
-    const arrowAnim = {
-        initial: { scaleX: 0, opacity: 0 },
-        animate: { scaleX: 1, opacity: 1 },
-        transition: { duration: 0.5 }
+        setTimeout(() => {
+            setSimStep(2); // USD phase
+            setDisplayedUsd(goldOunces * 35);
+            setFlowTrigger(t => t + 1); // Trigger USD particles
+        }, 1200);
+
+        setTimeout(() => {
+            setSimStep(3); // World phase
+            setDisplayedWorldUsd(goldOunces * 35);
+        }, 2400);
+
+        setTimeout(() => {
+            setSimStep(4); // Done
+        }, 3600);
+
+        setTimeout(() => {
+            setSimStep(0);
+            setAnimating(false);
+        }, 5000);
     };
 
     return (
@@ -196,8 +212,13 @@ function ThreeTierFlow() {
                     <input
                         type="range" min="10" max="1000" step="10"
                         value={goldOunces}
-                        onChange={e => setGoldOunces(Number(e.target.value))}
-                        className="w-full accent-yellow-400 cursor-pointer"
+                        onChange={e => {
+                            setGoldOunces(Number(e.target.value));
+                            setDisplayedUsd(0);
+                            setDisplayedWorldUsd(0);
+                        }}
+                        disabled={animating}
+                        className={`w-full accent-yellow-400 ${animating ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
                     />
                     <div className="flex justify-between text-white/30 text-xs mt-1">
                         <span>10 oz</span><span>1,000 oz</span>
@@ -206,13 +227,16 @@ function ThreeTierFlow() {
 
                 {/* 3-tier flow diagram */}
                 <div className="relative flex flex-col sm:flex-row items-center justify-between gap-2 mb-5">
-
                     {/* Tier 1: Gold */}
                     <motion.div
-                        className="flex-1 rounded-xl border border-yellow-400/50 p-3 text-center relative overflow-hidden"
-                        style={{ background: "rgba(120,80,0,0.35)" }}
-                        animate={animating ? { scale: [1, 1.04, 1] } : {}}
-                        transition={{ duration: 0.4 }}
+                        className="flex-1 rounded-xl border p-3 text-center relative overflow-hidden transition-all duration-300"
+                        style={{
+                            background: simStep === 1 ? "rgba(202,138,4,0.4)" : "rgba(120,80,0,0.35)",
+                            borderColor: simStep === 1 ? "rgba(253,224,71,0.8)" : "rgba(250,204,21,0.5)",
+                            boxShadow: simStep === 1 ? "0 0 20px rgba(250,204,21,0.4)" : "none"
+                        }}
+                        animate={simStep === 1 ? { scale: [1, 1.05, 1] } : { scale: 1 }}
+                        transition={{ repeat: simStep === 1 ? Infinity : 0, duration: 1 }}
                     >
                         <div className="text-3xl mb-1">🥇</div>
                         <div className="text-yellow-300 font-black text-xs uppercase tracking-widest">Vàng</div>
@@ -224,9 +248,9 @@ function ThreeTierFlow() {
                     {/* Arrow 1 */}
                     <div className="flex flex-col items-center sm:flex-row gap-1 px-1">
                         <motion.div
-                            className="text-yellow-300 font-black text-lg hidden sm:block"
-                            animate={animating ? { x: [0, 5, 0], opacity: [1, 0.4, 1] } : {}}
-                            transition={{ duration: 0.6, repeat: animating ? 2 : 0 }}
+                            className="text-yellow-300 font-black text-lg hidden sm:block delay-100"
+                            animate={simStep > 0 && simStep < 3 ? { x: [0, 8, 0], opacity: [0.5, 1, 0.5] } : { x: 0, opacity: 0.5 }}
+                            transition={{ duration: 0.8, repeat: Infinity }}
                         >→</motion.div>
                         <div className="text-yellow-300 font-black text-lg block sm:hidden">↓</div>
                         <div className="text-yellow-400/60 text-xs font-semibold whitespace-nowrap">× 35 USD</div>
@@ -234,25 +258,29 @@ function ThreeTierFlow() {
 
                     {/* Tier 2: USD */}
                     <motion.div
-                        className="flex-1 rounded-xl border border-blue-400/50 p-3 text-center relative overflow-hidden"
-                        style={{ background: "rgba(30,50,120,0.45)" }}
-                        animate={animating ? { scale: [1, 1.05, 1], boxShadow: ["0 0 0px #3b82f6", "0 0 24px #3b82f666", "0 0 0px #3b82f6"] } : {}}
-                        transition={{ duration: 0.6 }}
+                        className="flex-1 rounded-xl border p-3 text-center relative overflow-hidden transition-all duration-300"
+                        style={{
+                            background: simStep === 2 ? "rgba(37,99,235,0.4)" : "rgba(30,50,120,0.45)",
+                            borderColor: simStep === 2 ? "rgba(96,165,250,0.8)" : "rgba(96,165,250,0.5)",
+                            boxShadow: simStep === 2 ? "0 0 20px rgba(59,130,246,0.5)" : "none"
+                        }}
+                        animate={simStep === 2 ? { scale: [1, 1.05, 1] } : { scale: 1 }}
+                        transition={{ repeat: simStep === 2 ? Infinity : 0, duration: 1 }}
                     >
                         <FlyingParticle trigger={flowTrigger} collapsed={false} />
                         <div className="text-3xl mb-1">💵</div>
                         <div className="text-blue-300 font-black text-xs uppercase tracking-widest">USD</div>
-                        <div className="text-white font-bold text-lg">{usd.toLocaleString()}</div>
+                        <div className="text-white font-bold text-lg">{displayedUsd > 0 ? displayedUsd.toLocaleString() : "---"}</div>
                         <div className="text-blue-400/70 text-xs">USD (1944)</div>
-                        <div className="text-blue-200/50 text-xs mt-1">≈ ${usdNow.toLocaleString()} ngày nay</div>
+                        <div className="text-blue-200/50 text-xs mt-1">≈ ${displayedUsd > 0 ? usdNow.toLocaleString() : "---"} ngày nay</div>
                     </motion.div>
 
                     {/* Arrow 2 */}
                     <div className="flex flex-col items-center sm:flex-row gap-1 px-1">
                         <motion.div
                             className="text-blue-300 font-black text-lg hidden sm:block"
-                            animate={animating ? { x: [0, 5, 0], opacity: [1, 0.4, 1] } : {}}
-                            transition={{ duration: 0.6, repeat: animating ? 2 : 0, delay: 0.2 }}
+                            animate={simStep > 1 && simStep < 4 ? { x: [0, 8, 0], opacity: [0.5, 1, 0.5] } : { x: 0, opacity: 0.5 }}
+                            transition={{ duration: 0.8, repeat: Infinity }}
                         >→</motion.div>
                         <div className="text-blue-300 font-black text-lg block sm:hidden">↓</div>
                         <div className="text-blue-400/60 text-xs font-semibold whitespace-nowrap">Tỷ giá cố định</div>
@@ -260,17 +288,22 @@ function ThreeTierFlow() {
 
                     {/* Tier 3: World Currencies */}
                     <motion.div
-                        className="flex-1 rounded-xl border border-emerald-400/50 p-3 text-center"
-                        style={{ background: "rgba(0,60,40,0.45)" }}
-                        animate={animating ? { scale: [1, 1.04, 1] } : {}}
-                        transition={{ duration: 0.6, delay: 0.3 }}
+                        className="flex-1 rounded-xl border p-3 text-center transition-all duration-300"
+                        style={{
+                            background: simStep === 3 ? "rgba(5,150,105,0.4)" : "rgba(0,60,40,0.45)",
+                            borderColor: simStep === 3 ? "rgba(52,211,153,0.8)" : "rgba(52,211,153,0.5)",
+                            boxShadow: simStep === 3 ? "0 0 20px rgba(16,185,129,0.5)" : "none"
+                        }}
+                        animate={simStep === 3 ? { scale: [1, 1.05, 1] } : { scale: 1 }}
+                        transition={{ repeat: simStep === 3 ? Infinity : 0, duration: 1 }}
                     >
                         <div className="flex justify-center gap-1 text-xl mb-1">🇬🇧🇯🇵🇫🇷</div>
-                        <div className="text-emerald-300 font-black text-xs uppercase tracking-widest">Đồng tiền thế giới</div>
-                        <div className="grid grid-cols-2 gap-1 mt-1">
+                        <div className="text-emerald-300 font-black text-xs uppercase tracking-widest">Tiền thế giới</div>
+                        <div className="grid grid-cols-2 gap-x-1 gap-y-1.5 mt-2">
                             {CURRENCIES.slice(0, 4).map(c => (
-                                <div key={c.code} className="text-xs text-white/70 text-left">
-                                    <span>{c.flag}</span> <span className="font-bold text-white">{(usd / c.rate).toFixed(0)}</span> <span className="text-white/40">{c.code}</span>
+                                <div key={c.code} className="text-[10px] sm:text-xs text-white/80 text-left flex items-center justify-between">
+                                    <span className="flex-shrink-0" title={c.name}>{c.flag}</span>
+                                    <span className="font-bold text-white tracking-widest ml-1">{displayedWorldUsd > 0 ? (displayedWorldUsd / c.rate).toFixed(0) : "---"}</span>
                                 </div>
                             ))}
                         </div>
@@ -280,14 +313,22 @@ function ThreeTierFlow() {
                 <button
                     onClick={handleFlow}
                     disabled={animating}
-                    className="w-full py-2.5 rounded-xl font-black text-sm tracking-wide transition-all"
+                    className="w-full py-3 rounded-xl font-black text-sm tracking-wide transition-all duration-300"
                     style={{
-                        background: animating ? "rgba(100,100,100,0.3)" : "linear-gradient(90deg,#b45309,#d97706)",
+                        background: simStep === 1 ? "#ca8a04" :
+                            simStep === 2 ? "#2563eb" :
+                                simStep === 3 ? "#059669" :
+                                    simStep === 4 ? "#16a34a" :
+                                        "linear-gradient(90deg,#b45309,#d97706)",
                         color: "white",
                         cursor: animating ? "not-allowed" : "pointer"
                     }}
                 >
-                    {animating ? "⚡ Đang chuyển hóa..." : "▶ Mô phỏng dòng chảy tiền tệ"}
+                    {simStep === 1 ? "🥇 Đang lượng hóa Vàng dự trữ..." :
+                        simStep === 2 ? "💵 Đang in USD tương ứng..." :
+                            simStep === 3 ? "🌍 Đang neo tỷ giá toàn cầu..." :
+                                simStep === 4 ? "✨ Hoàn tất chu trình dòng chảy tiền tệ" :
+                                    "▶ Bắt đầu mô phỏng quy trình"}
                 </button>
             </div>
         </div>
@@ -555,7 +596,7 @@ function Timeline() {
                 {TIMELINE_EVENTS.map((t, i) => (
                     <div key={t.year} className="relative flex flex-col items-center flex-1 min-w-[72px] z-10">
                         <button
-                            onClick={() => setActive(active === i ? null : i)}
+                            onMouseEnter={() => setActive(i)}
                             className="w-10 h-10 rounded-full border-2 flex items-center justify-center text-sm font-black transition-all duration-300 focus:outline-none"
                             style={{
                                 borderColor: t.color,

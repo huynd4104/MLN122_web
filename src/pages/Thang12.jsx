@@ -384,7 +384,7 @@ export default function Thang12Page() {
                             {/* Step 1 */}
                             <div className="bg-emerald-950 border border-emerald-600 rounded-2xl p-5 text-center w-full md:w-1/3 shadow-xl transform transition-transform hover:-translate-y-2">
                                 <div className="text-4xl mb-3">🏭</div>
-                                <h4 className="font-bold text-emerald-300 uppercase mb-2">Sản xuất & Lắp ráp <br />(Việt Nam)</h4>
+                                <h4 className="font-bold text-emerald-300 uppercase mb-2">Sản xuất & Lắp ráp</h4>
                                 <p className="text-xs text-emerald-100/70">Nhập khẩu nguyên liệu (Từ Trung Quốc, Hàn Quốc). Tận dụng lao động, ưu đãi thuế để gia công và lắp ráp thành phẩm (Điện tử, Dệt may).</p>
                             </div>
 

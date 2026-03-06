@@ -343,7 +343,7 @@ export default function MarshallPlanPage() {
                         {TIMELINE.map((t, i) => (
                             <div key={t.year} className="relative flex flex-col items-center flex-1 min-w-[80px] z-10">
                                 <button
-                                    onClick={() => setActiveTimeline(activeTimeline === i ? null : i)}
+                                    onMouseEnter={() => setActiveTimeline(i)}
                                     className="w-10 h-10 rounded-full border-2 flex items-center justify-center font-black text-xs transition-all duration-300 focus:outline-none"
                                     style={{
                                         borderColor: t.color,
@@ -457,13 +457,9 @@ export default function MarshallPlanPage() {
                                             initial={{ opacity: 0 }}
                                             animate={{ opacity: 1 }}
                                         >
-                                            <motion.div
-                                                className="text-5xl"
-                                                animate={{ rotate: [0, 10, -10, 0] }}
-                                                transition={{ duration: 3, repeat: Infinity }}
-                                            >
+                                            <div className="text-5xl opacity-80 drop-shadow-md">
                                                 🌍
-                                            </motion.div>
+                                            </div>
                                             <p className="text-green-300/60 text-sm">Click vào một điểm trên<br />quả cầu để xem chi tiết</p>
                                         </motion.div>
                                     )}
