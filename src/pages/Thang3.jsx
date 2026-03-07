@@ -163,7 +163,21 @@ export default function BankCrisisPage() {
         {
             id: "bank_holiday",
             name: "Bank Holiday",
-            desc: "Tạm đóng cửa ngân hàng để kiểm tra.",
+            subtitle: "Đóng cửa ngân hàng khẩn cấp",
+            desc: "Tạm ngừng hoạt động toàn bộ ngân hàng để kiểm tra, ngăn dòng tiền tháo chạy và khôi phục niềm tin.",
+            icon: "🔒",
+            accentColor: "#3b82f6",
+            glowColor: "rgba(59,130,246,0.25)",
+            borderColor: "rgba(59,130,246,0.4)",
+            bgGradient: "linear-gradient(135deg,rgba(29,78,216,0.25),rgba(30,58,138,0.15))",
+            badgeColor: "rgba(59,130,246,0.2)",
+            badgeText: "ỔN ĐỊNH",
+            effects: [
+                { label: "Ổn định NH", value: "+30", positive: true },
+                { label: "Hoảng loạn", value: "−15", positive: true },
+                { label: "Dự trữ", value: "+5", positive: true },
+                { label: "Thất nghiệp", value: "+1.5%", positive: false },
+            ],
             action: () => {
                 setBankStability((s) => Math.min(100, s + 30));
                 setPanicLevel((p) => Math.max(0, p - 15));
@@ -171,19 +185,31 @@ export default function BankCrisisPage() {
                 setBankReserve((r) => Math.min(100, r + 5));
                 spawnParticles("🔒", 2);
             },
-            color: "bg-blue-600 hover:bg-blue-500",
         },
         {
             id: "print_money",
             name: "Print Money",
-            desc: "Bơm thanh khoản khẩn cấp.",
+            subtitle: "Bơm thanh khoản khẩn cấp",
+            desc: "In tiền bơm thẳng vào hệ thống ngân hàng. Hiệu quả tức thời nhưng nguy cơ lạm phát phi mã nếu lạm dụng.",
+            icon: "🖨️",
+            accentColor: "#10b981",
+            glowColor: "rgba(16,185,129,0.25)",
+            borderColor: "rgba(16,185,129,0.4)",
+            bgGradient: "linear-gradient(135deg,rgba(6,78,59,0.25),rgba(6,95,70,0.15))",
+            badgeColor: "rgba(16,185,129,0.2)",
+            badgeText: "THANH KHOẢN",
+            effects: [
+                { label: "Dự trữ NH", value: "+20", positive: true },
+                { label: "Lạm phát", value: "+4%", positive: false },
+                { label: "Giá bánh mì", value: "+0.5$", positive: false },
+            ],
             action: () => {
                 setBankReserve((r) => Math.min(100, r + 20));
                 setInflation((i) => i + 4);
                 setPrintMoneyCount((c) => {
                     const next = c + 1;
                     if (next >= 4) {
-                        setBreadPrice((p) => p * 10); // Hyperinflation Easter Egg
+                        setBreadPrice((p) => p * 10);
                         setNewsAlert("Tin nóng: Lạm phát phi mã! Giá bánh mì tăng vọt!!");
                         setTimeout(() => setNewsAlert(null), 4000);
                     } else {
@@ -193,25 +219,52 @@ export default function BankCrisisPage() {
                 });
                 spawnParticles("🖨️", 3);
             },
-            color: "bg-emerald-600 hover:bg-emerald-500",
         },
         {
             id: "interest_cut",
             name: "Interest Rate Cut",
-            desc: "Giảm lãi suất kích thích vay vốn.",
+            subtitle: "Giảm lãi suất cơ bản",
+            desc: "Hạ lãi suất để kích thích doanh nghiệp vay vốn đầu tư, giảm thất nghiệp nhưng dễ kéo dài tháo chạy.",
+            icon: "📉",
+            accentColor: "#f59e0b",
+            glowColor: "rgba(245,158,11,0.25)",
+            borderColor: "rgba(245,158,11,0.4)",
+            bgGradient: "linear-gradient(135deg,rgba(120,53,15,0.25),rgba(92,32,8,0.15))",
+            badgeColor: "rgba(245,158,11,0.2)",
+            badgeText: "KÍCH THÍCH",
+            effects: [
+                { label: "GDP", value: "+5", positive: true },
+                { label: "Thất nghiệp", value: "−0.8%", positive: true },
+                { label: "Lạm phát", value: "+1.5%", positive: false },
+                { label: "Dự trữ NH", value: "−5", positive: false },
+            ],
             action: () => {
                 setGdp((g) => g + 5);
                 setUnemployment((u) => Math.max(2, u - 0.8));
                 setInflation((i) => i + 1.5);
-                setBankReserve((r) => Math.max(1, r - 5)); // Dân rút tiền đi đầu tư
+                setBankReserve((r) => Math.max(1, r - 5));
                 spawnParticles("📉", 2);
             },
-            color: "bg-amber-600 hover:bg-amber-500",
         },
         {
             id: "new_deal",
             name: "New Deal Stimulus",
-            desc: "Đầu tư công quy mô lớn.",
+            subtitle: "Đầu tư công quy mô lớn",
+            desc: "Chương trình đầu tư công Roosevelt: xây cơ sở hạ tầng, tạo việc làm, kéo kinh tế ra khỏi khủng hoảng.",
+            icon: "🏗️",
+            accentColor: "#a855f7",
+            glowColor: "rgba(168,85,247,0.25)",
+            borderColor: "rgba(168,85,247,0.4)",
+            bgGradient: "linear-gradient(135deg,rgba(76,29,149,0.25),rgba(59,7,100,0.15))",
+            badgeColor: "rgba(168,85,247,0.2)",
+            badgeText: "PHỤC HỒI",
+            effects: [
+                { label: "GDP", value: "+10", positive: true },
+                { label: "Thất nghiệp", value: "−2.5%", positive: true },
+                { label: "Ổn định NH", value: "+10", positive: true },
+                { label: "Hoảng loạn", value: "−20", positive: true },
+                { label: "Lạm phát", value: "+2%", positive: false },
+            ],
             action: () => {
                 setGdp((g) => g + 10);
                 setUnemployment((u) => Math.max(2, u - 2.5));
@@ -220,7 +273,6 @@ export default function BankCrisisPage() {
                 setPanicLevel((p) => Math.max(0, p - 20));
                 spawnParticles("🏗️", 2);
             },
-            color: "bg-purple-600 hover:bg-purple-500",
         },
     ];
 
@@ -511,17 +563,72 @@ export default function BankCrisisPage() {
 
                                 {/* Thẻ Chính Sách */}
                                 <div>
-                                    <h3 className="font-bold text-gray-300 mb-3 uppercase tracking-wider text-xs">Policy Cards (Chính sách cứu trợ)</h3>
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <div className="h-px flex-1 bg-white/10" />
+                                        <h3 className="font-bold text-white/60 uppercase tracking-[0.2em] text-[11px] flex items-center gap-2">
+                                            <span>🏛️</span> Chính sách cứu trợ
+                                        </h3>
+                                        <div className="h-px flex-1 bg-white/10" />
+                                    </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                        {policies.map(Card => (
-                                            <button
-                                                key={Card.id}
-                                                onClick={Card.action}
-                                                className={`p-3 rounded-xl text-left transition-all transform active:scale-95 ${Card.color}`}
+                                        {policies.map(card => (
+                                            <motion.button
+                                                key={card.id}
+                                                onClick={card.action}
+                                                className="text-left rounded-2xl p-4 relative overflow-hidden group"
+                                                style={{
+                                                    background: card.bgGradient,
+                                                    border: `1px solid ${card.borderColor}`,
+                                                    backdropFilter: "blur(8px)",
+                                                }}
+                                                whileHover={{
+                                                    scale: 1.03,
+                                                    boxShadow: `0 0 24px ${card.glowColor}`,
+                                                    borderColor: card.accentColor,
+                                                }}
+                                                whileTap={{ scale: 0.97 }}
+                                                transition={{ duration: 0.18 }}
                                             >
-                                                <div className="font-bold text-white text-sm mb-1">{Card.name}</div>
-                                                <div className="text-xs text-white/80">{Card.desc}</div>
-                                            </button>
+                                                {/* Glow sweep on hover */}
+                                                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                                                    style={{ background: `radial-gradient(circle at 30% 50%, ${card.glowColor}, transparent 70%)` }} />
+
+                                                {/* Header row */}
+                                                <div className="flex items-start justify-between mb-2 relative">
+                                                    <div className="flex items-center gap-2.5">
+                                                        <div className="text-2xl leading-none">{card.icon}</div>
+                                                        <div>
+                                                            <div className="font-black text-white text-sm leading-tight">{card.name}</div>
+                                                            <div className="text-[11px] font-medium" style={{ color: card.accentColor }}>{card.subtitle}</div>
+                                                        </div>
+                                                    </div>
+                                                    <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full tracking-wide flex-shrink-0"
+                                                        style={{ background: card.badgeColor, color: card.accentColor, border: `1px solid ${card.borderColor}` }}>
+                                                        {card.badgeText}
+                                                    </span>
+                                                </div>
+
+                                                {/* Description */}
+                                                <p className="text-[12px] text-white/60 leading-relaxed mb-3 relative">{card.desc}</p>
+
+                                                {/* Effect tags */}
+                                                <div className="flex flex-wrap gap-1.5 relative">
+                                                    {card.effects.map((eff, i) => (
+                                                        <span key={i}
+                                                            className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full"
+                                                            style={{
+                                                                background: eff.positive ? "rgba(34,197,94,0.12)" : "rgba(239,68,68,0.12)",
+                                                                color: eff.positive ? "#4ade80" : "#f87171",
+                                                                border: eff.positive ? "1px solid rgba(34,197,94,0.3)" : "1px solid rgba(239,68,68,0.3)",
+                                                            }}
+                                                        >
+                                                            <span>{eff.positive ? "▲" : "▼"}</span>
+                                                            <span>{eff.label}</span>
+                                                            <span className="font-bold">{eff.value}</span>
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </motion.button>
                                         ))}
                                     </div>
                                 </div>

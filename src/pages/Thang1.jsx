@@ -535,20 +535,20 @@ function MiniGame() {
                                 </motion.div>
                             )}
                             <div className="text-center bg-yellow-400/10 border border-yellow-400/30 rounded-lg px-2.5 py-1 min-w-12">
-                                <div className="text-yellow-300 font-black text-base leading-none">{score}</div>
-                                <div className="text-yellow-600 text-[10px]">điểm</div>
+                                <div className="text-yellow-300 font-black text-xl leading-none">{score}</div>
+                                <div className="text-yellow-600 text-xs">điểm</div>
                             </div>
                             <div className="text-center bg-red-400/10 border border-red-400/30 rounded-lg px-2.5 py-1 min-w-12">
-                                <div className="text-red-300 font-black text-base leading-none">{wrongCount}</div>
-                                <div className="text-red-600 text-[10px]">sai</div>
+                                <div className="text-red-300 font-black text-xl leading-none">{wrongCount}</div>
+                                <div className="text-red-600 text-xs">sai</div>
                             </div>
                             <motion.button
                                 onClick={() => { grandTotalRef.current = 0; scoreRef.current = 0; startLevel(0); }}
                                 className="text-center bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg px-2.5 py-1 min-w-12 transition-colors"
                                 whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.93 }}
                                 title="Chơi lại từ đầu">
-                                <div className="text-white font-black text-base leading-none">↺</div>
-                                <div className="text-white/50 text-[10px]">lại</div>
+                                <div className="text-white font-black text-xl leading-none">↺</div>
+                                <div className="text-white/50 text-xs">lại</div>
                             </motion.button>
                         </div>
                     </div>
