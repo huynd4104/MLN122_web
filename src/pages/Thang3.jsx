@@ -438,22 +438,47 @@ export default function BankCrisisPage() {
                                 </div>
 
                                 {/* Slider Thị trường vs Nhà nước */}
-                                <div className="bg-gray-900/60 rounded-xl p-5 border border-purple-500/30">
-                                    <h3 className="text-center font-bold text-purple-300 mb-4 tracking-wide text-sm">ĐIỀU TIẾT VĨ MÔ</h3>
-                                    <div className="flex items-center gap-4">
-                                        <span className="text-xs text-sky-400 font-bold uppercase w-24 text-right">Thị trường</span>
+                                <div className={`bg-gray-900/60 rounded-xl p-5 border transition-all duration-500 ${
+                                    marketRegulation > 80 ? 'border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.2)]' : 
+                                    marketRegulation < 20 ? 'border-sky-500/50 shadow-[0_0_15px_rgba(56,189,248,0.2)]' : 
+                                    'border-purple-500/30'
+                                }`}>
+                                    <h3 className="text-center font-bold text-purple-300 mb-3 tracking-wide text-sm">
+                                        ĐIỀU TIẾT VĨ MÔ
+                                    </h3>
+                                    <div className="flex items-center gap-4 mb-4">
+                                        <span className={`text-xs font-bold uppercase w-24 text-right transition-colors ${marketRegulation < 50 ? 'text-sky-400' : 'text-gray-500'}`}>Thị trường</span>
                                         <input
                                             type="range"
                                             min="0" max="100"
                                             value={marketRegulation}
                                             onChange={(e) => setMarketRegulation(Number(e.target.value))}
-                                            className="flex-1 h-3 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
+                                            className="flex-1 h-3 bg-gray-700 rounded-lg appearance-none cursor-pointer transition-all"
+                                            style={{
+                                                accentColor: marketRegulation > 80 ? '#ef4444' : marketRegulation < 20 ? '#38bdf8' : '#a855f7'
+                                            }}
                                         />
-                                        <span className="text-xs text-red-400 font-bold uppercase w-24">Nhà nước</span>
+                                        <span className={`text-xs font-bold uppercase w-24 transition-colors ${marketRegulation >= 50 ? 'text-red-400' : 'text-gray-500'}`}>Nhà nước</span>
                                     </div>
-                                    <p className="text-center text-xs text-gray-400 mt-2">
-                                        {marketRegulation}% can thiệp. (0% = Hỗn loạn, 100% = Kiểm soát tuyệt đối)
-                                    </p>
+                                    
+                                    <div className="bg-black/50 rounded-lg p-3 text-sm text-center border border-gray-800">
+                                        <div className="font-bold mb-1">
+                                            Mức độ can thiệp: <span className={
+                                                marketRegulation > 80 ? 'text-red-400' : 
+                                                marketRegulation < 20 ? 'text-sky-400' : 
+                                                'text-purple-400'
+                                            }>{marketRegulation}%</span>
+                                        </div>
+                                        <div className="h-10 flex items-center justify-center">
+                                            {marketRegulation < 20 ? (
+                                                <span className="text-sky-300 text-xs animate-pulse">⚠️ <strong>Thả nổi:</strong> Hoảng loạn tăng nhanh (+1.5/s)<br/>GDP sụt giảm (-0.5/s)</span>
+                                            ) : marketRegulation > 80 ? (
+                                                <span className="text-red-300 text-xs animate-pulse">🛡️ <strong>Kiểm soát:</strong> Trấn an hoảng loạn (-1/s)<br/>Phục hồi GDP (+0.2/s)</span>
+                                            ) : (
+                                                <span className="text-gray-400 text-xs">⚖️ <strong>Trung lập:</strong> Không có tác động đặc biệt.<br/>Bank run diễn ra bình thường.</span>
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
 
                                 {/* Chỉ số Kinh tế */}
