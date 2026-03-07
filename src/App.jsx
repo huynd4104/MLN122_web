@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Thang1 from "./pages/Thang1";
 import Thang2 from "./pages/Thang2";
@@ -12,9 +13,18 @@ import Thang9 from "./pages/Thang9";
 import Thang10 from "./pages/Thang10";
 import Thang11 from "./pages/Thang11";
 import Thang12 from "./pages/Thang12";
+function ScrollToTop() {
+    const { pathname } = useLocation();
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+    return null;
+}
+
 function App() {
     return (
         <Router>
+            <ScrollToTop />
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/thang1" element={<Thang1 />} />

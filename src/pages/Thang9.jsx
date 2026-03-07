@@ -658,7 +658,7 @@ export default function LehmanCollapsePage() {
                         initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
                         📅 Tháng 9 · Sự kiện lịch sử
                     </motion.div>
-                    <motion.h1 className="text-2xl sm:text-4xl font-black leading-tight mb-2 whitespace-nowrap" style={{ letterSpacing: "-0.02em" }}>
+                    <motion.h1 className="text-2xl sm:text-4xl font-black leading-tight mb-2" style={{ letterSpacing: "-0.02em" }}>
                         <span className="text-white">Tháng 9: </span><span style={{ background: "linear-gradient(90deg,#FFD700,#FFA500,#FFD700)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Sự sụp đổ của Lehman Brothers</span>
                     </motion.h1>
                 </motion.header>

@@ -408,14 +408,14 @@ const VisualDomino = () => {
 
             {/* Domino Row — wrapper gives room for fallen tiles */}
             <div className="relative pb-24">
-                <div className="flex justify-center items-end gap-4 sm:gap-6">
+                <div className="flex justify-center items-end gap-2 sm:gap-6">
                     {dominos.map((d, i) => {
                         const isFallen = tipped > i;
                         const isExpanded = expandedIdx === i;
                         return (
                             <motion.div
                                 key={d.id}
-                                className={`w-16 sm:w-20 h-28 sm:h-32 rounded-xl border-2 flex flex-col justify-center items-center text-center shadow-2xl origin-bottom cursor-pointer select-none flex-shrink-0
+                                className={`w-14 sm:w-20 h-24 sm:h-32 rounded-xl border-2 flex flex-col justify-center items-center text-center shadow-2xl origin-bottom cursor-pointer select-none flex-shrink-0
                                 ${isFallen ? 'bg-red-950 border-red-600' : 'bg-neutral-900 border-neutral-700 hover:border-neutral-500'}`}
                                 animate={isFallen
                                     ? { rotateZ: 75, x: 10, y: 14, opacity: 0.85, scale: 0.92 }
@@ -424,16 +424,16 @@ const VisualDomino = () => {
                                 onClick={() => isFallen && setExpandedIdx(isExpanded ? null : i)}
                             >
                                 <motion.div
-                                    className="text-3xl sm:text-4xl mb-1"
+                                    className="text-2xl sm:text-4xl mb-1"
                                     animate={isFallen ? { scale: [1, 1.4, 1] } : {}}
                                     transition={{ duration: 0.4 }}
                                 >
                                     {isFallen ? '💥' : d.flag}
                                 </motion.div>
-                                <div className="font-black text-white text-xs sm:text-sm leading-tight px-1">{d.country}</div>
-                                <div className="text-[11px] text-neutral-400 mt-1 px-1">{d.date}</div>
+                                <div className="font-black text-white text-[10px] sm:text-sm leading-tight px-1">{d.country}</div>
+                                <div className="text-[9px] sm:text-[11px] text-neutral-400 mt-1 px-1">{d.date}</div>
                                 {isFallen && (
-                                    <div className="text-[10px] text-red-400 mt-1.5 font-black uppercase tracking-wide">👆 TAP XEM</div>
+                                    <div className="text-[8px] sm:text-[10px] text-red-400 mt-1 font-black uppercase tracking-wide">👆 XEM</div>
                                 )}
                             </motion.div>
                         );
@@ -1079,7 +1079,7 @@ const NewDealSection = ({ newDealEnabled, onActivate }) => {
                                             className="absolute left-10 top-1/2 -translate-y-1/2 h-0.5 bg-green-400 rounded-full"
                                             initial={{ width: 0, opacity: 0 }}
                                             animate={{ width: '70%', opacity: 1 }}
-                                            transition={{ duration: 1.4, ease: 'easeOut' }}
+                                            transition={{ duration: 1.5, ease: 'easeInOut' }}
                                         />
                                     </div>
                                     <p className="text-green-400 text-sm font-bold animate-pulse">Đang ký sắc lệnh…</p>
