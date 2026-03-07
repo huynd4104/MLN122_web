@@ -27,12 +27,58 @@ const COUNTRIES = [
 ];
 
 const CORE_IDEAS = [
-    { id: "hoi_nhap", label: "Hội nhập kinh tế QT", icon: "🌍", border: "border-green-400", bg: "bg-green-900/40", desc: "Tăng cường trao đổi, hợp tác để phát triển (Chương 6)." },
-    { id: "cuong_quoc", label: "Cường quốc kinh tế", icon: "🏆", border: "border-amber-400", bg: "bg-amber-900/40", desc: "Dẫn đến bất bình đẳng và phụ thuộc (Chương 6)." },
-    { id: "phu_thuoc", label: "Sự phụ thuộc QT", icon: "🔗", border: "border-emerald-400", bg: "bg-emerald-900/40", desc: "Các nước yếu bị chi phối bởi cường quốc (Chương 6)." },
-    { id: "toan_cau", label: "Xu thế toàn cầu hóa", icon: "🔄", border: "border-purple-400", bg: "bg-purple-900/40", desc: "Tăng cơ hội nhưng cũng thách thức cho nước đang phát triển." },
-    { id: "chien_luoc", label: "Chiến lược phát triển", icon: "📈", border: "border-sky-400", bg: "bg-sky-900/40", desc: "Hỗ trợ chuyển đổi kinh tế xã hội qua viện trợ." },
+    {
+        id: "hoi_nhap",
+        label: "Hội nhập kinh tế quốc tế",
+        icon: "🌍",
+        border: "border-green-400",
+        bg: "bg-green-900/40",
+        desc:
+            "Quá trình trao đổi kinh tế giữa các quốc gia, thúc đẩy phân công lao động quốc tế và chuyên môn hóa sản xuất.",
+        borderColor: "#22c55e",
+    },
+    {
+        id: "cuong_quoc",
+        label: "Cường quốc kinh tế",
+        icon: "🏆",
+        border: "border-amber-400",
+        bg: "bg-amber-900/40",
+        desc:
+            "Các nước có trình độ phát triển cao thống trị thị trường thế giới, hưởng lợi lớn từ thương mại quốc tế và bóc lột các nước yếu.",
+        borderColor: "#fbbf24",
+    },
+    {
+        id: "phu_thuoc",
+        label: "Sự phụ thuộc kinh tế quốc tế",
+        icon: "🔗",
+        border: "border-emerald-400",
+        bg: "bg-emerald-900/40",
+        desc:
+            "Các nước chậm phát triển bị lệ thuộc vào cường quốc về công nghệ, thị trường và tài chính, bất lợi trong trao đổi quốc tế.",
+        borderColor: "#34d399",
+    },
+    {
+        id: "toan_cau",
+        label: "Xu thế toàn cầu hóa kinh tế",
+        icon: "🔄",
+        border: "border-purple-400",
+        bg: "bg-purple-900/40",
+        desc:
+            "Tăng cường hội nhập kinh tế quốc tế, phân công lao động toàn cầu, nhưng làm sâu sắc thêm bất bình đẳng giữa các nước phát triển và đang phát triển.",
+        borderColor: "#c084fc",
+    },
+    {
+        id: "chien_luoc",
+        label: "Chiến lược phát triển kinh tế",
+        icon: "📈",
+        border: "border-sky-400",
+        bg: "bg-sky-900/40",
+        desc:
+            "Viện trợ kinh tế là công cụ của cường quốc để mở rộng ảnh hưởng, tạo thị trường tiêu thụ và phụ thuộc cho các nước nhận viện trợ.",
+        borderColor: "#38bdf8",
+    },
 ];
+
 
 const TIMELINE = [
     { year: "1947", label: "Đề xuất", color: "#fbbf24", desc: "Ngày 5/6/1947, Ngoại trưởng George C. Marshall đề xuất kế hoạch tại Đại học Harvard, cam kết Mỹ sẽ hỗ trợ châu Âu phục hồi." },
@@ -316,13 +362,12 @@ export default function MarshallPlanPage() {
                             <div className="text-yellow-400 font-bold text-xs uppercase tracking-widest mb-1">5 tháng 6, 1947</div>
                             <h2 className="text-xl font-bold text-white mb-2">Kế hoạch Marshall – Viện trợ tái thiết châu Âu</h2>
                             <p className="text-blue-200 text-sm leading-relaxed mb-2">
-                                Kế hoạch Marshall (European Recovery Program) được Ngoại trưởng Mỹ George C. Marshall{" "}
-                                <strong className="text-yellow-300">đề xuất ngày 5/6/1947</strong> tại Đại học Harvard, nhằm tái thiết châu Âu sau Thế chiến II. Từ 1948–1952, Mỹ viện trợ khoảng{" "}
-                                <strong className="text-yellow-300">13 tỷ USD</strong> (tương đương 150 tỷ USD hiện nay) cho 16 nước Tây Âu.
+                                Kế hoạch Marshall (European Recovery Program) được Ngoại trưởng Mỹ <strong className="text-yellow-300">George C. Marshall đề xuất ngày 5/6/1947</strong> tại Đại học Harvard, nhằm tái thiết 16 nước Tây Âu sau Thế chiến II. Từ 1948–1952, Mỹ cung cấp khoảng <strong className="text-yellow-300">13 tỷ USD</strong> (tương đương ~150 tỷ USD hiện nay) viện trợ cho Anh, Pháp, Tây Đức, Ý, Hà Lan, Bỉ, Áo, Đan Mạch, Hy Lạp, Na Uy, Thụy Điển, Thổ Nhĩ Kỳ, Ireland, Bồ Đào Nha, Iceland và Luxembourg.
                             </p>
                             <p className="text-blue-200 text-sm leading-relaxed">
-                                Kế hoạch củng cố vị thế cường quốc kinh tế của Mỹ, thúc đẩy phụ thuộc quốc tế và hội nhập kinh tế toàn cầu – minh chứng rõ nét cho các khái niệm Chương 6.
+                                Kế hoạch giúp châu Âu phục hồi nhanh chóng (GDP tăng trung bình 5-6%/năm), nhưng cũng là công cụ chiến lược của Mỹ trong Chiến tranh Lạnh để ngăn chặn chủ nghĩa xã hội, mở rộng thị trường xuất khẩu và tạo sự phụ thuộc kinh tế quốc tế.
                             </p>
+
                         </div>
                     </div>
                 </motion.section>
@@ -519,22 +564,19 @@ export default function MarshallPlanPage() {
                     </div>
                 </motion.section>
 
-                {/* ── VIDEO ── */}
-                <motion.section className="mb-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}>
-                    <div className="flex justify-center">
-                        <iframe
-                            width="560"
-                            height="315"
-                            src="https://www.youtube.com/embed/BULMSp-wcbo"
-                            title="YouTube video player"
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowFullScreen
-                            className="rounded-xl shadow-lg w-full max-w-xl"
-                        />
+                {/* ── VIDEO EMBED ── */}
+                <motion.section className="mt-20 pt-16 border-t border-slate-800 pb-12" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
+                    <div className="max-w-4xl mx-auto bg-slate-900/80 border border-slate-800 p-2 md:p-4 rounded-2xl md:rounded-3xl shadow-2xl overflow-hidden backdrop-blur-sm">
+                        <div className="relative w-full aspect-video rounded-xl overflow-hidden ring-1 ring-slate-700/50 bg-black">
+                            <iframe
+                                className="absolute inset-0 w-full h-full"
+                                src="https://www.youtube.com/embed/BULMSp-wcbo"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowFullScreen
+                            ></iframe>
+                        </div>
                     </div>
                 </motion.section>
-
             </div>
         </div>
     );

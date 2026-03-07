@@ -9,7 +9,8 @@ const CORE_IDEAS = [
         icon: "💰",
         border: "border-red-400",
         bg: "bg-red-900/40",
-        desc: "Phần giá trị mới dôi ra ngoài giá trị sức lao động (theo giáo trình: m' = v' - v, do lao động không công tạo ra).",
+        desc:
+            "Phần giá trị mới do lao động không công của công nhân tạo ra, dôi ra ngoài giá trị sức lao động",
         borderColor: "#f56565",
     },
     {
@@ -18,7 +19,8 @@ const CORE_IDEAS = [
         icon: "⏰",
         border: "border-amber-400",
         bg: "bg-amber-900/40",
-        desc: "Thời gian tái sản xuất giá trị sức lao động (theo giáo trình: Tạo ra giá trị v để bù đắp chi phí sống).",
+        desc:
+            "Thời gian lao động cần thiết để tái sản xuất giá trị sức lao động (v), bù đắp chi phí sinh hoạt của công nhân và gia đình họ.",
         borderColor: "#fbbf24",
     },
     {
@@ -27,7 +29,8 @@ const CORE_IDEAS = [
         icon: "🔥",
         border: "border-emerald-400",
         bg: "bg-emerald-900/40",
-        desc: "Thời gian lao động không công tạo giá trị thặng dư (theo giáo trình: Tạo ra giá trị m cho nhà tư bản).",
+        desc:
+            "Thời gian lao động không công của công nhân tạo ra giá trị thặng dư (m) hoàn toàn thuộc về nhà tư bản.",
         borderColor: "#34d399",
     },
     {
@@ -36,7 +39,8 @@ const CORE_IDEAS = [
         icon: "📊",
         border: "border-purple-400",
         bg: "bg-purple-900/40",
-        desc: "Mức độ bóc lột lao động (theo giáo trình: m' = m / v x 100%).",
+        desc:
+            "Mức độ bóc lột lao động của nhà tư bản (m' = m/v × 100%).",
         borderColor: "#c084fc",
     },
     {
@@ -45,10 +49,12 @@ const CORE_IDEAS = [
         icon: "🛠️",
         border: "border-sky-400",
         bg: "bg-sky-900/40",
-        desc: "Tuyệt đối (kéo dài ngày làm) và tương đối (tăng năng suất) (theo giáo trình: Tăng m bằng cách thay đổi thời gian hoặc hiệu quả).",
+        desc:
+            "Tuyệt đối (kéo dài ngày lao động) và tương đối (rút ngắn thời gian tất yếu bằng tăng năng suất lao động).",
         borderColor: "#38bdf8",
     },
 ];
+
 
 const MARX_QUOTES = [
     "\"Tư bản là lao động chết, giống như ma cà rồng, chỉ sống bằng cách hút lao động sống, và càng sống nhiều hơn, nó càng hút nhiều hơn.\" — Karl Marx",
@@ -283,18 +289,16 @@ export default function LaborDayPage() {
                 </motion.section>
 
                 {/* ── VIDEO EMBED ── */}
-                <motion.section className="mb-10" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
-                    <div className="flex justify-center">
-                        <iframe
-                            width="560"
-                            height="315"
-                            src="https://www.youtube.com/embed/DkYqONro9UI"
-                            title="YouTube video player"
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowFullScreen
-                            className="rounded-lg shadow-md w-full max-w-lg"
-                        ></iframe>
+                <motion.section className="mt-20 pt-16 border-t border-slate-800 pb-12" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
+                    <div className="max-w-4xl mx-auto bg-slate-900/80 border border-slate-800 p-2 md:p-4 rounded-2xl md:rounded-3xl shadow-2xl overflow-hidden backdrop-blur-sm">
+                        <div className="relative w-full aspect-video rounded-xl overflow-hidden ring-1 ring-slate-700/50 bg-black">
+                            <iframe
+                                className="absolute inset-0 w-full h-full"
+                                src="https://www.youtube.com/embed/DkYqONro9UI"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowFullScreen
+                            ></iframe>
+                        </div>
                     </div>
                 </motion.section>
 

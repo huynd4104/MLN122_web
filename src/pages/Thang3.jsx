@@ -5,50 +5,56 @@ import { Link } from "react-router-dom";
 const CORE_IDEAS = [
     {
         id: "canh_tranh",
-        label: "Cạnh tranh tự do",
+        label: "Cạnh tranh tư bản chủ nghĩa",
         icon: "🏆",
         border: "border-red-400",
         bg: "bg-red-900/40",
-        desc: "Cạnh tranh giữa các doanh nghiệp dẫn đến cải tiến sản xuất nhưng cũng gây hỗn loạn (theo giáo trình: Cạnh tranh thúc đẩy lực lượng sản xuất nhưng dẫn đến khủng hoảng).",
+        desc:
+            "Cạnh tranh giữa các nhà tư bản trong điều kiện sở hữu tư nhân tư bản chủ nghĩa thúc đẩy cải tiến kỹ thuật, hạ giá thành, mở rộng thị trường nhưng cũng làm gay gắt mâu thuẫn, dẫn tới khủng hoảng và tập trung tư bản.",
         borderColor: "#f56565",
     },
     {
         id: "doc_quyen",
-        label: "Độc quyền",
+        label: "Tư bản độc quyền",
         icon: "👑",
         border: "border-amber-400",
         bg: "bg-amber-900/40",
-        desc: "Tập trung sản xuất dẫn đến độc quyền, kiểm soát thị trường (theo giáo trình: Độc quyền thay thế cạnh tranh tự do trong chủ nghĩa tư bản).",
+        desc:
+            "Trình độ phát triển cao của chủ nghĩa tư bản khi tập trung sản xuất và tư bản dẫn tới hình thành các tổ chức độc quyền, chi phối giá cả, lợi nhuận và thị trường, thay thế dần cạnh tranh tự do nhưng không xóa bỏ cạnh tranh.",
         borderColor: "#fbbf24",
     },
     {
         id: "khung_hoang",
-        label: "Khủng hoảng kinh tế",
+        label: "Khủng hoảng kinh tế chu kỳ",
         icon: "📉",
         border: "border-emerald-400",
         bg: "bg-emerald-900/40",
-        desc: "Khủng hoảng chu kỳ do mâu thuẫn sản xuất - tiêu dùng (theo giáo trình: Khủng hoảng trong chủ nghĩa tư bản do sản xuất dư thừa).",
+        desc:
+            "Khủng hoảng kinh tế trong chủ nghĩa tư bản mang tính chu kỳ, bắt nguồn từ mâu thuẫn giữa tính chất xã hội hóa cao của sản xuất với hình thức chiếm hữu tư nhân tư bản chủ nghĩa, biểu hiện thành khủng hoảng sản xuất thừa.",
         borderColor: "#34d399",
     },
     {
         id: "nha_nuoc",
-        label: "Vai trò Nhà nước",
+        label: "Nhà nước tư bản can thiệp",
         icon: "🏛️",
         border: "border-purple-400",
         bg: "bg-purple-900/40",
-        desc: "Nhà nước can thiệp để ổn định thị trường thất bại (theo giáo trình: Nhà nước tư bản điều tiết kinh tế để giảm khủng hoảng).",
+        desc:
+            "Trong giai đoạn tư bản độc quyền nhà nước, Nhà nước tư sản sử dụng các công cụ tài khóa, tiền tệ, pháp luật để điều tiết kinh tế nhằm hạn chế khủng hoảng, bảo vệ lợi ích chung của tư bản độc quyền.",
         borderColor: "#c084fc",
     },
     {
         id: "thi_truong",
-        label: "Thị trường thất bại",
+        label: "Thất bại thị trường tư bản chủ nghĩa",
         icon: "⚠️",
         border: "border-sky-400",
         bg: "bg-sky-900/40",
-        desc: "Thị trường tự do không giải quyết được độc quyền và khủng hoảng (theo giáo trình: Cần Nhà nước can thiệp khi thị trường thất bại).",
+        desc:
+            "Cơ chế thị trường tư bản chủ nghĩa không tự khắc phục được những khuyết tật như độc quyền, thất nghiệp, khủng hoảng chu kỳ, bất bình đẳng và các ngoại ứng tiêu cực, đòi hỏi sự can thiệp của Nhà nước tư bản.",
         borderColor: "#38bdf8",
     },
 ];
+
 
 // ── Main Page ────────────────────────────────────────────────────────────────
 export default function BankCrisisPage() {
@@ -309,18 +315,17 @@ export default function BankCrisisPage() {
                 </motion.section>
 
                 {/* ── VIDEO EMBED ── */}
-                <motion.section className="mb-10" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
-                    <div className="flex justify-center">
-                        <iframe
-                            width="560"
-                            height="315"
-                            src="https://www.youtube.com/embed/xsH1WSEqqF0"
-                            title="YouTube video player"
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowFullScreen
-                            className="rounded-lg shadow-md w-full max-w-lg"
-                        ></iframe>
+                <motion.section className="mt-20 pt-16 border-t border-slate-800 pb-12" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
+                    <div className="max-w-4xl mx-auto bg-slate-900/80 border border-slate-800 p-2 md:p-4 rounded-2xl md:rounded-3xl shadow-2xl overflow-hidden backdrop-blur-sm">
+                        <div className="relative w-full aspect-video rounded-xl overflow-hidden ring-1 ring-slate-700/50 bg-black">
+                            <iframe
+                                className="absolute inset-0 w-full h-full"
+                                src="https://www.youtube.com/embed/xsH1WSEqqF0" title="YouTube video player"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowFullScreen
+                            ></iframe>
+                        </div>
                     </div>
                 </motion.section>
 
@@ -438,11 +443,10 @@ export default function BankCrisisPage() {
                                 </div>
 
                                 {/* Slider Thị trường vs Nhà nước */}
-                                <div className={`bg-gray-900/60 rounded-xl p-5 border transition-all duration-500 ${
-                                    marketRegulation > 80 ? 'border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.2)]' : 
-                                    marketRegulation < 20 ? 'border-sky-500/50 shadow-[0_0_15px_rgba(56,189,248,0.2)]' : 
-                                    'border-purple-500/30'
-                                }`}>
+                                <div className={`bg-gray-900/60 rounded-xl p-5 border transition-all duration-500 ${marketRegulation > 80 ? 'border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.2)]' :
+                                    marketRegulation < 20 ? 'border-sky-500/50 shadow-[0_0_15px_rgba(56,189,248,0.2)]' :
+                                        'border-purple-500/30'
+                                    }`}>
                                     <h3 className="text-center font-bold text-purple-300 mb-3 tracking-wide text-sm">
                                         ĐIỀU TIẾT VĨ MÔ
                                     </h3>
@@ -460,22 +464,22 @@ export default function BankCrisisPage() {
                                         />
                                         <span className={`text-xs font-bold uppercase w-24 transition-colors ${marketRegulation >= 50 ? 'text-red-400' : 'text-gray-500'}`}>Nhà nước</span>
                                     </div>
-                                    
+
                                     <div className="bg-black/50 rounded-lg p-3 text-sm text-center border border-gray-800">
                                         <div className="font-bold mb-1">
                                             Mức độ can thiệp: <span className={
-                                                marketRegulation > 80 ? 'text-red-400' : 
-                                                marketRegulation < 20 ? 'text-sky-400' : 
-                                                'text-purple-400'
+                                                marketRegulation > 80 ? 'text-red-400' :
+                                                    marketRegulation < 20 ? 'text-sky-400' :
+                                                        'text-purple-400'
                                             }>{marketRegulation}%</span>
                                         </div>
                                         <div className="h-10 flex items-center justify-center">
                                             {marketRegulation < 20 ? (
-                                                <span className="text-sky-300 text-xs animate-pulse">⚠️ <strong>Thả nổi:</strong> Hoảng loạn tăng nhanh (+1.5/s)<br/>GDP sụt giảm (-0.5/s)</span>
+                                                <span className="text-sky-300 text-xs animate-pulse">⚠️ <strong>Thả nổi:</strong> Hoảng loạn tăng nhanh (+1.5/s)<br />GDP sụt giảm (-0.5/s)</span>
                                             ) : marketRegulation > 80 ? (
-                                                <span className="text-red-300 text-xs animate-pulse">🛡️ <strong>Kiểm soát:</strong> Trấn an hoảng loạn (-1/s)<br/>Phục hồi GDP (+0.2/s)</span>
+                                                <span className="text-red-300 text-xs animate-pulse">🛡️ <strong>Kiểm soát:</strong> Trấn an hoảng loạn (-1/s)<br />Phục hồi GDP (+0.2/s)</span>
                                             ) : (
-                                                <span className="text-gray-400 text-xs">⚖️ <strong>Trung lập:</strong> Không có tác động đặc biệt.<br/>Bank run diễn ra bình thường.</span>
+                                                <span className="text-gray-400 text-xs">⚖️ <strong>Trung lập:</strong> Không có tác động đặc biệt.<br />Bank run diễn ra bình thường.</span>
                                             )}
                                         </div>
                                     </div>

@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 
 // --- DATA ---
 const TICKER_DATA = [
-    { sym: "FORD", chg: "-12%" }, { sym: "GM", chg: "-18%" },
-    { sym: "RCA", chg: "-20%" }, { sym: "GE", chg: "-15%" },
-    { sym: "US STEEL", chg: "-14%" }, { sym: "AT&T", chg: "-13%" },
+    { sym: "FORD", chg: "-23%" }, { sym: "GM", chg: "-38%" },
+    { sym: "RCA", chg: "-42%" }, { sym: "GE", chg: "-24%" },
+    { sym: "US STEEL", chg: "-27%" }, { sym: "AT&T", chg: "-19%" },
     { sym: "STD OIL", chg: "-11%" }, { sym: "CHRYSLER", chg: "-17%" }
 ];
 
@@ -81,39 +81,76 @@ const DynamicIndicators = ({ unemploy, prod, trade, color }) => {
     );
 };
 
-const DowJonesChart = ({ dowValue, dowColor, shakeProgress, isCrashed }) => {
-    // Shaking alert between 0.05 and 0.15 where the crash essentially begins
-    const isShaking = shakeProgress;
+const DowJonesChart = ({ dowValue, dowStatus }) => {
     const dowValueStr = useTransform(dowValue, v => Math.round(v));
+
+    // Determine the shaking based on status
+    const isWarning = dowStatus === 'warning';
+    const isPanic = dowStatus === 'panic';
+    const isCrash = dowStatus === 'crash';
+
     return (
         <motion.div
             className="sticky top-24 mx-auto w-full max-w-sm bg-black/80 border border-neutral-800 rounded-2xl p-4 backdrop-blur-xl shadow-2xl z-30"
-            animate={isShaking ? { x: [-10, 10, -10, 10, 0], y: [-5, 5, -5, 5, 0] } : {}}
-            transition={{ repeat: isShaking ? Infinity : 0, duration: 0.15 }}
+            animate={isPanic ? { x: [-2, 2, -2, 2, 0], y: [-1, 1, -1, 1, 0] } : isWarning ? { y: [-1, 1, 0] } : {}}
+            transition={{ repeat: (isPanic || isWarning) ? Infinity : 0, duration: isPanic ? 0.3 : 0.8 }}
         >
             <div className="flex flex-col items-center text-center">
                 <h3 className="text-xs text-white/50 font-bold tracking-widest uppercase mb-2">Chỉ số Dow Jones</h3>
 
                 <motion.div
                     className="text-6xl font-black drop-shadow-xl font-mono flex justify-center items-baseline"
-                    style={{ color: dowColor }}
+                    style={{ color: isPanic || isCrash ? '#ef4444' : isWarning ? '#eab308' : '#22c55e' }}
                 >
                     <motion.span>{dowValueStr}</motion.span>
                     <span className="text-lg ml-1 text-white/30">điểm</span>
                 </motion.div>
 
-                {/* Shake Alert */}
+                {/* Status Alerts */}
+                <div className="h-6 mt-2">
+                    <AnimatePresence mode="wait">
+                        {isWarning && (
+                            <motion.div
+                                key="warning"
+                                initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }}
+                                className="text-yellow-500 text-xs font-bold uppercase tracking-widest"
+                            >
+                                ⚠️ Cảnh báo (Thị trường rung lắc)
+                            </motion.div>
+                        )}
+                        {isPanic && (
+                            <motion.div
+                                key="panic"
+                                initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }}
+                                className="text-red-500 text-xs font-bold uppercase tracking-widest animate-pulse"
+                            >
+                                🚨 Hoảng Loạn (Bán tháo Black Thursday)
+                            </motion.div>
+                        )}
+                        {isCrash && (
+                            <motion.div
+                                key="crash"
+                                initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }}
+                                className="text-red-800 text-xs font-bold uppercase tracking-widest"
+                            >
+                                💥 Sụp đổ hoàn toàn
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
+
+                {/* Full Overlay for Panic Area */}
                 <AnimatePresence>
-                    {isShaking && (
+                    {isPanic && (
                         <motion.div
                             initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}
                             className="absolute inset-0 flex flex-col items-center justify-center bg-red-900/95 rounded-2xl pointer-events-none z-10 border-2 border-red-500 p-2"
                         >
-                            <span className="text-4xl font-black text-white mix-blend-overlay tracking-tighter mb-1">SỤP ĐỔ!</span>
+                            <span className="text-4xl font-black text-white mix-blend-overlay tracking-tighter mb-1">HOẢNG LOẠN!</span>
                             <span className="text-xs font-bold text-white">BÁN THÁO (SELL SELL)</span>
                         </motion.div>
                     )}
-                    {isCrashed && !isShaking && (
+                    {isCrash && (
                         <motion.div
                             initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                             className="absolute -top-3 -right-3 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg border border-red-400 transform rotate-12"
@@ -128,91 +165,185 @@ const DowJonesChart = ({ dowValue, dowColor, shakeProgress, isCrashed }) => {
 };
 
 const BankRunGame = () => {
-    const [cash, setCash] = useState(20);
-    const deposits = 100;
-    const isCollapsed = cash <= 0;
+    const [vault, setVault] = useState(20);
+    const [fail, setFail] = useState(false);
+    const [queue, setQueue] = useState([]);
+
+    const withdraw = () => {
+        if (fail) return;
+
+        // add person to queue
+        const newPerson = { id: Date.now() + Math.random() };
+        setQueue(q => [...q, newPerson]);
+
+        setTimeout(() => {
+            setVault(v => {
+                if (v >= 5) {
+                    return v - 5;
+                } else {
+                    setFail(true);
+                    return v;
+                }
+            });
+        }, 800);
+    };
 
     return (
-        <div className="my-16 bg-black/60 border border-neutral-800 rounded-3xl p-6 relative overflow-hidden">
-            <h3 className="text-xl font-bold text-white mb-2">🏦 Bank Run (Tháo chạy khỏi ngân hàng)</h3>
-            <p className="text-neutral-400 text-sm mb-6">Mọi người hoảng loạn rút tiền, nhưng ngân hàng chỉ giữ một phần tiền mặt...</p>
+        <div className="my-16 bg-[#050b14] border border-blue-900/30 rounded-3xl p-6 sm:p-10 relative overflow-hidden">
+            <h3 className="text-2xl font-black text-white mb-2">🏦 Phân hạch Ngân Hàng (Bank Run)</h3>
+            <p className="text-blue-200/60 text-sm mb-8">
+                Hệ thống <strong>Dự trữ phân đoạn (Fractional Reserve)</strong>: Tiền gửi không nằm im trong két. Ngân hàng đã mang 80% đi đầu tư kiếm lời. Điều gì xảy ra khi tất cả cùng hoảng loạn đòi rút tiền một lúc?
+            </p>
 
-            <div className="flex flex-col md:flex-row gap-6 items-center justify-center">
-                <div className="bg-neutral-900 p-5 rounded-2xl w-full max-w-xs text-center border border-neutral-800">
-                    <div className="text-xs text-neutral-500 uppercase tracking-widest mb-1">Dự trữ Tiền mặt</div>
-                    <div className={`text-5xl font-black ${isCollapsed ? 'text-red-500' : 'text-green-500'}`}>${cash}</div>
-                    <div className="text-xs text-neutral-500 mt-2">Tổng tiền gửi: ${deposits}</div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                {/* Visual of bank structure */}
+                <div className="flex flex-col gap-4">
+                    <div className="bg-neutral-900 rounded-2xl p-5 border border-neutral-800 relative">
+                        <div className="flex justify-between text-xs text-neutral-400 mb-3 font-bold uppercase tracking-widest">
+                            <span>Tổng Tiền Gửi Sổ Sách: $100</span>
+                        </div>
+                        <div className="h-14 w-full flex bg-neutral-950 rounded-xl overflow-hidden border border-neutral-700 shadow-inner">
+                            <div className="h-full bg-blue-600/30 flex items-center justify-center font-bold text-xs text-blue-400 border-r border-blue-900/50 text-center px-2" style={{ width: '80%' }}>
+                                Khoản vay ($80)
+                            </div>
+                            <div className="h-full relative flex items-center justify-center font-bold text-[10px] sm:text-xs transition-colors duration-300" style={{ width: '20%', backgroundColor: vault > 0 ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.2)' }}>
+                                <div className="absolute left-0 bottom-0 top-0 bg-green-500/80 transition-all duration-300" style={{ width: `${(vault / 20) * 100}%` }}></div>
+                                <span className={`relative z-10 ${vault === 0 ? 'text-red-500' : 'text-emerald-400'}`}>Két: ${vault}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col items-center">
+                        <button
+                            onClick={withdraw}
+                            className={`w-full font-black py-4 px-6 rounded-xl transition-all shadow-lg flex items-center justify-center gap-3 ${fail
+                                ? 'bg-neutral-800 text-neutral-500 cursor-not-allowed border border-neutral-700'
+                                : 'bg-red-600 hover:bg-red-500 active:scale-95 text-white shadow-red-900/50 border border-red-500'
+                                }`}
+                        >
+                            {fail ? '🔒 NGÂN HÀNG ĐÃ ĐÓNG CỬA' : '🗣️ Tung tin hoảng loạn & Rút tiền! ($5)'}
+                        </button>
+
+                        {fail && (
+                            <button
+                                onClick={() => { setVault(20); setFail(false); setQueue([]); }}
+                                className="mt-4 px-5 py-2.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-xs font-bold rounded-full transition-colors active:scale-95 shadow-md border border-neutral-600 flex items-center gap-2"
+                            >
+                                ↺ Mở cửa lại Ngân hàng
+                            </button>
+                        )}
+                    </div>
                 </div>
 
-                <button
-                    onClick={() => setCash(c => Math.max(0, c - 5))}
-                    disabled={isCollapsed}
-                    className={`px-8 py-4 rounded-xl font-black text-lg transition-all ${isCollapsed ? 'bg-red-900 text-red-400 cursor-not-allowed' : 'bg-white text-black hover:scale-105 hover:bg-red-500 hover:text-white active:scale-95'}`}
-                >
-                    {isCollapsed ? 'HẾT TIỀN!' : 'RÚT TIỀN ($5)'}
-                </button>
-            </div>
-
-            <AnimatePresence>
-                {isCollapsed && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                        className="mt-6 text-center"
-                    >
-                        <div className="text-3xl font-black text-red-500 mb-2">💥 BANK COLLAPSE!</div>
-                        <p className="text-red-300 text-sm">Hệ thống sụp đổ! Tin đồn lan truyền khiến hàng tỷ đô bốc hơi.</p>
-                        <div className="flex justify-center gap-4 mt-6 text-4xl">
-                            {[...Array(5)].map((_, i) => (
-                                <motion.div
-                                    key={i} initial={{ opacity: 1, rotate: 0 }}
-                                    animate={{ opacity: 0.3, rotate: -90, y: 20, color: '#ef4444' }}
-                                    transition={{ delay: i * 0.2 }}
-                                >
-                                    🏦
-                                </motion.div>
-                            ))}
+                {/* People representation */}
+                <div className="bg-black/40 border border-neutral-800 p-6 rounded-2xl min-h-[220px] flex flex-col items-center justify-center relative">
+                    {fail ? (
+                        <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center">
+                            <div className="text-6xl mb-4">💥</div>
+                            <div className="text-red-500 font-black text-3xl mb-2">VỠ NỢ TỨC THÌ!</div>
+                            <p className="text-red-400/80 text-xs px-2">Két sắt cạn kiệt, ngân hàng không thể thanh khoản. Biểu tình nổ ra, giông bão tài chính chính thức lan rộng.</p>
+                        </motion.div>
+                    ) : (
+                        <div className="w-full">
+                            <div className="text-center text-xs font-bold text-neutral-500 uppercase mb-6 tracking-widest border-b border-neutral-800 pb-2">Đám đông chờ rút tiền</div>
+                            <div className="flex flex-wrap justify-center gap-2 min-h-[60px]">
+                                <AnimatePresence>
+                                    {queue.map((p) => (
+                                        <motion.div
+                                            key={p.id}
+                                            initial={{ opacity: 0, scale: 0, x: 20 }}
+                                            animate={{ opacity: 1, scale: 1, x: 0 }}
+                                            exit={{ opacity: 0, scale: 0, y: -20 }}
+                                            className="text-3xl"
+                                        >
+                                            🤬
+                                        </motion.div>
+                                    ))}
+                                    {queue.length === 0 && <div className="text-neutral-600 text-xs w-full text-center mt-2">(Chưa có người nào)</div>}
+                                </AnimatePresence>
+                            </div>
                         </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                    )}
+                </div>
+            </div>
         </div>
     );
 };
 
 const VisualDomino = () => {
-    const ref = useRef(null);
-    const inView = useInView(ref, { once: true, margin: "-100px" });
-    const countries = [
-        { c: "USA", d: "1929" }, { c: "Đức", d: "1931" },
-        { c: "Anh", d: "1931" }, { c: "Nhật", d: "1932" }
+    const [tipped, setTipped] = useState(0); // 0 to 5
+
+    const dominos = [
+        { id: 1, c: "🇺🇸 Mỹ", desc: "Wall Street sụp đổ", d: "1929" },
+        { id: 2, c: "🇦🇹 Áo", desc: "Creditanstalt vỡ nợ", d: "T5/1931" },
+        { id: 3, c: "🇩🇪 Đức", desc: "Danatbank đóng cửa", d: "T7/1931" },
+        { id: 4, c: "🇬🇧 Anh", desc: "Rời Bản vị Vàng", d: "T9/1931" },
+        { id: 5, c: "🌐 Toàn cầu", desc: "Đại Suy Thoái", d: "1932" },
     ];
 
+    const triggerDomino = () => {
+        if (tipped > 0) return;
+        setTipped(1);
+        let count = 1;
+        const interval = setInterval(() => {
+            count++;
+            setTipped(count);
+            if (count >= 5) clearInterval(interval);
+        }, 500);
+    };
+
     return (
-        <div ref={ref} className="my-16 flex flex-col items-center">
-            <h3 className="text-lg font-bold text-neutral-400 mb-8 uppercase tracking-widest">Hiệu ứng Domino Toàn Cầu</h3>
-            <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-4">
-                {countries.map((item, i) => (
-                    <React.Fragment key={i}>
-                        <motion.div
-                            className="bg-neutral-900 border border-neutral-800 p-4 rounded-xl text-center min-w-[100px]"
-                            initial={{ y: -50, opacity: 0, rotate: -20 }}
-                            animate={inView ? { y: 0, opacity: 1, rotate: 0 } : {}}
-                            transition={{ delay: i * 0.5, type: "spring" }}
-                        >
-                            <div className="text-3xl mb-2">🏦</div>
-                            <div className="font-bold text-white">{item.c}</div>
-                            <div className="text-xs text-red-500">{item.d}</div>
-                        </motion.div>
-                        {i < countries.length - 1 && (
+        <div className="my-16 bg-[#0f0000] border border-red-900/40 rounded-3xl p-6 sm:p-10 relative overflow-hidden">
+            <div className="text-center mb-10">
+                <h3 className="text-2xl font-black text-white mb-2">Hệ quả Domino Toàn Cầu</h3>
+                <p className="text-neutral-400 text-sm">Một hệ thống tài chính liên kết chặt chẽ có nghĩa là một mồi lửa ở Mỹ sẽ thiêu rụi cả thế giới.</p>
+            </div>
+
+            <div className="flex flex-wrap justify-center items-center gap-y-8 gap-x-2">
+                {dominos.map((d, i) => {
+                    const isFallen = tipped > i;
+                    return (
+                        <div key={d.id} className="flex items-center">
                             <motion.div
-                                initial={{ scale: 0 }} animate={inView ? { scale: 1 } : {}} transition={{ delay: i * 0.5 + 0.3 }}
-                                className="text-red-600 font-bold text-xl"
+                                className={`w-36 h-40 rounded-2xl border-2 p-2 sm:p-4 flex flex-col justify-center items-center text-center shadow-2xl relative z-10 origin-bottom-right transition-colors ${isFallen ? 'bg-red-950 border-red-600' : 'bg-neutral-900 border-neutral-700'
+                                    }`}
+                                animate={isFallen ? { rotateZ: 70, x: 10, y: 15, opacity: 0.9, scale: 0.95 } : { rotateZ: 0, x: 0, y: 0, opacity: 1, scale: 1 }}
+                                transition={{ type: "spring", stiffness: 120, damping: 14 }}
                             >
-                                →
+                                <div className="text-2xl sm:text-3xl mb-1 sm:mb-2">{isFallen ? '💥' : '🏦'}</div>
+                                <div className="font-black text-white text-xs sm:text-sm">{d.c}</div>
+                                <div className={`text-[10px] sm:text-xs mt-1 ${isFallen ? 'text-red-300' : 'text-neutral-500'}`}>{isFallen ? d.desc : d.d}</div>
                             </motion.div>
-                        )}
-                    </React.Fragment>
-                ))}
+
+                            {i < dominos.length - 1 && (
+                                <motion.div
+                                    className="text-2xl sm:text-3xl text-red-500 mx-1 sm:mx-2"
+                                    animate={tipped > i ? { scale: [1, 1.5, 1], opacity: 1 } : { opacity: 0.2 }}
+                                >
+                                    →
+                                </motion.div>
+                            )}
+                        </div>
+                    );
+                })}
+            </div>
+
+            <div className="mt-12 text-center h-12 flex justify-center items-center">
+                {tipped === 0 ? (
+                    <button
+                        onClick={triggerDomino}
+                        className="bg-red-600 hover:bg-red-500 text-white font-black py-3 px-8 rounded-full text-sm shadow-[0_0_20px_rgba(220,38,38,0.5)] active:scale-95 transition-all animate-bounce"
+                    >
+                        Đẩy quân cờ đầu tiên (Bắt đầu Khủng hoảng)
+                    </button>
+                ) : tipped >= 5 ? (
+                    <button
+                        onClick={() => setTipped(0)}
+                        className="border border-neutral-600 hover:bg-neutral-800 text-white font-bold py-2 px-6 rounded-full text-sm transition-colors active:scale-95"
+                    >
+                        ↺ Khôi phục lại hệ thống
+                    </button>
+                ) : null}
             </div>
         </div>
     );
@@ -221,10 +352,30 @@ const VisualDomino = () => {
 const PolicySimulator = () => {
     const [result, setResult] = useState(null);
     const policies = [
-        { id: 'none', label: 'Không can thiệp', res: 'Thị trường sụp đổ hoàn toàn. Tỷ lệ thất nghiệp chạm đáy, người dân biểu tình.', color: 'border-neutral-500' },
-        { id: 'print', label: 'In tiền', res: 'Lạm phát tăng vọt, tiền mất giá, không giải quyết được vấn đề việc làm.', color: 'border-amber-500' },
-        { id: 'works', label: 'Công trình công cộng', res: 'Tạo việc làm, phục hồi kinh tế. (Giống với chính sách New Deal).', color: 'border-green-500' },
-        { id: 'close', label: 'Đóng cửa ngân hàng', res: 'Bank Holiday! Ngừng sự hoảng loạn tạm thời để tái cấu trúc.', color: 'border-blue-500' },
+        {
+            id: 'none',
+            label: 'Không can thiệp (Hoover)',
+            res: 'Thất bại: 10.000 ngân hàng phá sản, thất nghiệp 25%, sản xuất giảm 46% (1929-1933).',
+            color: 'border-neutral-500'
+        },
+        {
+            id: 'print',
+            label: 'In tiền cứu trợ',
+            res: 'Giảm phát nặng hơn (-10%/năm), tiền mất giá trị, không tạo việc làm.',
+            color: 'border-amber-500'
+        },
+        {
+            id: 'works',
+            label: 'New Deal (Roosevelt)',
+            res: 'Thành công tương đối: WPA tạo 8.5 triệu việc làm, FDIC bảo hiểm tiền gửi, phục hồi dần đến 1936.',
+            color: 'border-emerald-500'
+        },
+        {
+            id: 'close',
+            label: 'Bank Holiday',
+            res: '1933: Đóng cửa 4.000 ngân hàng 4 ngày, tái cấu trúc, khôi phục niềm tin.',
+            color: 'border-blue-500'
+        },
     ];
 
     return (
@@ -263,6 +414,10 @@ const HumanImpact = () => {
                 <div>
                     <h3 className="text-2xl font-black text-white mb-4">Mặt trái của tự do vô tổ chức</h3>
                     <p className="text-neutral-400 mb-4 leading-relaxed tracking-wide text-sm">
+                        <strong>Thực tế 1929-1933:</strong> Thất nghiệp 25% (15 triệu người), sản xuất công nghiệp giảm 46%, GDP Mỹ giảm 30%, 10.000 ngân hàng phá sản, <strong className="text-yellow-300">Dust Bowl</strong> khiến 2.5 triệu nông dân di cư.
+                    </p>
+
+                    <p className="text-neutral-400 mb-4 leading-relaxed tracking-wide text-sm">
                         Bong bóng vỡ không chỉ là những con số trên bảng Ticker. Hàng triệu người mất việc làm tạo thành những dòng người chờ bánh mì dài dằng dặc (Bread lines).
                         Nông dân miền Trung Tây nước Mỹ đối mặt với thảm họa thiên nhiên <strong>Dust Bowl</strong>.
                     </p>
@@ -296,21 +451,27 @@ export default function Thang10Page() {
 
     // Animated values based on scroll progress
     const crisisLevel = useTransform(smoothProgress, [0, 0.8], [10, 100]);
-    const dowJones = useTransform(smoothProgress, [0, 0.1, 0.25, 0.8], [381, 350, 100, 41]);
-    const uiColor = useTransform(smoothProgress, [0, 0.25, 0.8], ["#22c55e", "#ef4444", "#7f1d1d"]);
-    const unemploy = useTransform(smoothProgress, [0, 0.8], [3, 25]);
-    const prod = useTransform(smoothProgress, [0, 0.8], [0, -46]);
-    const trade = useTransform(smoothProgress, [0, 0.8], [0, -65]);
+    const dowJones = useTransform(smoothProgress, [0, 0.05, 0.25, 0.8], [381, 305, 198, 41]); const uiColor = useTransform(smoothProgress, [0, 0.25, 0.8], ["#22c55e", "#ef4444", "#7f1d1d"]);
+    const unemploy = useTransform(smoothProgress, [0, 0.8], [3.2, 25]);
+    const prod = useTransform(smoothProgress, [0, 0.8], [100, 54]);
+    const trade = useTransform(smoothProgress, [0, 0.8], [100, 35]);
 
-    // Screen Shake effect at the very top (Black Thursday region)
-    const [isShaking, setIsShaking] = useState(false);
-    const [isCrashed, setIsCrashed] = useState(false);
+    // Dow Jones Threshold Logic
+    const [dowStatus, setDowStatus] = useState('normal');
+
     useEffect(() => {
-        return smoothProgress.onChange((v) => {
-            setIsShaking(v > 0.12 && v < 0.25);
-            setIsCrashed(v >= 0.25);
+        return dowJones.onChange((v) => {
+            if (v < 200) {
+                setDowStatus('crash');   // < 200: Sụp đổ
+            } else if (v < 300) {
+                setDowStatus('panic');   // 200 - 300: Hoảng loạn
+            } else if (v <= 350) {
+                setDowStatus('warning'); // 300 - 350: Cảnh báo
+            } else {
+                setDowStatus('normal');  // > 350
+            }
         });
-    }, [smoothProgress]);
+    }, [dowJones]);
 
     // New Deal Activation State
     const [newDealEnabled, setNewDealEnabled] = useState(false);
@@ -318,11 +479,51 @@ export default function Thang10Page() {
     return (
         <motion.div
             ref={containerRef}
-            className="min-h-screen text-white/90 selection:bg-red-500 selection:text-white"
+            className="min-h-screen text-white/90 selection:bg-red-500 selection:text-white relative"
             style={{ backgroundColor: newDealEnabled ? '#022c22' : '#0a0000', transition: 'background-color 2s ease' }}
-            animate={isShaking ? { x: [-5, 5, -5, 5, 0], y: [-2, 2, -2, 2, 0] } : {}}
-            transition={{ repeat: Infinity, duration: 0.1 }}
         >
+            {/* Quang học / Glitch thay vì rung lắc vật lý */}
+            <AnimatePresence>
+                {dowStatus === 'panic' && (
+                    <motion.div
+                        className="fixed inset-0 pointer-events-none z-0 flex flex-col"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                    >
+                        {/* Chớp đỏ cực mạnh */}
+                        <motion.div
+                            className="absolute inset-0 bg-red-600 mix-blend-screen"
+                            animate={{ opacity: [0, 0.2, 0, 0.4, 0.1, 0] }}
+                            transition={{ repeat: Infinity, duration: 0.25, ease: "circIn" }}
+                        />
+
+                        {/* Sọc nhiễu ngang dịch chuyển */}
+                        <motion.div
+                            className="absolute inset-0 pointer-events-none opacity-40 mix-blend-screen"
+                            style={{
+                                backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(255, 0, 0, 0.2) 4px, rgba(255, 0, 0, 0.2) 8px)'
+                            }}
+                            animate={{ y: [0, 8, -8, 4, -4, 0] }}
+                            transition={{ repeat: Infinity, duration: 0.2, ease: "linear" }}
+                        />
+
+                        {/* Viền đỏ (Vignette) bo lấy màn hình */}
+                        <div className="absolute inset-0 shadow-[inset_0_0_150px_rgba(255,0,0,0.4)] mix-blend-screen" />
+
+                        {/* Một dải nhiễu trắng mạnh lướt ngẫu nhiên */}
+                        <motion.div
+                            className="absolute left-0 right-0 h-10 bg-white/20 mix-blend-screen blur-sm"
+                            animate={{
+                                top: ['-20%', '120%'],
+                                opacity: [0, 1, 0, 0.6, 0]
+                            }}
+                            transition={{ repeat: Infinity, duration: 2.5, ease: "linear", repeatDelay: 0.5 }}
+                        />
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             <StockTicker />
             <CrisisLevelBar progress={crisisLevel} />
             <DynamicIndicators unemploy={unemploy} prod={prod} trade={trade} color={uiColor} />
@@ -346,12 +547,12 @@ export default function Thang10Page() {
                         BLACK <br /><span className="text-red-600">THURSDAY</span>
                     </motion.h1>
                     <p className="text-neutral-400 text-lg max-w-2xl mx-auto leading-relaxed">
-                        Thị trường tự do không điều tiết đã đẩy lòng tham lên đến đỉnh điểm. Và rồi, bong bóng vỡ...
+                        Ngày <strong className="text-red-400">24/10/1929</strong>: Thị trường chứng khoán Phố Wall sụp đổ, mở đầu <strong className="text-yellow-300">Đại Suy Thoái 1929-1933</strong> — khủng hoảng kinh tế lớn nhất thế kỷ 20.
                     </p>
                 </div>
 
                 {/* Main Interactive Map */}
-                <DowJonesChart dowValue={dowJones} dowColor={uiColor} shakeProgress={isShaking} isCrashed={isCrashed} />
+                <DowJonesChart dowValue={dowJones} dowStatus={dowStatus} />
 
                 <div className="mt-8 text-center max-w-2xl mx-auto">
                     <p className="text-xs text-neutral-400 mb-4 leading-relaxed">
@@ -420,6 +621,20 @@ export default function Thang10Page() {
                                     <span>✓ Đã kích hoạt New Deal</span>
                                 </div>
                             )}
+                        </div>
+                    </motion.section>
+
+                    {/* ── VIDEO EMBED ── */}
+                    <motion.section className="mt-20 pt-16 border-t border-slate-800 pb-12" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
+                        <div className="max-w-4xl mx-auto bg-slate-900/80 border border-slate-800 p-2 md:p-4 rounded-2xl md:rounded-3xl shadow-2xl overflow-hidden backdrop-blur-sm">
+                            <div className="relative w-full aspect-video rounded-xl overflow-hidden ring-1 ring-slate-700/50 bg-black">
+                                <iframe
+                                    className="absolute inset-0 w-full h-full"
+                                    src="https://www.youtube.com/embed/dMFEA3y9J0U"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowFullScreen
+                                ></iframe>
+                            </div>
                         </div>
                     </motion.section>
                 </div>

@@ -9,8 +9,10 @@ const CORE_IDEAS = [
         icon: "🔍",
         border: "border-red-400",
         bg: "bg-red-900/40",
-        desc: "Các quan hệ xã hội của sản xuất và trao đổi trong phương thức sản xuất (theo giáo trình: Quan hệ sản xuất và trao đổi gắn với lực lượng sản xuất và kiến trúc thượng tầng).",
+        desc:
+            "Những quan hệ sản xuất và trao đổi cùng với các quy luật vận động kinh tế của chủ nghĩa tư bản và các hình thái kinh tế – xã hội kế tiếp.",
         borderColor: "#f56565",
+        source: "Giáo trình Kinh tế chính trị Mác – Lênin, Chương mở đầu"
     },
     {
         id: "phuong_phap",
@@ -18,8 +20,10 @@ const CORE_IDEAS = [
         icon: "🛠️",
         border: "border-amber-400",
         bg: "bg-amber-900/40",
-        desc: "Phép biện chứng duy vật và trừu tượng hóa khoa học (theo giáo trình: Kết hợp logic với lịch sử, thống kê, phân tích).",
+        desc:
+            "Phép biện chứng duy vật kết hợp với trừu tượng hóa khoa học, thống nhất logic với lịch sử, phân tích – tổng hợp, so sánh và thống kê.",
         borderColor: "#fbbf24",
+        source: "Giáo trình Kinh tế chính trị Mác – Lênin, Chương mở đầu"
     },
     {
         id: "chuc_nang",
@@ -27,8 +31,10 @@ const CORE_IDEAS = [
         icon: "⚙️",
         border: "border-emerald-400",
         bg: "bg-emerald-900/40",
-        desc: "Nhận thức, thực tiễn, tư tưởng và phương pháp luận (theo giáo trình: Cung cấp cơ sở khoa học cho phát triển xã hội).",
+        desc:
+            "Chức năng nhận thức, thực tiễn và tư tưởng – phương pháp luận, góp phần cung cấp cơ sở khoa học cho việc hoạch định đường lối, chính sách phát triển kinh tế – xã hội.",
         borderColor: "#34d399",
+        source: "Giáo trình Kinh tế chính trị Mác – Lênin, Chương mở đầu"
     },
     {
         id: "hinh_thanh",
@@ -36,8 +42,10 @@ const CORE_IDEAS = [
         icon: "📜",
         border: "border-purple-400",
         bg: "bg-purple-900/40",
-        desc: "Kế thừa kinh tế chính trị cổ điển, phát triển thành khoa học cách mạng (theo giáo trình: Từ Montchretien đến A.Smith, rồi Mác - Lênin).",
+        desc:
+            "Kế thừa có phê phán kinh tế chính trị tư sản cổ điển (Petty, Quesnay, A. Smith, D. Ricardo...) và tổng kết thực tiễn tư bản chủ nghĩa để xây dựng kinh tế chính trị Mác – Lênin như một khoa học cách mạng.",
         borderColor: "#c084fc",
+        source: "Giáo trình Kinh tế chính trị Mác – Lênin; Tuyên ngôn 1848"
     },
     {
         id: "quy_luat",
@@ -45,53 +53,230 @@ const CORE_IDEAS = [
         icon: "📈",
         border: "border-sky-400",
         bg: "bg-sky-900/40",
-        desc: "Mối liên hệ bản chất, khách quan của các hiện tượng kinh tế (theo giáo trình: Điều chỉnh hành vi con người qua lợi ích).",
+        desc:
+            "Những mối liên hệ bản chất, tất yếu, lặp đi lặp lại của các hiện tượng và quá trình kinh tế, chi phối hành vi kinh tế của con người thông qua lợi ích.",
         borderColor: "#38bdf8",
-    },
+        source: "Giáo trình Kinh tế chính trị Mác – Lênin, mục Quy luật kinh tế"
+    }
 ];
 
 const QUOTES = [
-    "Một bóng ma đang ám ảnh châu Âu – bóng ma của chủ nghĩa cộng sản.",
-    "Lịch sử của tất cả các xã hội tồn tại từ trước đến nay đều là lịch sử đấu tranh giai cấp.",
-    "Người tự do và nô lệ, quý tộc và bình dân, lãnh chúa và nông nô, thợ cả và thợ học việc – nói tóm lại, kẻ áp bức và người bị áp bức luôn luôn đối kháng nhau.",
-    "Xã hội tư sản hiện đại đã mọc lên từ đống tàn tích của xã hội phong kiến.",
-    "Giai cấp tư sản đã đóng một vai trò hết sức cách mạng trong lịch sử.",
-    "Giai cấp tư sản không thể tồn tại nếu không luôn luôn cách mạng hóa công cụ sản xuất.",
-    "Giai cấp tư sản đã tạo ra những lực lượng sản xuất to lớn hơn tất cả các thế hệ trước cộng lại.",
-    "Đại công nghiệp đã tạo ra thị trường thế giới.",
-    "Thị trường thế giới đã thúc đẩy sự phát triển to lớn của thương nghiệp, hàng hải và giao thông.",
-    "Những tư tưởng thống trị của mỗi thời đại luôn luôn chỉ là tư tưởng của giai cấp thống trị.",
-    "Chính quyền nhà nước hiện đại chỉ là một ủy ban quản lý những công việc chung của toàn bộ giai cấp tư sản.",
-    "Xã hội tư sản hiện đại giống như một phù thủy không còn điều khiển nổi những sức mạnh mà chính hắn đã gọi lên.",
-    "Công nhân hiện đại chỉ sống chừng nào họ còn tìm được việc làm.",
-    "Lao động của người công nhân đã mất hết tính độc lập và sức hấp dẫn.",
-    "Người công nhân trở thành một bộ phận phụ thuộc của cỗ máy.",
-    "Giai cấp tư sản đã sản xuất ra những người đào mồ chôn chính mình.",
-    "Sự sụp đổ của giai cấp tư sản và thắng lợi của giai cấp vô sản đều là tất yếu như nhau.",
-    "Những người cộng sản không có lợi ích nào tách khỏi lợi ích của toàn thể giai cấp vô sản.",
-    "Những người cộng sản chỉ khác các đảng công nhân khác ở chỗ họ luôn luôn đại biểu cho lợi ích chung của toàn bộ phong trào.",
-    "Mục tiêu trực tiếp của những người cộng sản là: tổ chức giai cấp vô sản thành giai cấp.",
-    "Bước đầu tiên trong cách mạng công nhân là nâng giai cấp vô sản lên thành giai cấp thống trị.",
-    "Giai cấp vô sản sẽ dùng quyền lực chính trị của mình để từng bước tước đoạt toàn bộ tư bản của giai cấp tư sản.",
-    "Cách mạng cộng sản là sự đoạn tuyệt triệt để nhất với quan hệ sở hữu truyền thống.",
-    "Các người kinh hoàng vì chúng tôi muốn xóa bỏ sở hữu tư nhân.",
-    "Nhưng trong xã hội của các người, sở hữu tư nhân đã bị xóa bỏ đối với chín phần mười dân cư.",
-    "Các người buộc tội chúng tôi muốn xóa bỏ gia đình.",
-    "Công nhân không có Tổ quốc.",
-    "Những người cộng sản không hạ thấp mình bằng cách che giấu quan điểm và mục đích của mình.",
-    "Họ công khai tuyên bố rằng mục đích của họ chỉ có thể đạt được bằng việc lật đổ toàn bộ trật tự xã hội hiện hành bằng bạo lực.",
-    "Giai cấp vô sản không có gì để mất ngoài xiềng xích của mình.",
-    "Họ có cả một thế giới để giành lấy.",
-    "Hỡi những người vô sản toàn thế giới, hãy đoàn kết lại!",
-    "Sự phát triển của đại công nghiệp làm lung lay chính nền tảng mà trên đó giai cấp tư sản sản xuất và chiếm hữu sản phẩm.",
-    "Điều mà giai cấp tư sản sản xuất ra trước hết chính là những kẻ đào mồ chôn nó.",
-    "Trong xã hội tư sản, lao động sống chỉ là phương tiện để làm tăng lao động tích lũy.",
-    "Trong xã hội cộng sản, lao động tích lũy chỉ là phương tiện để mở rộng, làm phong phú và nâng cao đời sống của người lao động.",
-    "Sự phát triển tự do của mỗi người là điều kiện cho sự phát triển tự do của tất cả mọi người.",
-    "Các giai cấp trung gian ngày càng bị đẩy xuống hàng ngũ giai cấp vô sản.",
-    "Giai cấp vô sản là sản phẩm riêng của đại công nghiệp.",
-    "Phong trào vô sản là phong trào độc lập của đại đa số vì lợi ích của đại đa số."
+    {
+        text: "Một bóng ma đang ám ảnh châu Âu: bóng ma chủ nghĩa cộng sản.",
+        chapter: "I",
+        source: "Tuyên ngôn của Đảng Cộng sản, Lời mở đầu"
+    },
+    {
+        text: "Lịch sử của tất cả các xã hội cho đến ngày nay là lịch sử đấu tranh giai cấp.",
+        chapter: "I",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần I"
+    },
+    {
+        text:
+            "Người tự do và nô lệ, patrici và plebe, lãnh chúa và nông nô, thợ cả và thợ học việc – nói tóm lại, kẻ áp bức và người bị áp bức luôn luôn đối lập nhau.",
+        chapter: "I",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần I"
+    },
+    {
+        text: "Xã hội tư sản hiện đại nảy sinh từ trong lòng xã hội phong kiến đang suy tàn.",
+        chapter: "I",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần I"
+    },
+    {
+        text: "Giai cấp tư sản đã đóng một vai trò hết sức cách mạng trong lịch sử.",
+        chapter: "I",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần I"
+    },
+    {
+        text:
+            "Giai cấp tư sản không thể tồn tại nếu không luôn luôn cách mạng hóa công cụ sản xuất, tức là những quan hệ sản xuất, toàn bộ những quan hệ xã hội.",
+        chapter: "I",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần I"
+    },
+    {
+        text:
+            "Giai cấp tư sản đã tạo ra những lực lượng sản xuất to lớn hơn tất cả các thế hệ trước cộng lại.",
+        chapter: "I",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần I"
+    },
+    {
+        text: "Đại công nghiệp đã tạo ra thị trường thế giới.",
+        chapter: "I",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần I"
+    },
+    {
+        text:
+            "Thị trường thế giới đã thúc đẩy sự phát triển hết sức to lớn của thương nghiệp, hàng hải và giao thông.",
+        chapter: "I",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần I"
+    },
+    {
+        text:
+            "Những tư tưởng thống trị của mỗi thời đại luôn luôn chỉ là tư tưởng của giai cấp thống trị.",
+        chapter: "I",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần I"
+    },
+    {
+        text:
+            "Chính quyền nhà nước hiện đại chỉ là một ủy ban quản lý những lợi ích chung của toàn bộ giai cấp tư sản.",
+        chapter: "I",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần I"
+    },
+    {
+        text:
+            "Xã hội tư sản hiện đại giống như một tên phù thủy không còn điều khiển nổi những sức mạnh ngầm mà y đã gọi lên bằng những bùa chú của mình.",
+        chapter: "I",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần I"
+    },
+    {
+        text: "Trong xã hội tư sản, lao động sống chỉ là phương tiện để làm tăng lao động tích lũy.",
+        chapter: "II",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần II"
+    },
+    {
+        text:
+            "Trong xã hội cộng sản, lao động tích lũy chỉ là phương tiện để mở rộng, làm phong phú và nâng cao đời sống của người lao động.",
+        chapter: "II",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần II"
+    },
+    {
+        text: "Giai cấp tư sản đã sản sinh ra những người đào mồ chôn chính nó.",
+        chapter: "I",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần I"
+    },
+    {
+        text:
+            "Sự sụp đổ của giai cấp tư sản và thắng lợi của giai cấp vô sản đều tất yếu như nhau.",
+        chapter: "I",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần I"
+    },
+    {
+        text:
+            "Những người cộng sản không có lợi ích nào tách khỏi lợi ích của toàn thể giai cấp vô sản.",
+        chapter: "II",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần II"
+    },
+    {
+        text:
+            "Mục đích trước mắt của những người cộng sản là: tổ chức những người vô sản thành giai cấp, lật đổ sự thống trị của giai cấp tư sản, giai cấp vô sản giành lấy chính quyền.",
+        chapter: "II",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần II"
+    },
+    {
+        text:
+            "Bước đầu tiên trong cách mạng vô sản là nâng giai cấp vô sản lên thành giai cấp thống trị, giành lấy dân chủ.",
+        chapter: "II",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần II"
+    },
+    {
+        text:
+            "Giai cấp vô sản sẽ dùng quyền lực chính trị để từng bước đoạt hết tư bản trong tay giai cấp tư sản, tập trung tất cả công cụ sản xuất vào trong tay nhà nước.",
+        chapter: "II",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần II"
+    },
+    {
+        text: "Cách mạng cộng sản là sự đoạn tuyệt triệt để nhất với những quan hệ sở hữu truyền thống.",
+        chapter: "II",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần II"
+    },
+    {
+        text: "Các người khiếp đảm vì chúng tôi muốn xóa bỏ sở hữu tư nhân.",
+        chapter: "II",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần II"
+    },
+    {
+        text:
+            "Trong xã hội hiện nay, sở hữu tư nhân đã bị xóa bỏ đối với chín phần mười dân cư.",
+        chapter: "II",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần II"
+    },
+    {
+        text: "Các người buộc tội chúng tôi muốn xóa bỏ gia đình.",
+        chapter: "II",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần II"
+    },
+    {
+        text: "Giai cấp vô sản không có Tổ quốc.",
+        chapter: "II",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần II"
+    },
+    {
+        text:
+            "Những người cộng sản không hạ thấp mình đến mức che giấu những quan điểm và ý đồ của họ.",
+        chapter: "IV",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần IV"
+    },
+    {
+        text:
+            "Họ công khai tuyên bố rằng mục đích của họ chỉ có thể đạt được bằng cách lật đổ bằng bạo lực toàn bộ trật tự xã hội hiện có.",
+        chapter: "IV",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần IV"
+    },
+    {
+        text: "Giai cấp vô sản không có gì phải mất ngoài những xiềng xích của mình.",
+        chapter: "IV",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần IV"
+    },
+    {
+        text: "Họ có cả một thế giới để giành lấy.",
+        chapter: "IV",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần IV"
+    },
+    {
+        text: "Vô sản tất cả các nước, đoàn kết lại!",
+        chapter: "IV",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần IV"
+    },
+    {
+        text:
+            "Sự phát triển của đại công nghiệp làm lung lay chính cái nền mà trên đó giai cấp tư sản sản xuất và chiếm hữu sản phẩm.",
+        chapter: "I",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần I"
+    },
+    {
+        text:
+            "Điều mà giai cấp tư sản sản xuất ra, trước hết chính là những kẻ đào mồ chôn nó.",
+        chapter: "I",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần I"
+    },
+    {
+        text:
+            "Trong xã hội tư sản, quá khứ thống trị hiện tại; trong xã hội cộng sản, hiện tại thống trị quá khứ.",
+        chapter: "II",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần II"
+    },
+    {
+        text:
+            "Trong xã hội tư sản, cá nhân bị tư bản thống trị; trong xã hội cộng sản, tư bản trở thành công cụ của cá nhân.",
+        chapter: "II",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần II"
+    },
+    {
+        text:
+            "Trong xã hội cộng sản, sự phát triển tự do của mỗi người là điều kiện cho sự phát triển tự do của tất cả mọi người.",
+        chapter: "II",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần II"
+    },
+    {
+        text:
+            "Các giai cấp trung gian, tiểu tư sản, phú nông... một phần bị giai cấp vô sản gạt sang hàng ngũ của mình, một phần bị giai cấp tư sản xô xuống hàng ngũ vô sản.",
+        chapter: "I",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần I"
+    },
+    {
+        text: "Giai cấp vô sản là sản phẩm riêng của đại công nghiệp.",
+        chapter: "I",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần I"
+    },
+    {
+        text:
+            "Phong trào vô sản là phong trào độc lập của đại đa số vì lợi ích của đại đa số.",
+        chapter: "II",
+        source: "Tuyên ngôn của Đảng Cộng sản, Phần II"
+    }
 ];
+
+
 
 // ── CARD DRAW COMPONENT ────────────────────────────────────────────────────────
 function GieoQue() {
@@ -110,9 +295,9 @@ function GieoQue() {
 
             let filteredQuotes = QUOTES;
             if (selected.id === "hinh_thanh") {
-                filteredQuotes = QUOTES.filter(q => q.includes("lịch sử") || q.includes("xã hội") || q.includes("giai cấp"));
+                filteredQuotes = QUOTES.filter(q => q.text.includes("lịch sử") || q.text.includes("xã hội") || q.text.includes("giai cấp"));
             } else if (selected.id === "doi_tuong") {
-                filteredQuotes = QUOTES.filter(q => q.includes("sản xuất") || q.includes("công nhân"));
+                filteredQuotes = QUOTES.filter(q => q.text.includes("sản xuất") || q.text.includes("công nhân"));
             }
             if (filteredQuotes.length === 0) filteredQuotes = QUOTES;
             const relatedQuote = filteredQuotes[Math.floor(Math.random() * filteredQuotes.length)];
@@ -207,8 +392,20 @@ function GieoQue() {
                                 Lời dạy kinh điển
                             </div>
                             <div className="text-4xl text-yellow-600/20 absolute -top-1 left-2 font-serif leading-none hidden sm:block">"</div>
-                            <p className="text-yellow-100 italic font-serif text-base sm:text-lg leading-relaxed relative z-10 sm:px-6 inline-block">
-                                "{result.quote}"
+                            <p
+                                className="text-yellow-100 italic font-serif text-base sm:text-lg leading-relaxed relative z-10 sm:px-6 inline-block group cursor-help transition-colors hover:text-yellow-200"
+                            >
+                                "{result.quote.text}"
+                                {/* Custom Tooltip */}
+                                <span className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none w-max max-w-[280px] sm:max-w-xs bg-black/95 border border-yellow-500/40 rounded-lg p-3 shadow-[0_10px_30px_rgba(0,0,0,0.8)] z-50 text-left">
+                                    <span className="block text-yellow-500 font-bold text-[10px] uppercase tracking-widest mb-1">
+                                        Chương {result.quote.chapter}
+                                    </span>
+                                    <span className="block text-gray-300 text-xs font-sans not-italic leading-relaxed">
+                                        {result.quote.source}
+                                    </span>
+                                    <span className="absolute top-full left-1/2 -translate-x-1/2 border-[5px] border-transparent border-t-yellow-500/40"></span>
+                                </span>
                             </p>
                             <div className="text-4xl text-yellow-600/20 absolute -bottom-4 right-2 font-serif rotate-180 leading-none hidden sm:block">"</div>
                         </div>
@@ -278,10 +475,10 @@ export default function Thang2Page() {
                             <div className="text-yellow-400 font-bold text-xs uppercase tracking-widest mb-1">Tháng 2, 1848</div>
                             <h2 className="text-xl font-bold text-white mb-2">Tuyên ngôn Đảng Cộng sản ra đời - Lời tuyên bố cách mạng</h2>
                             <p className="text-blue-200 text-sm leading-relaxed mb-2">
-                                Vào tháng 2 năm 1848, <strong className="text-yellow-300">Tuyên ngôn của Đảng Cộng sản</strong> (Manifest der Kommunistischen Partei) được C. Mác và Ph. Ăngghen hoàn thành và công bố tại London, Anh. Đây là văn kiện chương trình đầu tiên của phong trào cộng sản quốc tế, được viết dưới dạng lời kêu gọi cách mạng, phân tích sâu sắc xã hội tư bản và kêu gọi giai cấp vô sản đoàn kết lật đổ giai cấp tư sản.
+                                Vào tháng 2 năm 1848, <strong className="text-yellow-300">Tuyên ngôn của Đảng Cộng sản</strong> (Manifest der Kommunistischen Partei) do C. Mác và Ph. Ăngghen soạn thảo được công bố tại London, Anh. Đây là văn kiện chương trình kinh điển của chủ nghĩa xã hội khoa học, trình bày tập trung học thuyết đấu tranh giai cấp, sứ mệnh lịch sử của giai cấp vô sản và mục tiêu cuối cùng là xóa bỏ chế độ tư hữu tư bản chủ nghĩa.
                             </p>
                             <p className="text-blue-200 text-sm leading-relaxed mb-2">
-                                Sự kiện diễn ra trong bối cảnh <strong className="text-white">cách mạng 1848 lan rộng châu Âu</strong>, với các cuộc nổi dậy chống phong kiến và tư bản ở Pháp, Đức, Ý... Tuyên ngôn không chỉ là bản tuyên bố lý thuyết mà còn là vũ khí tư tưởng cho giai cấp công nhân, khẳng định sứ mệnh lịch sử của chủ nghĩa xã hội khoa học. Đến nay, Tuyên ngôn đã được dịch ra hơn 200 ngôn ngữ và ảnh hưởng sâu sắc đến cách mạng thế giới, bao gồm Việt Nam (qua tư tưởng Hồ Chí Minh).
+                                Tuyên ngôn ra đời trong bối cảnh phong trào cách mạng 1848 bùng nổ khắp châu Âu, đánh dấu bước trưởng thành về lý luận của phong trào công nhân. Tác phẩm đã được dịch ra rất nhiều thứ tiếng và có ảnh hưởng sâu rộng đến phong trào cộng sản, công nhân quốc tế, trong đó có cách mạng Việt Nam thông qua hoạt động lý luận và thực tiễn của Chủ tịch Hồ Chí Minh.
                             </p>
                         </div>
                     </div>
@@ -301,21 +498,23 @@ export default function Thang2Page() {
                         ))}
                     </div>
                 </motion.section>
+
                 {/* ── VIDEO EMBED ── */}
-                <motion.section className="mb-10" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
-                    <div className="flex justify-center">
-                        <iframe
-                            width="560"
-                            height="315"
-                            src="https://www.youtube.com/embed/GruG7drQByY"
-                            title="YouTube video player"
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowFullScreen
-                            className="rounded-lg shadow-md w-full max-w-lg"
-                        ></iframe>
+                <motion.section className="mt-20 pt-16 border-t border-slate-800 pb-12" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
+                    <div className="max-w-4xl mx-auto bg-slate-900/80 border border-slate-800 p-2 md:p-4 rounded-2xl md:rounded-3xl shadow-2xl overflow-hidden backdrop-blur-sm">
+                        <div className="relative w-full aspect-video rounded-xl overflow-hidden ring-1 ring-slate-700/50 bg-black">
+                            <iframe
+                                className="absolute inset-0 w-full h-full"
+                                src="https://www.youtube.com/embed/GruG7drQByY"
+                                title="YouTube video player"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowFullScreen
+                            ></iframe>
+                        </div>
                     </div>
                 </motion.section>
+
                 {/* ── MINI-GAME: Gieo quẻ tư tưởng nâng cấp ── */}
                 <motion.section initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}>
                     {/* Header bar */}

@@ -36,52 +36,75 @@ const COUNTRIES_44 = [
 
 const TIMELINE_EVENTS = [
     {
-        year: "1944", label: "Ký kết", icon: "✍️", color: "#fbbf24",
-        desc: "1–22/7/1944: 44 quốc gia họp tại Bretton Woods, New Hampshire. Hiệp định được ký kết, thiết lập USD làm neo giá thay thế vàng. 1 ounce vàng = 35 USD.",
-        detail: "Hội nghị do Harry Dexter White (Mỹ) và John Maynard Keynes (Anh) chủ trì. Mỹ sở hữu ~70% dự trữ vàng thế giới lúc đó, tạo nền tảng cho dollar hegemony."
+        year: "1944",
+        label: "Kết thúc",
+        icon: "📜",
+        color: "#fbbf24",
+        desc:
+            "22/7/1944: 44 quốc gia họp tại Bretton Woods. Ký kết thiết lập USD neo giá trị thay thế vàng (1 ounce = 35 USD).",
+        detail:
+            "Hội nghị do Harry Dexter White (Mỹ) và John Maynard Keynes (Anh) chủ trì. Mỹ sở hữu 70% dự trữ vàng thế giới lúc bấy giờ, tạo nền tảng cho bá quyền USD.",
     },
     {
-        year: "1945", label: "IMF & World Bank", icon: "🏦", color: "#34d399",
-        desc: "IMF (Quỹ Tiền tệ Quốc tế) và IBRD (tiền thân World Bank) chính thức thành lập 27/12/1945. Nhiệm vụ: duy trì tỷ giá cố định, cung cấp thanh khoản khẩn cấp.",
-        detail: "IMF ban đầu có 29 thành viên. Mỗi nước đóng góp quota dựa trên GDP. Mỹ nắm 17.4% quyền biểu quyết — đủ để phủ quyết mọi quyết định lớn."
+        year: "1945",
+        label: "IMF & World Bank",
+        icon: "🏛️",
+        color: "#34d399",
+        desc:
+            "27/12/1945: IMF (Quỹ Tiền tệ Quốc tế) và IBRD (World Bank) chính thức thành lập. Nhiệm vụ duy trì tỷ giá ổn định, cung cấp thanh khoản khẩn cấp.",
+        detail:
+            "IMF ban đầu có 29 thành viên. Mỗi nước nộp quota dựa trên GDP. Mỹ nắm 17.4% quyền biểu quyết, phủ quyết mọi quyết định lớn.",
     },
     {
-        year: "1960s", label: "Khủng hoảng", icon: "⚠️", color: "#f97316",
-        desc: "Mỹ chi tiêu khổng lồ cho Chiến tranh Việt Nam và Great Society, in thêm USD vượt dự trữ vàng. Các nước bắt đầu đổi USD lấy vàng — dự trữ Fort Knox giảm mạnh.",
-        detail: "Năm 1960: Mỹ có 17.8 tỷ USD vàng, nhưng nợ nước ngoài đã là 21 tỷ. Robert Triffin cảnh báo (Triffin Dilemma): đồng tiền dự trữ toàn cầu bất khả thi về dài hạn."
+        year: "1960s",
+        label: "Khủng hoảng",
+        icon: "📉",
+        color: "#f97316",
+        desc:
+            "Mỹ chi tiêu quá mức cho Chiến tranh Việt Nam + Great Society, in thêm USD vượt dự trữ vàng. Các nước bắt đầu đổi USD lấy vàng dự trữ Fort Knox giảm mạnh.",
+        detail:
+            "Năm 1960 Mỹ còn 17.8 tỷ USD vàng, nhưng nước ngoài nắm 21 tỷ. Robert Triffin cảnh báo 'Triffin Dilemma': Ngân tín dụng toàn cầu bất khả thi và không bền vững.",
     },
     {
-        year: "1971", label: "Nixon Shock", icon: "💥", color: "#ef4444",
-        desc: "15/8/1971: Tổng thống Nixon tuyên bố đình chỉ khả năng chuyển đổi USD sang vàng. Hệ thống Bretton Woods sụp đổ. Thế giới chuyển sang tỷ giá thả nổi (Fiat money).",
-        detail: "Nixon ra quyết định mà không thông báo cho các đồng minh. G10 họp tại Smithsonian Institution 12/1971, phá giá USD 8%. Đến 1973, mọi nước chuyển sang tỷ giá thả nổi."
+        year: "1971",
+        label: "Nixon Shock",
+        icon: "⚡",
+        color: "#ef4444",
+        desc:
+            "15/8/1971: Tổng thống Nixon tuyên bố ngừng khả năng chuyển đổi USD sang vàng. Hệ thống Bretton Woods sụp đổ. Thế giới chuyển sang tỷ giá thả nổi (Fiat money).",
+        detail:
+            "Nixon ra quyết định bí mật không thông báo cho các đồng minh. G10 họp tại Smithsonian Institution 12/1971, phá giá USD 8%. Đến 1973, mọi nước chuyển sang tỷ giá thả nổi.",
     },
 ];
 
 const QUOTES = [
     {
-        text: "Nếu bạn nợ ngân hàng 100 pound, đó là vấn đề của bạn. Nếu bạn nợ ngân hàng 1 triệu pound, đó là vấn đề của ngân hàng.",
+        text:
+            "Nếu bạn nợ ngân hàng 100 pound, đó là vấn đề của bạn. Nếu bạn nợ ngân hàng 1 triệu pound, đó là vấn đề của ngân hàng.",
         author: "John Maynard Keynes",
-        icon: "💭"
+        icon: "💡",
     },
     {
-        text: "Đồng Dollar là đồng tiền của chúng tôi, nhưng là vấn đề của các bạn.",
+        text:
+            "Ngân sách Dollar là ngân sách của chúng tôi, nhưng là vấn đề của các bạn.",
         author: "John Connally, Bộ trưởng Tài chính Mỹ, 1971",
-        icon: "💵"
+        icon: "🇺🇸",
     },
     {
-        text: "Hệ thống Bretton Woods là sự thừa nhận rằng, để thương mại phồn thịnh, tiền tệ phải ổn định.",
+        text:
+            "Hệ thống Bretton Woods là sự thỏa thuận nhân nhượng, thương mại phân tranh, tiền tệ phải ổn định.",
         author: "George C. Marshall",
-        icon: "🌍"
+        icon: "📜",
     },
 ];
 
 const RESERVE_DATA = [
-    { currency: "USD", pct: 59.5, color: "#3b82f6", flag: "🇺🇸" },
-    { currency: "EUR", pct: 19.7, color: "#facc15", flag: "🇪🇺" },
-    { currency: "JPY", pct: 5.5, color: "#f97316", flag: "🇯🇵" },
-    { currency: "GBP", pct: 4.9, color: "#ef4444", flag: "🇬🇧" },
-    { currency: "CNY", pct: 2.8, color: "#f87171", flag: "🇨🇳" },
-    { currency: "Other", pct: 7.6, color: "#6b7280", flag: "🌐" },
+    { currency: "USD", pct: 58.9, color: "#3b82f6", flag: "🇺🇸" },
+    { currency: "EUR", pct: 20.1, color: "#facc15", flag: "🇪🇺" },
+    { currency: "JPY", pct: 5.7, color: "#f97316", flag: "🇯🇵" },
+    { currency: "GBP", pct: 4.8, color: "#ef4444", flag: "🇬🇧" },
+    { currency: "CNY", pct: 2.9, color: "#f87171", flag: "🇨🇳" },
+    { currency: "Other", pct: 7.6, color: "#6b7280", flag: "🌍" },
 ];
 
 const COMPARE_DATA = [
@@ -90,35 +113,35 @@ const COMPARE_DATA = [
         bw: "Cố định (Fixed)",
         modern: "Thả nổi (Float)",
         bwColor: "#22c55e",
-        modernColor: "#f97316"
+        modernColor: "#f97316",
     },
     {
-        label: "Cơ sở tiền tệ",
+        label: "Cơ sở tín dụng",
         bw: "Bản vị Vàng-USD",
-        modern: "Tiền pháp định (Fiat)",
+        modern: "Tín phiếu ngân hàng (Fiat)",
         bwColor: "#fbbf24",
-        modernColor: "#8b5cf6"
+        modernColor: "#8b5cf6",
     },
     {
         label: "Ổn định",
         bw: "Cao (neo cứng)",
         modern: "Biến động thị trường",
         bwColor: "#38bdf8",
-        modernColor: "#f87171"
+        modernColor: "#f87171",
     },
     {
         label: "Linh hoạt",
-        bw: "Thấp (cứng nhắc)",
+        bw: "Thấp (công thức)",
         modern: "Cao (điều chỉnh tự do)",
         bwColor: "#f87171",
-        modernColor: "#22c55e"
+        modernColor: "#22c55e",
     },
     {
         label: "Cơ quan điều hành",
         bw: "IMF + Mỹ",
         modern: "IMF + NHTW mỗi nước",
         bwColor: "#a78bfa",
-        modernColor: "#34d399"
+        modernColor: "#34d399",
     },
 ];
 
@@ -367,7 +390,7 @@ function NixonShock() {
         ? "💥 HỆ THỐNG SỤP ĐỔ — NIXON SHOCK 1971"
         : isCritical ? "🚨 KHỦNG HOẢNG NGHIÊM TRỌNG"
             : isUnstable ? "⚠️ HỆ THỐNG MẤT ỔN ĐỊNH"
-                : "✅ HỆ THỐNG ỔN ĐỊNH";
+                : "✓ HỆ THỐNG ỔN ĐỊNH";
 
     return (
         <motion.div
@@ -842,12 +865,58 @@ function QuotesSection() {
 
 // ── CORE IDEAS ────────────────────────────────────────────────────────────────
 const CORE_IDEAS = [
-    { id: "tien_te", label: "Tiền tệ quốc tế", icon: "💵", border: "border-blue-400", bg: "bg-blue-900/40", desc: "Vai trò của tiền tệ trong trao đổi quốc tế (Chương 2: Tiền tệ làm phương tiện thanh toán toàn cầu)." },
-    { id: "ban_vi_vang", label: "Bản vị vàng", icon: "🥇", border: "border-amber-400", bg: "bg-amber-900/40", desc: "Hệ thống tiền tệ dựa trên vàng (Chương 2: Đảm bảo giá trị tiền tệ qua dự trữ vàng)." },
-    { id: "imf_world_bank", label: "IMF và World Bank", icon: "🏦", border: "border-emerald-400", bg: "bg-emerald-900/40", desc: "Tổ chức ổn định tài chính toàn cầu (Chương 6: Hỗ trợ hội nhập và phát triển kinh tế)." },
-    { id: "hoi_nhap_kinh_te", label: "Hội nhập kinh tế", icon: "🔗", border: "border-purple-400", bg: "bg-purple-900/40", desc: "Liên kết kinh tế quốc tế (Chương 6: Thúc đẩy thương mại và ổn định tiền tệ)." },
-    { id: "ty_gia_hoi_doai", label: "Tỷ giá hối đoái", icon: "🔄", border: "border-sky-400", bg: "bg-sky-900/40", desc: "Chuyển đổi giá trị tiền tệ (Chương 2: Ảnh hưởng đến giá trị hàng hóa quốc tế)." },
+    {
+        id: "tiente",
+        label: "Tiền tệ quốc tế",
+        icon: "💱",
+        border: "border-blue-400",
+        bg: "bg-blue-900/40",
+        desc:
+            "Vai trò tiền tệ trong trao đổi quốc tế: phương tiện thanh toán, dự trữ và tích lũy.",
+        borderColor: "#3b82f6",
+    },
+    {
+        id: "banvivang",
+        label: "Bản vị vàng",
+        icon: "🥇",
+        border: "border-amber-400",
+        bg: "bg-amber-900/40",
+        desc:
+            "Hệ thống tiền tệ dựa trên vàng đảm bảo giá trị ổn định qua dự trữ vàng quốc gia.",
+        borderColor: "#fbbf24",
+    },
+    {
+        id: "imfworldbank",
+        label: "IMF và World Bank",
+        icon: "🏛️",
+        border: "border-emerald-400",
+        bg: "bg-emerald-900/40",
+        desc:
+            "Tổ chức ổn định tài chính toàn cầu, hỗ trợ hội nhập và phát triển kinh tế quốc tế.",
+        borderColor: "#34d399",
+    },
+    {
+        id: "hoinhapkinhte",
+        label: "Hội nhập kinh tế",
+        icon: "🔗",
+        border: "border-purple-400",
+        bg: "bg-purple-900/40",
+        desc:
+            "Liên kết kinh tế quốc tế thúc đẩy thương mại, ổn định tiền tệ và phân công lao động quốc tế.",
+        borderColor: "#a78bfa",
+    },
+    {
+        id: "tygiahoidoi",
+        label: "Tỷ giá hối đoái",
+        icon: "📈",
+        border: "border-sky-400",
+        bg: "bg-sky-900/40",
+        desc:
+            "Chuyển đổi giá trị tiền tệ quốc tế, ảnh hưởng đến giá trị hàng hóa và cán cân thương mại.",
+        borderColor: "#38bdf8",
+    },
 ];
+
 
 // ── MAIN PAGE ─────────────────────────────────────────────────────────────────
 export default function BrettonWoodsPage() {
@@ -909,13 +978,10 @@ export default function BrettonWoodsPage() {
                             <div className="text-yellow-400 font-bold text-xs uppercase tracking-widest mb-1">Tháng 7, 1944 · New Hampshire, Mỹ</div>
                             <h2 className="text-xl font-bold text-white mb-2">Hệ thống Bretton Woods — Nền tảng tài chính toàn cầu</h2>
                             <p className="text-blue-200 text-sm leading-relaxed mb-2">
-                                Hội nghị Bretton Woods diễn ra từ <strong className="text-yellow-300">1–22/7/1944</strong> với 44 quốc gia tham gia.
-                                Thiết lập hệ thống tiền tệ quốc tế dựa trên bản vị vàng-USD: <strong className="text-yellow-300">1 ounce vàng = 35 USD</strong> (cố định).
-                                Tất cả đồng tiền khác neo vào USD với biên độ ±1%.
+                                Hội nghị <strong className="text-yellow-300">Bretton Woods</strong> diễn ra từ <strong className="text-white">1-22/7/1944</strong> tại New Hampshire, Mỹ với 44 quốc gia tham gia. Thiết lập hệ thống tiền tệ quốc tế dựa trên bản vị vàng – USD: <strong className="text-yellow-300">1 ounce vàng = 35 USD</strong> cố định. Tất cả tiền tệ khác neo vào USD với biên độ dao động ±1%.
                             </p>
                             <p className="text-blue-200 text-sm leading-relaxed">
-                                Kết quả: Thành lập <strong className="text-emerald-300">IMF</strong> (ổn định tỷ giá) và <strong className="text-emerald-300">World Bank</strong> (tái thiết & phát triển).
-                                Hệ thống này thống trị đến 1971 khi Nixon Shock kết thúc kỷ nguyên bản vị vàng.
+                                Kết quả: Thành lập <strong className="text-emerald-300">IMF</strong> (Quỹ Tiền tệ Quốc tế) ổn định tỷ giá và <strong className="text-emerald-300">World Bank</strong> (Ngân hàng Thế giới) tài trợ phát triển. Hệ thống thống trị đến 1971 (Nixon Shock) rồi chuyển sang tỷ giá thả nổi. Đây là đỉnh cao của bản vị vàng – USD, phản ánh vị thế cường quốc kinh tế của Mỹ sau Thế chiến II.
                             </p>
                         </div>
                     </div>
@@ -969,22 +1035,19 @@ export default function BrettonWoodsPage() {
                 {/* ── QUOTES ── */}
                 <QuotesSection />
 
-                {/* ── VIDEO ── */}
-                <motion.section className="mb-4"
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.85 }}>
-                    <div className="flex justify-center">
-                        <iframe
-                            width="560" height="315"
-                            src="https://www.youtube.com/embed/6U0GpAxx5BU"
-                            title="Bretton Woods System"
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowFullScreen
-                            className="rounded-xl shadow-lg w-full max-w-xl"
-                        />
+                {/* ── VIDEO EMBED ── */}
+                <motion.section className="mt-20 pt-16 border-t border-slate-800 pb-12" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
+                    <div className="max-w-4xl mx-auto bg-slate-900/80 border border-slate-800 p-2 md:p-4 rounded-2xl md:rounded-3xl shadow-2xl overflow-hidden backdrop-blur-sm">
+                        <div className="relative w-full aspect-video rounded-xl overflow-hidden ring-1 ring-slate-700/50 bg-black">
+                            <iframe
+                                className="absolute inset-0 w-full h-full"
+                                src="https://www.youtube.com/embed/6U0GpAxx5BU"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowFullScreen
+                            ></iframe>
+                        </div>
                     </div>
                 </motion.section>
-
             </div>
         </div>
     );

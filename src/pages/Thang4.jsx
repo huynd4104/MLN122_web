@@ -9,7 +9,8 @@ const CORE_IDEAS = [
         icon: "🏭",
         border: "border-blue-400",
         bg: "bg-blue-900/40",
-        desc: "Chuyển đổi nền kinh tế từ nông nghiệp sang công nghiệp (theo giáo trình: Phát triển lực lượng sản xuất qua công nghệ hiện đại).",
+        desc:
+            "Quá trình chuyển dịch cơ cấu kinh tế theo hướng tăng tỷ trọng công nghiệp hiện đại, phát triển lực lượng sản xuất, tạo nền tảng vật chất - kỹ thuật cho chủ nghĩa xã hội.",
         borderColor: "#60a5fa",
     },
     {
@@ -18,25 +19,28 @@ const CORE_IDEAS = [
         icon: "⚙️",
         border: "border-amber-400",
         bg: "bg-amber-900/40",
-        desc: "Áp dụng công nghệ cao để nâng cao năng suất (theo giáo trình: Kết hợp với công nghiệp hóa để xây dựng nền kinh tế xã hội chủ nghĩa).",
+        desc:
+            "Quá trình đổi mới công nghệ, quản lý, tổ chức sản xuất theo hướng hiện đại, nâng cao năng suất lao động và chất lượng sản phẩm, gắn liền với công nghiệp hóa.",
         borderColor: "#fbbf24",
     },
     {
         id: "ai_tu_dong_hoa",
-        label: "AI và Tự động hóa",
+        label: "Tự động hóa và AI",
         icon: "🤖",
         border: "border-emerald-400",
         bg: "bg-emerald-900/40",
-        desc: "Tác động đến giá trị hàng hóa và sức lao động (theo giáo trình: Giảm thời gian lao động tất yếu, tăng giá trị thặng dư).",
+        desc:
+            "Ứng dụng công nghệ 4.0 (AI, robot, IoT) làm giảm thời gian lao động tất yếu, tăng năng suất lao động xã hội và giá trị thặng dư trong nền sản xuất tư bản chủ nghĩa.",
         borderColor: "#34d399",
     },
     {
         id: "luc_luong_san_xuat",
-        label: "Lực lượng sản xuất",
+        label: "Phát triển lực lượng sản xuất",
         icon: "🔧",
         border: "border-purple-400",
         bg: "bg-purple-900/40",
-        desc: "Phát triển qua công nghệ 4.0 (theo giáo trình: Thay đổi quan hệ sản xuất để phù hợp với lực lượng sản xuất mới).",
+        desc:
+            "Cách mạng công nghiệp 4.0 là bước nhảy vọt về khoa học - công nghệ, đòi hỏi đổi mới quan hệ sản xuất để lực lượng sản xuất phát triển phù hợp.",
         borderColor: "#c084fc",
     },
     {
@@ -45,10 +49,12 @@ const CORE_IDEAS = [
         icon: "🌍",
         border: "border-sky-400",
         bg: "bg-sky-900/40",
-        desc: "Thách thức và cơ hội cho Việt Nam (theo giáo trình: Công nghiệp hóa gắn với hội nhập kinh tế toàn cầu).",
+        desc:
+            "Công nghiệp hóa - hiện đại hóa ở Việt Nam gắn với hội nhập kinh tế quốc tế, chủ động tham gia chuỗi giá trị toàn cầu trong bối cảnh cách mạng công nghiệp 4.0.",
         borderColor: "#38bdf8",
     },
 ];
+
 
 const COMPARISONS = {
     human: {
@@ -251,11 +257,12 @@ export default function Industry40Page() {
                             <div className="text-yellow-400 font-bold text-xs uppercase tracking-widest mb-1">2011 - Hiện nay</div>
                             <h2 className="text-xl font-bold text-white mb-2">Cách mạng Công nghiệp 4.0 - Kỷ nguyên số</h2>
                             <p className="text-blue-200 text-sm leading-relaxed mb-2">
-                                Cách mạng Công nghiệp 4.0 (Industry 4.0) được khởi xướng tại <strong className="text-yellow-300">Hannover Fair, Đức năm 2011</strong>, là giai đoạn chuyển đổi số toàn diện với sự tích hợp của AI, IoT, Big Data, Robotics, và Cloud Computing. Nó xây dựng trên các cuộc cách mạng trước (cơ khí hóa, điện khí hóa, tự động hóa) để tạo ra "nhà máy thông minh" nơi máy móc kết nối và tự tối ưu hóa.
+                                Khái niệm <strong className="text-yellow-300">Cách mạng Công nghiệp 4.0</strong> (Industry 4.0) được chính thức đề xuất tại <strong className="text-white">Hannover Messe, Đức năm 2011</strong>, đánh dấu giai đoạn chuyển đổi số toàn diện với sự kết hợp của các công nghệ cốt lõi: trí tuệ nhân tạo (AI), Internet vạn vật (IoT), dữ liệu lớn (Big Data), điện toán đám mây, robot thông minh và sản xuất thông minh. Đây là cuộc cách mạng tiếp nối ba cuộc cách mạng trước (cơ khí hóa, điện khí hóa, điện tử hóa).
                             </p>
                             <p className="text-blue-200 text-sm leading-relaxed">
-                                Sự kiện này tác động toàn cầu, thay đổi cách sản xuất, tăng năng suất nhưng cũng dẫn đến mất việc làm thủ công, khoảng cách kỹ thuật số. Ở Việt Nam, Chính phủ thúc đẩy từ 2019 qua Chiến lược Quốc gia về Cách mạng 4.0, tập trung công nghiệp hóa - hiện đại hóa để hội nhập kinh tế số.
+                                Ở Việt Nam, Chính phủ ban hành <strong className="text-yellow-300">Chiến lược Quốc gia về Cách mạng Công nghiệp 4.0</strong> (Quyết định 749/QĐ-TTg năm 2020), xác định công nghiệp hóa - hiện đại hóa gắn với cách mạng 4.0 là nhiệm vụ trọng tâm, tạo nền tảng cho phát triển kinh tế số, xã hội số. Dưới góc nhìn kinh tế chính trị Mác – Lênin, cuộc cách mạng này thúc đẩy lực lượng sản xuất phát triển vượt bậc, đòi hỏi đổi mới quan hệ sản xuất cho phù hợp.
                             </p>
+
                         </div>
                     </div>
                 </motion.section>
@@ -274,21 +281,21 @@ export default function Industry40Page() {
                         ))}
                     </div>
                 </motion.section>
+
                 {/* ── VIDEO EMBED ── */}
-                <motion.section className="mb-10" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
-                    <div className="flex justify-center">
-                        <iframe
-                            width="560"
-                            height="315"
-                            src="https://www.youtube.com/embed/Ft-Lr3f8XAY"
-                            title="YouTube video player"
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowFullScreen
-                            className="rounded-lg shadow-md w-full max-w-lg"
-                        ></iframe>
+                <motion.section className="mt-20 pt-16 border-t border-slate-800 pb-12" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
+                    <div className="max-w-4xl mx-auto bg-slate-900/80 border border-slate-800 p-2 md:p-4 rounded-2xl md:rounded-3xl shadow-2xl overflow-hidden backdrop-blur-sm">
+                        <div className="relative w-full aspect-video rounded-xl overflow-hidden ring-1 ring-slate-700/50 bg-black">
+                            <iframe
+                                className="absolute inset-0 w-full h-full"
+                                src="https://www.youtube.com/embed/Ft-Lr3f8XAY" frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowFullScreen
+                            ></iframe>
+                        </div>
                     </div>
                 </motion.section>
+
                 {/* ── MINI-GAME: Robot vs Con người ── */}
                 <motion.section initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}>
                     <div className="rounded-2xl border border-blue-500/30 overflow-hidden bg-[rgba(13,27,75,0.7)] backdrop-blur-md relative">
@@ -470,6 +477,28 @@ export default function Industry40Page() {
                                 </motion.div>
                             )}
                         </AnimatePresence>
+                    </div>
+                </motion.section>
+                {/* ── COMPARISONS TABLE ── */}
+                <motion.section initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1 }} className="mt-12">
+                    <h2 className="text-center text-lg font-bold text-yellow-300 uppercase tracking-widest mb-6">✦ So sánh năng lực sản xuất ✦</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                        {Object.entries(COMPARISONS).map(([key, data]) => (
+                            <div key={key} className={`rounded-xl border ${key === 'human' ? 'border-yellow-500/40 bg-yellow-900/20' : 'border-emerald-500/40 bg-emerald-900/20'} overflow-hidden backdrop-blur-sm`}>
+                                <div className={`p-4 ${key === 'human' ? 'bg-yellow-500/20' : 'bg-emerald-500/20'} flex items-center gap-3 border-b ${key === 'human' ? 'border-yellow-500/30' : 'border-emerald-500/30'}`}>
+                                    <div className="text-3xl">{data.emoji}</div>
+                                    <h3 className={`font-bold text-lg ${key === 'human' ? 'text-yellow-300' : 'text-emerald-300'}`}>{data.title}</h3>
+                                </div>
+                                <div className="p-4 space-y-3">
+                                    {data.stats.map((stat, i) => (
+                                        <div key={i} className="flex flex-col sm:flex-row sm:items-center py-2 border-b border-white/5 last:border-0 gap-1 sm:gap-4">
+                                            <span className="text-white/60 text-xs uppercase tracking-wider font-semibold w-24 shrink-0">{stat.label}</span>
+                                            <span className="text-white/90 text-sm">{stat.value}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </motion.section>
             </div>

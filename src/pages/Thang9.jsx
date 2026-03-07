@@ -4,49 +4,175 @@ import { Link } from "react-router-dom";
 
 // ── DATA ──────────────────────────────────────────────────────────────────────
 const ASSET_TYPES = [
-    { id: "real_estate", icon: "🏠", label: "Bất động sản", color: "#f97316", borderColor: "rgba(249,115,22,0.7)", bgColor: "rgba(249,115,22,0.18)", risk: "Khủng hoảng nợ dưới chuẩn Subprime 2008 — Hàng triệu gia đình mất nhà.", riskOnSelfPop: 13, inflateSpeed: 28 },
-    { id: "stock", icon: "📈", label: "Cổ phiếu", color: "#22c55e", borderColor: "rgba(34,197,94,0.7)", bgColor: "rgba(34,197,94,0.18)", risk: "S&P 500 giảm 57% từ 2007–2009, xóa đi 11 nghìn tỷ USD.", riskOnSelfPop: 9, inflateSpeed: 25 },
+    { id: "real_estate", icon: "🏠", label: "Bất động sản", color: "#f97316", borderColor: "rgba(249,115,22,0.7)", bgColor: "rgba(249,115,22,0.18)", risk: "Subprime 2008 — 13 triệu nhà bị tịch thu, Case-Shiller Index giảm 33%.", riskOnSelfPop: 13, inflateSpeed: 28 },
+    { id: "stock", icon: "📈", label: "Cổ phiếu", color: "#22c55e", borderColor: "rgba(34,197,94,0.7)", bgColor: "rgba(34,197,94,0.18)", risk: "S&P 500 giảm 57% (2007-2009), xóa sổ 11 nghìn tỷ USD vốn hóa.", riskOnSelfPop: 9, inflateSpeed: 25 },
     { id: "tech", icon: "💻", label: "Công nghệ", color: "#38bdf8", borderColor: "rgba(56,189,248,0.7)", bgColor: "rgba(56,189,248,0.18)", risk: "Bong bóng Dot-com 2000 — NASDAQ sụt 78%, hàng nghìn startup phá sản.", riskOnSelfPop: 7, inflateSpeed: 22 },
     { id: "bank", icon: "🏦", label: "Ngân hàng", color: "#ef4444", borderColor: "rgba(239,68,68,0.8)", bgColor: "rgba(239,68,68,0.22)", risk: "Domino ngân hàng — Lehman kéo theo Bear Stearns, AIG, Merrill Lynch. Tín dụng toàn cầu đóng băng.", riskOnSelfPop: 20, inflateSpeed: 26, isBank: true },
     { id: "crypto", icon: "₿", label: "Crypto", color: "#fbbf24", borderColor: "rgba(251,191,36,0.7)", bgColor: "rgba(251,191,36,0.18)", risk: "Terra/LUNA 2022 — 60 tỷ USD bốc hơi trong 72 giờ.", riskOnSelfPop: 10, inflateSpeed: 20 },
 ];
 
 const TIMELINE_EVENTS = [
-    { year: "2001", label: "Dotcom", icon: "💻", color: "#38bdf8", desc: "Bong bóng Dotcom vỡ — NASDAQ giảm 78%. FED cắt lãi suất kích thích kinh tế, vô tình thổi phồng bong bóng bất động sản." },
-    { year: "2003", label: "Housing Boom", icon: "🏠", color: "#f97316", desc: "Bùng nổ bất động sản — Lãi suất thấp + cho vay dưới chuẩn dễ dãi. Ngân hàng đóng gói nợ xấu thành CDO bán khắp thế giới." },
-    { year: "2007", label: "Subprime", icon: "⚠️", color: "#fbbf24", desc: "Khủng hoảng Subprime — Người vay mất khả năng trả nợ hàng loạt. Bear Stearns mất 1.6 tỷ USD. Domino bắt đầu đổ." },
-    { year: "2008", label: "Lehman", icon: "💥", color: "#ef4444", desc: "Lehman Brothers sụp đổ 15/9/2008 — Phá sản 613 tỷ USD lớn nhất lịch sử. Mỹ bơm 700 tỷ USD cứu trợ." },
+    {
+        year: "2001",
+        label: "Dotcom",
+        icon: "💻",
+        color: "#38bdf8",
+        desc:
+            "Bong bóng Dot-com vỡ — NASDAQ giảm 78%. FED cắt lãi suất 1% kích thích kinh tế, vô tình thổi phồng bong bóng bất động sản.",
+    },
+    {
+        year: "2003",
+        label: "Housing Boom",
+        icon: "🏠",
+        color: "#f97316",
+        desc:
+            "Bùng nổ nhà ở — Lãi suất thấp + cho vay dưới chuẩn dễ dãi. Ngân hàng đóng gói nợ xấu thành CDO bán toàn cầu (85 tỷ USD danh mục Lehman).",
+    },
+    {
+        year: "2007",
+        label: "Subprime",
+        icon: "⚠️",
+        color: "#fbbf24",
+        desc:
+            "Khủng hoảng subprime — Vỡ nợ hàng loạt. Bear Stearns lỗ 1.6 tỷ USD. Lehman lỗ quý 1/2008: 2.8 tỷ USD.",
+    },
+    {
+        year: "2008",
+        label: "Lehman",
+        icon: "💥",
+        color: "#ef4444",
+        desc:
+            "Lehman phá sản 15/9/2008 (613 tỷ USD nợ). Chính phủ Mỹ bơm 700 tỷ USD TARP cứu hệ thống. Suy thoái toàn cầu.",
+    },
 ];
+
 
 const QUOTES = [
-    { text: "Lịch sử cho thấy chủ nghĩa tư bản tạo ra những cuộc khủng hoảng định kỳ — đó là mâu thuẫn nội tại không thể tránh khỏi giữa sản xuất xã hội hóa và chiếm hữu tư nhân.", author: "Karl Marx", icon: "📕" },
-    { text: "Lạm phát là thuế mà không cần thông qua Quốc hội. Phá sản ngân hàng là kết quả tất yếu của sự can thiệp thiếu kiềm chế.", author: "Milton Friedman", icon: "💭" },
-    { text: "Thị trường có thể duy trì phi lý trí lâu hơn bạn có thể duy trì khả năng thanh toán.", author: "John Maynard Keynes", icon: "📖" },
-    { text: "Chúng ta đã xây dựng một hệ thống tài chính phức tạp đến mức không ai hiểu rõ nó — cho đến khi nó sụp đổ.", author: "Alan Greenspan, 2008", icon: "🏛️" },
+    {
+        text:
+            "Khủng hoảng tư bản là tất yếu khách quan của phương thức sản xuất tư bản chủ nghĩa, do mâu thuẫn cơ bản giữa lực lượng sản xuất và quan hệ sản xuất.",
+        author: "Karl Marx & Friedrich Engels, Tuyên ngôn Đảng Cộng sản",
+        icon: "📕",
+    },
+    {
+        text:
+            "Lạm phát là phương thuế không cần thông qua Quốc hội.",
+        author: "Milton Friedman",
+        icon: "💭",
+    },
+    {
+        text:
+            "Thị trường có thể phi lý trí lâu hơn bạn có thể duy trì thanh khoản.",
+        author: "John Maynard Keynes",
+        icon: "📖",
+    },
+    {
+        text:
+            "Chúng tôi đã tạo hệ thống tài chính phức tạp đến mức không ai hiểu — cho đến khi nó sụp đổ.",
+        author: "Alan Greenspan, Chủ tịch FED 2008",
+        icon: "🏛️",
+    },
 ];
+
 
 const CRISIS_SPREAD = [
-    { flag: "🇺🇸", country: "USA", role: "Nguồn phát", color: "#ef4444" },
-    { flag: "🇬🇧", country: "UK", role: "Ngân hàng sụp đổ", color: "#f97316" },
-    { flag: "🇩🇪", country: "Đức", role: "Xuất khẩu sụt giảm", color: "#fbbf24" },
-    { flag: "🇬🇷", country: "Hy Lạp", role: "Nợ công", color: "#a78bfa" },
-    { flag: "🌐", country: "Toàn cầu", role: "Suy thoái", color: "#94a3b8" },
+    { flag: "🇺🇸", country: "Mỹ", role: "Nguồn phát (Subprime)", color: "#ef4444" },
+    { flag: "🇬🇧", country: "Anh", role: "Northern Rock phá sản", color: "#f97316" },
+    { flag: "🇩🇪", country: "Đức", role: "Hypo Real Estate cứu trợ", color: "#fbbf24" },
+    { flag: "🇬🇷", country: "Hy Lạp", role: "Nợ công vỡ nợ", color: "#a78bfa" },
+    { flag: "🌐", country: "Toàn cầu", role: "Suy thoái GDP -4%", color: "#94a3b8" },
 ];
 
+
 const COMPARE_ROWS = [
-    { label: "Tín dụng", before: "Cho vay dưới chuẩn tràn lan", after: "Basel III — Vốn tối thiểu 8%", bc: "#ef4444", ac: "#22c55e" },
-    { label: "Giám sát", before: "Tự điều tiết", after: "Stress test bắt buộc hàng năm", bc: "#f97316", ac: "#38bdf8" },
-    { label: "Sản phẩm tài chính", before: "CDO bí ẩn, CDS không kiểm soát", after: "Công khai, bắt buộc bảo chứng", bc: "#ef4444", ac: "#22c55e" },
-    { label: "Cứu trợ", before: "Không có cơ chế rõ ràng", after: "Dodd-Frank Act 2010", bc: "#f97316", ac: "#a78bfa" },
-    { label: "Lãi suất", before: "Thấp kéo dài (Greenspan Put)", after: "Chính sách linh hoạt hơn", bc: "#fbbf24", ac: "#22c55e" },
+    {
+        label: "Tín dụng",
+        before: "Cho vay dưới chuẩn tràn lan",
+        after: "Basel III — Vốn tối thiểu 8%",
+        bc: "#ef4444",
+        ac: "#22c55e",
+    },
+    {
+        label: "Giám sát",
+        before: "Tự điều tiết (Glass-Steagall bãi bỏ)",
+        after: "Stress test bắt buộc hàng năm",
+        bc: "#f97316",
+        ac: "#38bdf8",
+    },
+    {
+        label: "Sản phẩm tài chính",
+        before: "CDO bí ẩn, CDS không bảo chứng",
+        after: "Công khai, Volcker Rule cấm đầu cơ",
+        bc: "#ef4444",
+        ac: "#22c55e",
+    },
+    {
+        label: "Cứu trợ",
+        before: "Không cơ chế rõ ràng",
+        after: "Dodd-Frank Act 2010 + TARP",
+        bc: "#f97316",
+        ac: "#a78bfa",
+    },
+    {
+        label: "Lãi suất",
+        before: "Thấp kéo dài (Greenspan Put)",
+        after: "Chính sách linh hoạt hơn (FED độc lập)",
+        bc: "#fbbf24",
+        ac: "#22c55e",
+    },
 ];
 
 const CORE_IDEAS = [
-    { id: "1", label: "Khủng hoảng chu kỳ", icon: "📉", border: "border-red-400", bg: "bg-red-900/40", desc: "Khủng hoảng định kỳ trong chủ nghĩa tư bản (theo giáo trình: Do mâu thuẫn sản xuất - tiêu dùng dư thừa)." },
-    { id: "2", label: "Bong bóng tài chính", icon: "💥", border: "border-amber-400", bg: "bg-amber-900/40", desc: "Giá tài sản tăng vọt rồi vỡ (theo giáo trình: Do đầu cơ, dẫn đến khủng hoảng tài chính)." },
-    { id: "3", label: "Cạnh tranh và độc quyền", icon: "🏆", border: "border-emerald-400", bg: "bg-emerald-900/40", desc: "Cạnh tranh dẫn đến độc quyền, gây bất ổn (theo giáo trình: Tập trung tư bản tăng khủng hoảng)." },
-    { id: "4", label: "Mâu thuẫn tư bản", icon: "⚖️", border: "border-purple-400", bg: "bg-purple-900/40", desc: "Mâu thuẫn giữa sản xuất xã hội hóa và chiếm hữu tư nhân (theo giáo trình: Nguyên nhân gốc rễ khủng hoảng)." },
-    { id: "5", label: "Nhà nước can thiệp", icon: "🏛️", border: "border-sky-400", bg: "bg-sky-900/40", desc: "Nhà nước điều tiết để giảm khủng hoảng (theo giáo trình: Không giải quyết tận gốc mâu thuẫn)." },
+    {
+        id: "1",
+        label: "Khủng hoảng chu kỳ",
+        icon: "📉",
+        border: "border-red-400",
+        bg: "bg-red-900/40",
+        desc:
+            "Nền kinh tế tư bản thường trải qua các chu kỳ bùng nổ và suy thoái. Khủng hoảng xảy ra khi sản xuất mở rộng quá mức so với khả năng tiêu thụ của thị trường.",
+        borderColor: "#ef4444",
+    },
+    {
+        id: "2",
+        label: "Bong bóng tài chính",
+        icon: "💥",
+        border: "border-amber-400",
+        bg: "bg-amber-900/40",
+        desc:
+            "Giá tài sản tăng cao nhanh chóng do đầu cơ và dòng vốn đổ vào quá mạnh. Khi niềm tin thị trường sụp đổ, giá lao dốc và gây ra khủng hoảng tài chính.",
+        borderColor: "#f97316",
+    },
+    {
+        id: "3",
+        label: "Cạnh tranh → độc quyền",
+        icon: "🏆",
+        border: "border-emerald-400",
+        bg: "bg-emerald-900/40",
+        desc:
+            "Trong quá trình cạnh tranh, các doanh nghiệp lớn dần thâu tóm thị trường và tích lũy tư bản. Kết quả là hình thành các tập đoàn độc quyền có khả năng chi phối giá cả và thị trường.",
+        borderColor: "#34d399",
+    },
+    {
+        id: "4",
+        label: "Mâu thuẫn tư bản",
+        icon: "⚖️",
+        border: "border-purple-400",
+        bg: "bg-purple-900/40",
+        desc:
+            "Hoạt động sản xuất ngày càng mang tính xã hội hóa với sự tham gia của nhiều người lao động, nhưng lợi ích kinh tế lại tập trung vào một nhóm chủ sở hữu tư bản. Sự chênh lệch này tạo ra những căng thẳng và bất ổn trong nền kinh tế.",
+        borderColor: "#a78bfa",
+    },
+    {
+        id: "5",
+        label: "Nhà nước can thiệp",
+        icon: "🏛️",
+        border: "border-sky-400",
+        bg: "bg-sky-900/40",
+        desc:
+            "Trong các giai đoạn khủng hoảng, nhà nước thường can thiệp bằng chính sách tài khóa, tiền tệ hoặc cứu trợ doanh nghiệp lớn để ổn định hệ thống kinh tế và tài chính.",
+        borderColor: "#38bdf8",
+    },
 ];
 
 function rnd(min, max) { return Math.random() * (max - min) + min; }
@@ -149,7 +275,7 @@ function DominoFall({ score, onRestart }) {
                         <thead><tr>
                             <th className="text-left text-white/40 py-1 pr-3 w-24">Tiêu chí</th>
                             <th className="text-center text-red-300 font-black pb-1 px-2">⛔ Trước 2008</th>
-                            <th className="text-center text-green-300 font-black pb-1 px-2">✅ Sau 2008</th>
+                            <th className="text-center text-green-300 font-black pb-1 px-2">✓ Sau 2008</th>
                         </tr></thead>
                         <tbody>
                             {COMPARE_ROWS.map(r => (
@@ -305,7 +431,7 @@ function BubbleGame({ onScoreChange }) {
     // Click = defuse = good, NO risk increase
     const onPop = (id, asset) => {
         setBubbles(prev => prev.filter(b => b.id !== id));
-        showPopup(`✅ ${asset.icon} ${asset.label} bị dập tắt kịp thời!`, asset.color);
+        showPopup(`✓ ${asset.icon} ${asset.label} bị dập tắt kịp thời!`, asset.color);
         setScore(prev => {
             const ns = prev + 10;
             onScoreChange(ns);
@@ -371,7 +497,7 @@ function BubbleGame({ onScoreChange }) {
             <div className="mb-3">
                 <div className="flex justify-between items-center mb-1">
                     <span className="text-xs font-bold" style={{ color: riskColor }}>
-                        {risk >= 80 ? "🚨 Nguy hiểm cực cao" : risk >= 50 ? "⚠️ Rủi ro cao" : risk >= 25 ? "⚡ Rủi ro trung bình" : "✅ Ổn định"}
+                        {risk >= 80 ? "🚨 Nguy hiểm cực cao" : risk >= 50 ? "⚠️ Rủi ro cao" : risk >= 25 ? "⚡ Rủi ro trung bình" : "✓ Ổn định"}
                     </span>
                     <span className="text-xs font-black" style={{ color: riskColor }}>Risk: {risk}%</span>
                 </div>
@@ -548,11 +674,12 @@ export default function LehmanCollapsePage() {
                             <div className="text-yellow-400 font-bold text-xs uppercase tracking-widest mb-1">15 tháng 9, 2008</div>
                             <h2 className="text-xl font-bold text-white mb-2">Sự sụp đổ của Lehman Brothers — Khủng hoảng tài chính toàn cầu</h2>
                             <p className="text-blue-200 text-sm leading-relaxed mb-2">
-                                Ngày 15/9/2008, <strong className="text-yellow-300">Lehman Brothers</strong> — ngân hàng đầu tư lớn thứ 4 Mỹ — nộp đơn phá sản với nợ 613 tỷ USD, do bong bóng bất động sản vỡ và khủng hoảng subprime. Đây là vụ phá sản lớn nhất lịch sử Mỹ.
+                                Ngày <strong className="text-yellow-300">15/9/2008</strong>, <strong className="text-white">Lehman Brothers</strong> — ngân hàng đầu tư lớn thứ 4 Mỹ (158 năm tuổi) — nộp đơn phá sản với <strong className="text-red-400">613 tỷ USD nợ</strong>, lớn nhất lịch sử Mỹ. Nguyên nhân: Bong bóng bất động sản vỡ + cho vay dưới chuẩn subprime.
                             </p>
                             <p className="text-blue-200 text-sm leading-relaxed">
-                                Sự kiện khởi đầu khủng hoảng tài chính 2008, dẫn đến suy thoái toàn cầu, thất nghiệp tăng, thị trường chứng khoán sụp đổ. Nó minh họa tính chu kỳ của khủng hoảng tư bản và rủi ro bong bóng tài chính.
+                                Lehman khởi đầu khủng hoảng tài chính 2008: S&P 500 giảm 57%, xóa sổ 11 nghìn tỷ USD; 30 triệu người mất việc toàn cầu. Minh họa rõ nét <strong className="text-yellow-300">chu kỳ khủng hoảng tư bản chủ nghĩa</strong> (Chương 24 KTCT Mác – Lênin): Đầu cơ → bong bóng → khủng hoảng sản xuất thừa.
                             </p>
+
                         </div>
                     </div>
                 </motion.section>
@@ -580,13 +707,17 @@ export default function LehmanCollapsePage() {
                 {/* Quotes */}
                 <QuotesSection />
 
-                {/* Video */}
-                <motion.section className="mb-10" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}>
-                    <div className="flex justify-center">
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/KAu_ozSNL64"
-                            title="Lehman Brothers Collapse" frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowFullScreen className="rounded-xl shadow-lg w-full max-w-lg" />
+                {/* ── VIDEO EMBED ── */}
+                <motion.section className="mt-20 pt-16 border-t border-slate-800 pb-12" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
+                    <div className="max-w-4xl mx-auto bg-slate-900/80 border border-slate-800 p-2 md:p-4 rounded-2xl md:rounded-3xl shadow-2xl overflow-hidden backdrop-blur-sm">
+                        <div className="relative w-full aspect-video rounded-xl overflow-hidden ring-1 ring-slate-700/50 bg-black">
+                            <iframe
+                                className="absolute inset-0 w-full h-full"
+                                src="https://www.youtube.com/embed/KAu_ozSNL64"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowFullScreen
+                            ></iframe>
+                        </div>
                     </div>
                 </motion.section>
 
@@ -605,7 +736,7 @@ export default function LehmanCollapsePage() {
                                 </div>
                                 <button onClick={() => setGameKey(k => k + 1)}
                                     className="bg-red-800 hover:bg-red-700 text-white text-sm font-bold px-4 py-2 rounded-xl transition-colors">
-                                    🔄 Chơi lại
+                                    ↺ Chơi lại
                                 </button>
                             </div>
                         </div>

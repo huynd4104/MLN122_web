@@ -6,51 +6,84 @@ import { Link } from "react-router-dom";
 
 const TIMELINE_EVENTS = [
     {
-        year: "1944", icon: "✍️", color: "#fbbf24", label: "Bretton Woods",
-        desc: "44 quốc gia ký kết hệ thống tiền tệ quốc tế tại New Hampshire. USD neo vào vàng: 1 ounce = $35. Mọi đồng tiền neo vào USD với biên độ ±1%.",
-        detail: "Mỹ nắm ~70% dự trữ vàng thế giới, trở thành trung tâm tài chính toàn cầu."
+        year: "1944",
+        icon: "📜",
+        color: "#fbbf24",
+        label: "Bretton Woods",
+        desc:
+            "44 quốc gia ký kết hệ thống tiền tệ quốc tế tại New Hampshire. USD neo vào vàng (1 ounce = 35 USD). Mọi tiền tệ neo vào USD ±1%.",
+        detail:
+            "Mỹ nắm 70% dự trữ vàng thế giới, trở thành trung tâm tài chính toàn cầu.",
     },
     {
-        year: "1965", icon: "🔫", color: "#f97316", label: "Chiến tranh Việt Nam",
-        desc: "Mỹ chi hàng trăm tỷ USD cho Chiến tranh Việt Nam và chương trình 'Great Society'. In tiền vượt dự trữ vàng, các nước bắt đầu nghi ngờ sức mạnh USD.",
-        detail: "Năm 1960: Nợ nước ngoài Mỹ = $21B, nhưng vàng chỉ còn $17.8B. Triffin Dilemma xuất hiện."
+        year: "1965",
+        icon: "⚔️",
+        color: "#f97316",
+        label: "Chiến tranh Việt Nam",
+        desc:
+            "Mỹ chi hàng trăm tỷ USD cho Chiến tranh Việt Nam + chương trình Great Society. In tiền vượt dự trữ vàng, các nước nghi ngờ sức mạnh USD.",
+        detail:
+            "Năm 1960: Nước ngoài nắm 21B USD, nhưng vàng chỉ còn 17.8B. Triffin Dilemma xuất hiện.",
     },
     {
-        year: "1971", icon: "💥", color: "#ef4444", label: "Nixon Shock",
-        desc: "15/8/1971: Nixon tuyên bố đình chỉ chuyển đổi USD sang vàng. Bretton Woods sụp đổ. Thế giới bước vào kỷ nguyên tiền fiat.",
-        detail: "\"I have directed Secretary Connally to suspend temporarily the convertibility of the dollar into gold...\" — Nixon, 15/8/1971"
+        year: "1971",
+        icon: "⚡",
+        color: "#ef4444",
+        label: "Nixon Shock",
+        desc:
+            "15/8/1971: Nixon tuyên bố ngừng chuyển đổi USD sang vàng. Bretton Woods sụp đổ. Thế giới bước vào kỷ nguyên tiền fiat.",
+        detail:
+            '"I have directed Secretary Connally to suspend temporarily the convertibility of the dollar into gold..." – Nixon, 15/8/1971',
     },
     {
-        year: "1973", icon: "🌊", color: "#38bdf8", label: "Tỷ giá Thả nổi",
-        desc: "Các nước G10 chính thức chuyển sang tỷ giá thả nổi. Vàng tự do tăng từ $35 lên $120/oz. USD không còn bị 'trói buộc' bởi vàng.",
-        detail: "Giá vàng tăng vọt do không còn bị kìm hãm ở $35. Đến 1980, vàng đạt $850/oz — tăng 24 lần."
+        year: "1973",
+        icon: "📊",
+        color: "#38bdf8",
+        label: "Tỷ giá thả nổi",
+        desc:
+            "Các nước G10 chính thức chuyển sang tỷ giá thả nổi. Vàng tự do tăng từ 35 lên 120/oz. USD không còn bị tri bức bởi vàng.",
+        detail:
+            "Giá vàng tăng vọt không còn bị kìm hãm 35$. Đến 1980, vàng lên 850/oz (tăng 24 lần).",
     },
 ];
 
+
 const WORLD_REACTIONS = [
     {
-        flag: "🇫🇷", country: "Pháp", color: "#3b82f6",
+        flag: "🇫🇷",
+        country: "Pháp",
+        color: "#3b82f6",
         reaction: "Phản ứng mạnh nhất",
-        desc: "Pháp dưới thời de Gaulle đã gửi tàu chiến đến Mỹ để đổi USD lấy vàng trước khi Nixon đóng cửa sổ. Charles de Gaulle gọi USD là 'đặc quyền thái quá' của Mỹ.",
-        impact: "Xúc tác chính thúc đẩy Nixon hành động"
+        desc:
+            "Pháp dưới thời De Gaulle gửi tàu chở đầy USD đến Mỹ đòi đổi vàng trước khi Nixon đóng cửa. Charles de Gaulle gọi USD là 'công cụ quyền lực thừa kế của Mỹ'.",
+        impact: "Xúc tác chính thức yêu Nixon hành động",
     },
     {
-        flag: "🇺🇸", country: "Mỹ", color: "#ef4444",
+        flag: "🇬🇧",
+        country: "Anh",
+        color: "#ef4444",
         reaction: "Thâm hụt kép",
-        desc: "Thâm hụt ngân sách do chi chiến tranh + thâm hụt thương mại vì hàng hóa Mỹ đắt hơn Nhật/Đức. Dự trữ vàng tại Fort Knox giảm từ 20.000 tấn xuống 8.000 tấn.",
-        impact: "Buộc phải hành động đơn phương"
+        desc:
+            "Anh thâm hụt ngân sách do chi chiến tranh + thâm hụt thương mại + hàng hóa Mỹ rẻ hơn Nhật/Đức. Dự trữ vàng tại Fort Knox giảm từ 20.000 tấn xuống 8.000 tấn.",
+        impact: "Bức phải hành động ngăn phòng thủ",
     },
     {
-        flag: "🇩🇪", country: "Đức (Tây)", color: "#fbbf24",
+        flag: "🇩🇪",
+        country: "Đức",
+        color: "#fbbf24",
         reaction: "Áp lực tỷ giá",
-        desc: "Đức phải nhận lượng USD khổng lồ để duy trì tỷ giá cố định. Deutsche Mark bị định giá thấp giúp xuất khẩu bùng nổ nhưng gây lạm phát nhập khẩu. Đức quyết định thả nổi DM trước Nixon.",
-        impact: "Hội nhập kinh tế châu Âu tăng tốc"
+        desc:
+            "Đức phải nhận lượng USD không lối thoát để duy trì tỷ giá cố định. Deutsche Mark bị định giá thấp giúp xuất khẩu bùng nổ nhưng gây lạm phát nhập khẩu. Đức quyết định thả nổi DM trước Nixon.",
+        impact: "Hội nhập kinh tế châu Âu tăng tốc",
     },
     {
-        flag: "🇯🇵", country: "Nhật Bản", color: "#f87185",
+        flag: "🇯🇵",
+        country: "Nhật Bản",
+        color: "#fb7185",
         reaction: "Dollar shock",
-        desc: "1 USD = 360 Yên suốt 22 năm (1949-1971). Sau Nixon Shock, Yên lên giá mạnh. Hàng xuất khẩu Nhật đột ngột đắt hơn — gây cú sốc cho nền kinh tế xuất khẩu.",
-        impact: "Buộc Nhật tái cơ cấu kinh tế lên công nghệ cao"
+        desc:
+            "1 USD = 360 Yên suốt 22 năm (1949-1971). Sau Nixon Shock, Yên liên tục tăng giá mạnh. Hàng xuất khẩu Nhật đột ngột đắt đỏ hơn gây cú sốc cho nền kinh tế xuất khẩu.",
+        impact: "Bức Nhật tới cấu trúc kinh tế lớn công nghệ cao",
     },
 ];
 
@@ -68,11 +101,41 @@ const QUOTES = [
 ];
 
 const COMPARE_ROWS = [
-    { label: "Tỷ giá", before: "Cố định (±1%)", after: "Thả nổi tự do", beforeColor: "#22c55e", afterColor: "#f97316" },
-    { label: "Cơ sở tiền tệ", before: "Bản vị Vàng–USD", after: "Tiền Fiat (pháp định)", beforeColor: "#fbbf24", afterColor: "#8b5cf6" },
-    { label: "Ổn định giá", before: "Cao — neo cứng", after: "Biến động thị trường", beforeColor: "#38bdf8", afterColor: "#f87185" },
-    { label: "Linh hoạt chính sách", before: "Thấp — cứng nhắc", after: "Cao — điều chỉnh tự do", beforeColor: "#f87185", afterColor: "#22c55e" },
-    { label: "Rủi ro lạm phát", before: "Thấp (bị vàng giới hạn)", after: "Cao (phụ thuộc NHTW)", beforeColor: "#22c55e", afterColor: "#ef4444" },
+    {
+        label: "Tỷ giá",
+        before: "Cố định (±1%)",
+        after: "Thả nổi tự do",
+        beforeColor: "#22c55e",
+        afterColor: "#f97316",
+    },
+    {
+        label: "Cơ sở tín dụng",
+        before: "Bản vị Vàng-USD",
+        after: "Tín phiếu ngân hàng (Fiat)",
+        beforeColor: "#fbbf24",
+        afterColor: "#8b5cf6",
+    },
+    {
+        label: "Ổn định giá trị",
+        before: "Cao (neo cứng)",
+        after: "Biến động thị trường",
+        beforeColor: "#38bdf8",
+        afterColor: "#f87185",
+    },
+    {
+        label: "Linh hoạt chính sách",
+        before: "Thấp (công thức)",
+        after: "Cao (điều chỉnh tự do)",
+        beforeColor: "#f87185",
+        afterColor: "#22c55e",
+    },
+    {
+        label: "Rủi ro lạm phát",
+        before: "Thấp (vàng giới hạn)",
+        after: "Cao (phụ thuộc NHTW)",
+        beforeColor: "#22c55e",
+        afterColor: "#ef4444",
+    },
 ];
 
 const STARS = [...Array(30)].map(() => ({
@@ -116,102 +179,156 @@ function MoneyParticles({ level }) {
 }
 
 function GoldWindow() {
+    const [usd, setUsd] = useState(35); // Tỷ USD
+    const [gold, setGold] = useState(20000); // Tấn
     const [shocked, setShocked] = useState(false);
-    const [played, setPlayed] = useState(false);
+    const [shaking, setShaking] = useState(false);
+
+    const printMoney = () => {
+        if (shocked) return;
+
+        setUsd(p => p + 15);
+        setGold(p => Math.max(8000, p - 1800));
+        setShaking(true);
+        setTimeout(() => setShaking(false), 200);
+    };
 
     const trigger = () => {
-        if (!shocked) { setShocked(true); setPlayed(true); }
-        else { setShocked(false); }
+        setShocked(true);
     };
+
+    const isCritical = gold <= 10000 && !shocked;
 
     return (
         <motion.section
-            className="mb-8 rounded-2xl border border-yellow-500/30 overflow-hidden"
+            className="mb-8 rounded-2xl border border-yellow-500/30 overflow-hidden relative"
             style={{ background: "rgba(13,20,50,0.85)", backdropFilter: "blur(14px)" }}
             initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
         >
             <div className="p-4 border-b border-yellow-500/20" style={{ background: "linear-gradient(90deg,#78350f,#b45309)" }}>
-                <h2 className="text-base font-black text-white">🪟 Cửa sổ Vàng (Gold Window)</h2>
-                <p className="text-amber-200 text-xs mt-0.5">Mối liên kết $35 ↔ 1 oz Vàng — nhấn nút để kích hoạt Nixon Shock</p>
+                <h2 className="text-base font-black text-white">🪟 Cơ chế đứt gãy (Gold Window)</h2>
+                <p className="text-amber-200 text-xs mt-0.5">Bấm in tiền để xem dự trữ vàng bốc hơi (Triffin Dilemma) trước khi đóng!</p>
             </div>
-            <div className="p-5">
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-5 relative">
-                    {/* USD Box */}
-                    <motion.div
-                        className="rounded-2xl border border-blue-400/50 p-5 text-center w-36"
-                        style={{ background: "rgba(30,50,120,0.5)" }}
-                        animate={shocked ? { x: [-4, 4, -3, 3, 0], opacity: 0.4 } : { x: 0, opacity: 1 }}
-                        transition={{ duration: 0.6 }}
-                    >
-                        <div className="text-4xl mb-1">💵</div>
-                        <div className="text-blue-300 font-black text-lg">$35</div>
-                        <div className="text-blue-400/60 text-xs">USD</div>
-                    </motion.div>
 
-                    {/* Arrow / X */}
-                    <div className="relative flex flex-col items-center">
+            <div className="p-5 sm:p-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-8">
+
+                    {/* LEFT: USD PRINTING */}
+                    <div className="flex flex-col items-center">
                         <motion.div
-                            className="text-2xl font-black"
-                            style={{ color: shocked ? "#ef4444" : "#fbbf24" }}
-                            animate={shocked ? { rotate: [0, 10, -10, 0], scale: [1, 1.3, 1] } : {}}
-                            transition={{ duration: 0.5 }}
+                            className="w-full rounded-2xl border-2 p-5 text-center relative overflow-hidden"
+                            style={{ borderColor: "rgba(59, 130, 246, 0.5)", background: "rgba(30,50,120,0.4)" }}
+                            animate={shaking ? { x: [-3, 3, -2, 2, 0] } : {}}
+                            transition={{ duration: 0.3 }}
                         >
-                            {shocked ? "✕" : "⇌"}
-                        </motion.div>
-                        <AnimatePresence>
-                            {shocked && (
-                                <motion.div
-                                    className="absolute -bottom-8 whitespace-nowrap text-red-400 font-black text-xs border border-red-400/50 rounded-lg px-2 py-0.5"
-                                    style={{ background: "rgba(127,29,29,0.6)" }}
-                                    initial={{ opacity: 0, scale: 0.7 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}
+                            <div className="text-4xl mb-2 flex justify-center">
+                                <motion.div animate={shaking ? { scale: [1, 1.2, 1] } : {}}>💵</motion.div>
+                            </div>
+                            <div className="text-blue-300 font-black text-2xl">{usd} Tỷ USD</div>
+                            <div className="text-blue-400/60 text-xs mt-1">Lượng tiền cung ứng ngoài Mỹ</div>
+
+                            {!shocked && (
+                                <button
+                                    onClick={printMoney}
+                                    className="mt-4 w-full py-2 rounded-xl bg-blue-600 hover:bg-blue-500 border border-blue-400/50 text-white font-bold text-xs transition-colors active:scale-95 shadow-lg shadow-blue-500/20"
                                 >
-                                    Convertibility Suspended
-                                </motion.div>
+                                    + In tiền tài trợ Chiến tranh
+                                </button>
                             )}
-                        </AnimatePresence>
+                        </motion.div>
                     </div>
 
-                    {/* Gold Box */}
-                    <motion.div
-                        className="rounded-2xl border border-yellow-400/50 p-5 text-center w-36"
-                        style={{ background: "rgba(120,80,0,0.4)" }}
-                        animate={shocked ? { x: [-4, 4, -3, 3, 0], opacity: 0.4 } : { x: 0, opacity: 1 }}
-                        transition={{ duration: 0.6, delay: 0.05 }}
-                    >
-                        <div className="text-4xl mb-1">🥇</div>
-                        <div className="text-yellow-300 font-black text-lg">1 oz</div>
-                        <div className="text-yellow-400/60 text-xs">Vàng</div>
-                    </motion.div>
+                    {/* RIGHT: GOLD RESERVE */}
+                    <div className="flex flex-col items-center">
+                        <motion.div
+                            className="w-full rounded-2xl border-2 p-5 text-center relative overflow-hidden transition-colors duration-500"
+                            style={{ borderColor: isCritical ? "rgba(239, 68, 68, 0.5)" : "rgba(250, 204, 21, 0.5)", background: isCritical ? "rgba(120,30,0,0.4)" : "rgba(120,80,0,0.4)" }}
+                        >
+                            <div className="text-4xl mb-2 flex justify-center">
+                                <motion.div animate={shaking ? { rotate: [-10, 10, -10, 0] } : {}}>🥇</motion.div>
+                            </div>
+                            <div className="text-yellow-300 font-black text-2xl">{gold.toLocaleString()} Tấn</div>
+                            <div className="text-yellow-400/60 text-xs mt-1">Vàng dự trữ (Fort Knox)</div>
+
+                            {/* Visual Gold Bar Stack */}
+                            <div className="h-4 w-full mt-4 flex items-end justify-start rounded-full bg-black/40 overflow-hidden relative border border-white/10">
+                                <motion.div
+                                    className="absolute bottom-0 left-0 h-full bg-gradient-to-r from-yellow-600 to-yellow-300"
+                                    animate={{ width: `${(gold / 20000) * 100}%` }}
+                                    transition={{ duration: 0.5 }}
+                                />
+                            </div>
+                            <div className="text-[10px] text-white/30 text-right mt-1">Sức chứa 20,000 Tấn</div>
+
+                            {isCritical && !shocked && (
+                                <div className="absolute top-3 right-3 flex items-center justify-center">
+                                    <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-red-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                                </div>
+                            )}
+                        </motion.div>
+                    </div>
                 </div>
 
-                <AnimatePresence>
-                    {shocked && (
-                        <motion.div
-                            className="mb-4 rounded-xl border border-red-500/40 p-3 text-center"
-                            style={{ background: "rgba(127,29,29,0.35)" }}
-                            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                {/* THE WINDOW MECHANISM */}
+                <div className="relative mb-8 max-w-sm mx-auto h-16">
+                    {/* Background link */}
+                    <div className="absolute inset-0 border-4 border-dashed border-yellow-500/30 rounded-xl flex items-center justify-center bg-yellow-900/20">
+                        <span className="text-yellow-500/50 font-black tracking-widest flex items-center gap-4">
+                            <span>USD</span> <span>⟷</span> <span>VÀNG</span>
+                        </span>
+                    </div>
+
+                    {/* Slamming Door / Shock Overlay */}
+                    <AnimatePresence>
+                        {shocked && (
+                            <motion.div
+                                className="absolute inset-0 flex items-center justify-center rounded-xl overflow-hidden z-10"
+                                style={{ background: "linear-gradient(135deg, #7f1d1d, #450a0a)", border: "2px solid #ef4444", boxShadow: "0 0 20px rgba(239, 68, 68, 0.4)" }}
+                                initial={{ top: -50, bottom: 50, opacity: 0 }}
+                                animate={{ top: 0, bottom: 0, opacity: 1 }}
+                                transition={{ type: "spring", stiffness: 200, damping: 15 }}
+                            >
+                                <div className="flex items-center gap-3">
+                                    <div className="text-2xl">🔒</div>
+                                    <h3 className="text-white font-black text-sm tracking-widest uppercase">Cửa sổ Vàng đã đóng</h3>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
+
+                {/* BUTTON */}
+                <div className="flex justify-center flex-col items-center gap-3">
+                    {!shocked ? (
+                        <motion.button
+                            onClick={trigger}
+                            className={`px-6 sm:px-8 py-3 rounded-full font-black text-xs sm:text-sm transition-all flex items-center gap-2 ${isCritical ? 'bg-red-600 hover:bg-red-500 shadow-[0_0_20px_rgba(239,68,68,0.7)] animate-pulse border border-red-400 text-white' : 'bg-gray-800 hover:bg-gray-700 text-gray-400 border border-gray-600'
+                                }`}
+                            whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                         >
-                            <div className="text-red-300 font-black text-sm">📈 Vàng tự do tăng vọt!</div>
-                            <div className="text-red-200/70 text-xs mt-1">$35 → $120 (1973) → $850 (1980) → $2,800 (2024)</div>
-                            <div className="text-white/40 text-xs mt-1">Không còn bị kìm hãm bởi chính sách Mỹ</div>
+                            {isCritical ? "⚡ KÍCH HOẠT NIXON SHOCK (ĐÓNG CỬA)" : "⚠️ Vàng đang ổn định (Chưa cần kích hoạt)"}
+                        </motion.button>
+                    ) : (
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+                            className="w-full flex flex-col items-center"
+                        >
+                            <div className="text-center rounded-xl border border-red-500/40 p-4 max-w-lg w-full" style={{ background: "rgba(127,29,29,0.25)" }}>
+                                <div className="text-red-300 font-black text-sm uppercase tracking-wider mb-2">🌐 Kỷ nguyên Fiat bắt đầu</div>
+                                <p className="text-red-200/80 text-xs leading-relaxed text-justify sm:text-center">
+                                    USD chính thức mất đi sự kiềm chế của vàng. Các quốc gia không thể đổi USD lấy vàng nữa.
+                                    Từ đây, tín dụng và niềm tin (fiat) hoàn toàn thế chỗ bản vị vàng, mở đường cho những đợt lạm phát khổng lồ.
+                                </p>
+                            </div>
+                            <button
+                                onClick={() => { setUsd(35); setGold(20000); setShocked(false); }}
+                                className="bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-600 px-6 py-2.5 rounded-full text-xs transition-all mt-4 font-bold shadow-md active:scale-95"
+                            >
+                                ↺ Khôi phục hệ thống Bretton Woods
+                            </button>
                         </motion.div>
                     )}
-                </AnimatePresence>
-
-                <div className="flex justify-center">
-                    <motion.button
-                        onClick={trigger}
-                        className="px-6 py-2.5 rounded-xl font-black text-sm transition-all"
-                        style={{
-                            background: shocked
-                                ? "linear-gradient(90deg,#1e40af,#1d4ed8)"
-                                : "linear-gradient(90deg,#991b1b,#dc2626)",
-                            color: "white"
-                        }}
-                        whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
-                    >
-                        {shocked ? "🔄 Khôi phục Bretton Woods" : "⚡ Kích hoạt Nixon Shock (15/8/1971)"}
-                    </motion.button>
                 </div>
             </div>
         </motion.section>
@@ -287,7 +404,7 @@ function InflationSim() {
 
     const severity = level >= 500 ? "hyper" : level >= 300 ? "critical" : level >= 150 ? "high" : level >= 50 ? "medium" : "low";
     const colors = { low: "#22c55e", medium: "#f59e0b", high: "#f97316", critical: "#ef4444", hyper: "#dc2626" };
-    const labels = { low: "✅ Ổn định", medium: "⚠️ Lạm phát vừa", high: "🚨 Lạm phát cao", critical: "💥 Siêu lạm phát!", hyper: "☠️ Hyperinflation Detected!" };
+    const labels = { low: "🛡️ Ổn định", medium: "⚠️ Lạm phát vừa", high: "🚨 Lạm phát cao", critical: "💥 Siêu lạm phát!", hyper: "☠️ Hyperinflation Detected!" };
     const col = colors[severity];
 
     return (
@@ -305,7 +422,7 @@ function InflationSim() {
                         onClick={() => setLevel(0)}
                         className="bg-amber-700 hover:bg-amber-600 text-white text-xs font-bold px-3 py-2 rounded-xl transition-colors"
                     >
-                        🔄 Làm mới
+                        ↺ Làm mới
                     </button>
                 </div>
             </div>
@@ -508,11 +625,56 @@ function QuotesSection() {
 
 // ─── CORE IDEAS ───────────────────────────────────────────────────────────────
 const CORE_IDEAS = [
-    { id: "hinh_thai", label: "Các hình thái tiền tệ", icon: "💵", border: "border-amber-400", bg: "bg-amber-900/40", desc: "Từ tiền kim loại đến tiền giấy, tín dụng (theo giáo trình: Tiền tệ phát triển từ giá trị thực đến biểu tượng)." },
-    { id: "lam_phat", label: "Lạm phát", icon: "📈", border: "border-red-400", bg: "bg-red-900/40", desc: "Tăng giá do in tiền quá mức (theo giáo trình: Giảm giá trị tiền tệ, ảnh hưởng đến lưu thông)." },
-    { id: "niem_tin", label: "Niềm tin vào tiền tệ", icon: "🤝", border: "border-emerald-400", bg: "bg-emerald-900/40", desc: "Giá trị tiền giấy dựa trên niềm tin xã hội (theo giáo trình: Không cần vàng bảo đảm nếu có sự ổn định kinh tế)." },
-    { id: "ban_vi_vang", label: "Bản vị vàng", icon: "🥇", border: "border-purple-400", bg: "bg-purple-900/40", desc: "Hệ thống cũ neo tiền tệ vào vàng (theo giáo trình: Bị thay thế do linh hoạt kinh tế)." },
-    { id: "tien_giay", label: "Tiền giấy fiat", icon: "🏦", border: "border-sky-400", bg: "bg-sky-900/40", desc: "Giá trị từ chính sách nhà nước (theo giáo trình: Dựa vào cung cầu và niềm tin, dễ gây lạm phát)." },
+    {
+        id: "hinhthai",
+        label: "Các hình thái tiền tệ",
+        icon: "💰",
+        border: "border-amber-400",
+        bg: "bg-amber-900/40",
+        desc:
+            "Tiền tệ phát triển từ tiền kim loại sang tiền giấy và tiền tín dụng.",
+        borderColor: "#fbbf24",
+    },
+    {
+        id: "lamphat",
+        label: "Lạm phát",
+        icon: "📈",
+        border: "border-red-400",
+        bg: "bg-red-900/40",
+        desc:
+            "Lạm phát xảy ra khi lượng tiền trong lưu thông tăng nhanh hơn hàng hóa.",
+        borderColor: "#ef4444",
+    },
+    {
+        id: "niemtin",
+        label: "Niềm tin vào tiền tệ",
+        icon: "🧠",
+        border: "border-emerald-400",
+        bg: "bg-emerald-900/40",
+        desc:
+            "Tiền giấy chỉ có giá trị khi xã hội tin rằng nó có thể dùng để trao đổi.",
+        borderColor: "#34d399",
+    },
+    {
+        id: "banvivang",
+        label: "Bản vị vàng",
+        icon: "🥇",
+        border: "border-purple-400",
+        bg: "bg-purple-900/40",
+        desc:
+            "Một hệ thống tiền tệ trong đó giá trị tiền được neo trực tiếp vào vàng.",
+        borderColor: "#a78bfa",
+    },
+    {
+        id: "tiengiay",
+        label: "Tiền giấy fiat",
+        icon: "💵",
+        border: "border-sky-400",
+        bg: "bg-sky-900/40",
+        desc:
+            "Tiền hiện đại không có giá trị nội tại, mà dựa vào uy tín của nhà nước.",
+        borderColor: "#38bdf8",
+    },
 ];
 
 // ─── MAIN PAGE ────────────────────────────────────────────────────────────────
@@ -613,8 +775,12 @@ export default function NixonShockPage() {
                             <div className="text-yellow-400 font-bold text-xs uppercase tracking-widest mb-1">15 tháng 8, 1971</div>
                             <h2 className="text-xl font-bold text-white mb-2">Cú sốc Nixon — Kết thúc bản vị vàng</h2>
                             <p className="text-blue-200 text-sm leading-relaxed mb-2">
-                                Ngày 15/8/1971, Tổng thống Mỹ Richard Nixon <strong className="text-yellow-300">tuyên bố trên truyền hình</strong> chấm dứt chuyển đổi USD sang vàng, tạm dừng bản vị vàng của hệ thống Bretton Woods.
+                                Ngày <strong className="text-yellow-300">15/8/1971</strong>, Tổng thống Mỹ Richard Nixon <strong className="text-white">tuyên bố trên truyền hình</strong> chấm dứt chuyển đổi USD sang vàng, tạm dừng bản vị vàng của hệ thống Bretton Woods. Quyết định "Nixon Shock" đánh dấu kết thúc kỷ nguyên bản vị vàng – USD (1944-1971).
                             </p>
+                            <p className="text-blue-200 text-sm leading-relaxed">
+                                Hậu quả: Tỷ giá thả nổi toàn cầu, tiền fiat thống trị. Mỹ thoát áp lực dự trữ vàng (giảm từ 20.000 tấn xuống 8.000 tấn), nhưng gây khủng hoảng niềm tin tiền tệ quốc tế. Phản ánh mâu thuẫn nội tại chủ nghĩa tư bản: in tiền quá mức → lạm phát → khủng hoảng tiền tệ (Chương 2).
+                            </p>
+
                             <div className="grid grid-cols-3 gap-3 mt-4">
                                 {[
                                     { label: "Ngày xảy ra", value: "15/8/1971", icon: "📅" },
@@ -668,17 +834,19 @@ export default function NixonShockPage() {
                 {/* ── QUOTES ── */}
                 <QuotesSection />
 
-                {/* ── VIDEO ── */}
-                <motion.section className="mb-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }}>
-                    <div className="flex justify-center">
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/XH_2Vu5OhhA"
-                            title="Nixon Shock 1971" frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowFullScreen className="rounded-xl shadow-lg w-full max-w-lg"
-                        />
+                {/* ── VIDEO EMBED ── */}
+                <motion.section className="mt-20 pt-16 border-t border-slate-800 pb-12" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
+                    <div className="max-w-4xl mx-auto bg-slate-900/80 border border-slate-800 p-2 md:p-4 rounded-2xl md:rounded-3xl shadow-2xl overflow-hidden backdrop-blur-sm">
+                        <div className="relative w-full aspect-video rounded-xl overflow-hidden ring-1 ring-slate-700/50 bg-black">
+                            <iframe
+                                className="absolute inset-0 w-full h-full"
+                                src="https://www.youtube.com/embed/XH_2Vu5OhhA"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowFullScreen
+                            ></iframe>
+                        </div>
                     </div>
                 </motion.section>
-
             </div>
         </div>
     );
