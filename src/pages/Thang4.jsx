@@ -61,10 +61,11 @@ const TOAST_CLS = {
 };
 
 function ToastStack({ toasts }) {
+    const displayToasts = toasts.slice(-3);
     return (
-        <div className="fixed top-4 right-4 z-[300] flex flex-col gap-2 pointer-events-none" style={{ maxWidth: 290 }}>
+        <div className="fixed top-24 md:top-20 right-4 z-[99999] flex flex-col gap-2 pointer-events-none" style={{ maxWidth: 290 }}>
             <AnimatePresence>
-                {toasts.map(t => (
+                {displayToasts.map(t => (
                     <motion.div key={t.id}
                         initial={{ opacity: 0, x: 80, scale: 0.85 }}
                         animate={{ opacity: 1, x: 0, scale: 1 }}
@@ -411,20 +412,22 @@ export default function Industry40Page() {
                                     <h2 className="text-lg sm:text-xl font-black text-white">⚔️ Robot vs Con người</h2>
                                     <p className="text-blue-200 text-xs mt-0.5">Click nhanh tạo Combo · Cẩn thận sự kiện bất ngờ!</p>
                                 </div>
-                                {/* Timer */}
-                                <div className="flex items-center gap-2">
-                                    <div className={`font-black text-2xl px-4 py-1.5 rounded-xl border ${timeLeft <= 3 && gamePhase === "running" ? "bg-red-500/30 border-red-400 text-red-300 animate-pulse" : "bg-blue-900/50 border-blue-400/30 text-white"}`}>
-                                        ⏱ {timeLeft}s
+                                <div className="flex items-center justify-between w-full sm:w-auto gap-4 mt-2 sm:mt-0">
+                                    {/* Timer */}
+                                    <div className="flex items-center gap-2">
+                                        <div className={`font-black text-2xl px-4 py-1.5 rounded-xl border ${timeLeft <= 3 && gamePhase === "running" ? "bg-red-500/30 border-red-400 text-red-300 animate-pulse" : "bg-blue-900/50 border-blue-400/30 text-white"}`}>
+                                            ⏱ {timeLeft}s
+                                        </div>
                                     </div>
-                                </div>
-                                {/* Buttons */}
-                                <div className="flex items-center gap-2 flex-wrap">
-                                    <button onClick={startGame} disabled={gamePhase === "running"} className="bg-yellow-500 hover:bg-yellow-400 disabled:opacity-40 disabled:cursor-not-allowed text-blue-900 text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-sm">
-                                        {gamePhase === "finished" ? "Chơi lại" : "Bắt đầu"}
-                                    </button>
-                                    <button onClick={resetGame} className="bg-blue-800/60 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition-colors">
-                                        Reset
-                                    </button>
+                                    {/* Buttons */}
+                                    <div className="flex items-center gap-2 flex-wrap justify-end">
+                                        <button onClick={startGame} disabled={gamePhase === "running"} className="bg-yellow-500 hover:bg-yellow-400 disabled:opacity-40 disabled:cursor-not-allowed text-blue-900 text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-sm whitespace-nowrap">
+                                            {gamePhase === "finished" ? "Chơi lại" : "Bắt đầu"}
+                                        </button>
+                                        <button onClick={resetGame} className="bg-blue-800/60 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition-colors whitespace-nowrap">
+                                            Reset
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
