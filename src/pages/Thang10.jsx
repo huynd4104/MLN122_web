@@ -96,18 +96,18 @@ const DowJonesChart = ({ dowValue, dowStatus }) => {
             transition={{ repeat: (isPanic || isWarning) ? Infinity : 0, duration: isPanic ? 0.3 : 0.8 }}
         >
             <div className="flex flex-col items-center text-center">
-                <h3 className="text-xs text-white/50 font-bold tracking-widest uppercase mb-2">Chỉ số Dow Jones</h3>
+                <h3 className="relative z-20 text-lh text-white/50 font-bold tracking-widest uppercase mb-2">Chỉ số Dow Jones</h3>
 
                 <motion.div
-                    className="text-6xl font-black drop-shadow-xl font-mono flex justify-center items-baseline"
+                    className="relative z-20 text-6xl font-black drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)] font-mono flex justify-center items-baseline"
                     style={{ color: isPanic || isCrash ? '#ef4444' : isWarning ? '#eab308' : '#22c55e' }}
                 >
                     <motion.span>{dowValueStr}</motion.span>
-                    <span className="text-lg ml-1 text-white/30">điểm</span>
+                    <span className="text-lg ml-1 text-white/90 font-bold">điểm</span>
                 </motion.div>
 
                 {/* Status Alerts */}
-                <div className="h-6 mt-2">
+                <div className="relative z-20 h-6 mt-2">
                     <AnimatePresence mode="wait">
                         {isWarning && (
                             <motion.div
@@ -115,7 +115,7 @@ const DowJonesChart = ({ dowValue, dowStatus }) => {
                                 initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }}
                                 className="text-yellow-500 text-xs font-bold uppercase tracking-widest"
                             >
-                                ⚠️ Cảnh báo (Thị trường rung lắc)
+                                ⚠️ Cảnh báo
                             </motion.div>
                         )}
                         {isPanic && (
@@ -124,7 +124,7 @@ const DowJonesChart = ({ dowValue, dowStatus }) => {
                                 initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }}
                                 className="text-red-500 text-xs font-bold uppercase tracking-widest animate-pulse"
                             >
-                                🚨 Hoảng Loạn (Bán tháo Black Thursday)
+                                🚨 Hoảng Loạn
                             </motion.div>
                         )}
                         {isCrash && (
@@ -144,16 +144,17 @@ const DowJonesChart = ({ dowValue, dowStatus }) => {
                     {isPanic && (
                         <motion.div
                             initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}
-                            className="absolute inset-0 flex flex-col items-center justify-center bg-red-900/95 rounded-2xl pointer-events-none z-10 border-2 border-red-500 p-2"
+                            className="absolute inset-0 flex flex-col items-center justify-center bg-red-900/90 rounded-2xl pointer-events-none z-10 border-2 border-red-500 overflow-hidden"
                         >
-                            <span className="text-4xl font-black text-white mix-blend-overlay tracking-tighter mb-1">HOẢNG LOẠN!</span>
-                            <span className="text-xs font-bold text-white">BÁN THÁO (SELL SELL)</span>
+                            <span className="text-3xl sm:text-4xl font-black text-white/60 mix-blend-overlay tracking-tighter rotate-[-5deg]">
+                                BÁN THÁO (SELL SELL)
+                            </span>
                         </motion.div>
                     )}
                     {isCrash && (
                         <motion.div
                             initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                            className="absolute -top-3 -right-3 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg border border-red-400 transform rotate-12"
+                            className="absolute -top-3 -right-3 bg-red-600 text-white text-[12px] font-bold px-2 py-0.5 rounded-full shadow-lg border border-red-400 transform rotate-12"
                         >
                             Đáy vực sâu
                         </motion.div>
@@ -354,7 +355,7 @@ const VisualDomino = () => {
         timeoutsRef.current.forEach(clearTimeout);
         timeoutsRef.current = [];
         dominos.forEach((_, i) => {
-            const t = setTimeout(() => setTipped(i + 1), (i + 1) * STEP_DELAY);
+            const t = setTimeout(() => setTipped(i + 1), i * STEP_DELAY);
             timeoutsRef.current.push(t);
         });
     };
@@ -1193,14 +1194,35 @@ export default function Thang10Page() {
     return (
         <motion.div
             ref={containerRef}
-            className="min-h-screen text-white/90 selection:bg-red-500 selection:text-white relative"
+            className="min-h-screen text-white/90 selection:bg-red-500 selection:text-white relative isolate"
             style={{ backgroundColor: newDealEnabled ? '#022c22' : '#0a0000', transition: 'background-color 2s ease' }}
         >
             {/* Quang học / Glitch thay vì rung lắc vật lý */}
             <AnimatePresence>
+                {dowStatus === 'warning' && (
+                    <motion.div
+                        key="warning-bg"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className="fixed inset-0 pointer-events-none -z-10"
+                    >
+                        <motion.div
+                            className="absolute inset-0"
+                            animate={{ opacity: [0.2, 0.9, 0.2] }}
+                            transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+                            style={{
+                                background: "radial-gradient(ellipse at center, transparent 20%, rgba(234, 179, 8, 0.15) 50%, rgba(234, 179, 8, 0.5) 100%)",
+                                mixBlendMode: 'screen'
+                            }}
+                        />
+                    </motion.div>
+                )}
                 {dowStatus === 'panic' && (
                     <motion.div
-                        className="fixed inset-0 pointer-events-none z-0 flex flex-col"
+                        key="panic-bg"
+                        className="fixed inset-0 pointer-events-none -z-10 flex flex-col"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}

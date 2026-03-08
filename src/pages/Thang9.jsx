@@ -293,7 +293,7 @@ function DominoFall({ score, onRestart }) {
                 style={{ background: "linear-gradient(90deg,#b91c1c,#ef4444)" }}
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 3 }}
                 whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.96 }}
-                onClick={onRestart}>🔄 Chơi lại</motion.button>
+                onClick={onRestart}>⟲ Chơi lại</motion.button>
         </motion.div>
     );
 }

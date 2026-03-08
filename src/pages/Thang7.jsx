@@ -223,7 +223,7 @@ function ThreeTierFlow() {
             style={{ background: "rgba(13,20,50,0.85)", backdropFilter: "blur(14px)" }}>
             <div className="p-4 border-b border-yellow-500/20"
                 style={{ background: "linear-gradient(90deg,#78350f,#b45309)" }}>
-                <h2 className="text-base font-black text-white">🔄 Mô phỏng Hệ thống 3 Tầng</h2>
+                <h2 className="text-base font-black text-white">💵 Mô phỏng Hệ thống 3 Tầng</h2>
                 <p className="text-amber-200 text-xs mt-0.5">Vàng → USD → Đồng tiền thế giới (Tỷ giá cố định 1944)</p>
             </div>
             <div className="p-5">

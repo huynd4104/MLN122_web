@@ -30,7 +30,7 @@ const CLICK_COOLDOWN = 250;
 
 const EVENTS = [
     { id: "human_fatigue", icon: "😴", label: "Mệt mỏi!", msg: "Không click được trong 2 giây!", type: "warning", recov: "Hồi phục rồi! Click tiếp nào! 💪" },
-    { id: "robot_error", icon: "💥", label: "Robot lỗi!", msg: "Robot bị tắt trong 1.5 giây!", type: "error", recov: "Robot đã sửa xong! Chạy tiếp 🔄" },
+    { id: "robot_error", icon: "💥", label: "Robot lỗi!", msg: "Robot bị tắt trong 1.5 giây!", type: "error", recov: "Robot đã sửa xong! Chạy tiếp ↺" },
     { id: "human_creativity", icon: "💡", label: "Sáng kiến!", msg: "Con người sáng tạo → +3 sản phẩm!", type: "success" },
     { id: "robot_overdrive", icon: "⚡", label: "Robot tăng tốc!", msg: "Robot x2 tốc độ trong 2 giây!", type: "info", recov: "Robot trở lại bình thường 🤖" },
     { id: "power_outage", icon: "🌑", label: "Mất điện!", msg: "Robot mất nguồn trong 2.5 giây!", type: "error", recov: "Có điện rồi! Robot khởi động ⚡" },

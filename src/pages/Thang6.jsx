@@ -60,7 +60,7 @@ const CORE_IDEAS = [
     {
         id: "toan_cau",
         label: "Xu thế toàn cầu hóa kinh tế",
-        icon: "🔄",
+        icon: "🤝",
         border: "border-purple-400",
         bg: "bg-purple-900/40",
         desc:
