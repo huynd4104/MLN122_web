@@ -392,9 +392,6 @@ export default function Thang12Page() {
                     </h2>
 
                     <div className="relative">
-                        {/* Connecting Line background */}
-                        <div className="absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-emerald-800 via-emerald-400 to-amber-500 -translate-y-1/2 z-0 hidden md:block opacity-30"></div>
-
                         <div className="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10 w-full px-2">
                             {/* Step 1 */}
                             <div className="bg-emerald-950 border border-emerald-600 rounded-2xl p-5 text-center w-full md:w-1/3 shadow-xl transform transition-transform hover:-translate-y-2">
