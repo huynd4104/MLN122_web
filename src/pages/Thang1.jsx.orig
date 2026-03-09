@@ -128,24 +128,22 @@ function DraggableCard({ card, status, onDropped }) {
     return (
         <motion.div
             ref={ref}
-            layout="position"
+            layout
             initial={{ opacity: 0, scale: 0.8, y: 16 }}
             animate={{ opacity: 1, scale: status === "correct" ? 1.08 : 1, backgroundColor: bgColor }}
             exit={{ opacity: 0, scale: 0, transition: { duration: 0.2 } }}
-            className="border rounded-xl px-3 py-2 select-none cursor-grab active:cursor-grabbing relative flex flex-col justify-center h-full"
+            className="border rounded-xl px-3 py-2 select-none cursor-grab active:cursor-grabbing relative"
             style={{ borderColor: borderCol, minWidth: 110, touchAction: "none" }}
             draggable
             onDragStart={(e) => { e.dataTransfer.effectAllowed = "move"; e.dataTransfer.setData("cardId", String(card.id)); }}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
-            whileHover={{ scale: 1.04 }}
+            whileHover={{ scale: 1.06, y: -3 }}
             whileTap={{ scale: 0.94 }}
         >
-            <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-1 sm:gap-1.5 w-full">
-                <span className="text-lg flex-shrink-0 leading-none">{card.emoji}</span>
-                <span className="text-[11px] sm:text-xs font-medium text-white leading-snug break-words">{card.text}</span>
-            </div>
+            <span className="mr-1 text-sm">{card.emoji}</span>
+            <span className="text-xs font-medium text-white">{card.text}</span>
         </motion.div>
     );
 }
