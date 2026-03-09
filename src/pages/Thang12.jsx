@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback, Suspense, lazy } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { Link } from "react-router-dom";
+import Draggable from 'react-draggable';
 
 // Lazy-load globe
 const Globe = lazy(() => import("react-globe.gl"));
@@ -63,39 +64,45 @@ function GlobeSection({ selected, onSelect, flowFilter, tariff }) {
         }
     }, []);
 
-    const arcsData = PARTNERS.map((p) => {
-        let startLat, startLng, endLat, endLng, color;
-        // Direction and color logic
-        if (flowFilter === 'export') {
-            startLat = VN_COORD.lat; startLng = VN_COORD.lng; endLat = p.lat; endLng = p.lng;
-            color = ["rgba(34,197,94,0.1)", "rgba(34,197,94,1)"]; // Xuất khẩu: Green
-        } else if (flowFilter === 'import') {
-            startLat = p.lat; startLng = p.lng; endLat = VN_COORD.lat; endLng = VN_COORD.lng;
-            color = ["rgba(239,68,68,0.1)", "rgba(239,68,68,1)"]; // Nhập khẩu: Red
-        } else if (flowFilter === 'fdi') {
-            startLat = p.lat; startLng = p.lng; endLat = VN_COORD.lat; endLng = VN_COORD.lng;
-            color = ["rgba(251,191,36,0.1)", "rgba(251,191,36,1)"]; // FDI: Yellow
-        } else {
-            // all
-            if (p.exportAmt > p.importAmt) {
-                startLat = VN_COORD.lat; startLng = VN_COORD.lng; endLat = p.lat; endLng = p.lng;
-                color = ["rgba(34,197,94,0.1)", "rgba(34,197,94,1)"];
-            } else {
-                startLat = p.lat; startLng = p.lng; endLat = VN_COORD.lat; endLng = VN_COORD.lng;
-                color = ["rgba(239,68,68,0.1)", "rgba(239,68,68,1)"];
-            }
-        }
-
-        const tradeVolume = flowFilter === 'export' ? p.exportAmt : flowFilter === 'import' ? p.importAmt : flowFilter === 'fdi' ? p.fdi : p.trade;
+    const arcsData = PARTNERS.flatMap((p) => {
         const tariffEffect = tariff / 40; // 0 to 1
 
-        const activeTradeVol = Math.max(1, tradeVolume * (1 - tariffEffect * 0.8)); // 80% loss at 40% tariff
-        const strokeValue = Math.max(0.1, (activeTradeVol / 100) * 1.5);
-        const dashLength = Math.max(0.01, 0.5 - tariffEffect * 0.4);
-        const dashGap = 0.2 + tariffEffect;
-        const animateTime = 1500 + tariffEffect * 5000;
+        const getArc = (type) => {
+            let startLat, startLng, endLat, endLng, color, tradeVolume;
+            if (type === 'export') {
+                startLat = VN_COORD.lat; startLng = VN_COORD.lng; endLat = p.lat; endLng = p.lng;
+                color = ["rgba(34,197,94,0.1)", "rgba(34,197,94,1)"]; // Xuất khẩu: Green
+                tradeVolume = p.exportAmt;
+                if (flowFilter === 'all') {
+                    startLat += 0.8; endLat += 0.8;
+                }
+            } else if (type === 'import') {
+                startLat = p.lat; startLng = p.lng; endLat = VN_COORD.lat; endLng = VN_COORD.lng;
+                color = ["rgba(239,68,68,0.1)", "rgba(239,68,68,1)"]; // Nhập khẩu: Red
+                tradeVolume = p.importAmt;
+                if (flowFilter === 'all') {
+                    startLat -= 0.8; endLat -= 0.8;
+                }
+            } else if (type === 'fdi') {
+                startLat = p.lat; startLng = p.lng; endLat = VN_COORD.lat; endLng = VN_COORD.lng;
+                color = ["rgba(251,191,36,0.1)", "rgba(251,191,36,1)"]; // FDI: Yellow
+                tradeVolume = p.fdi;
+                if (flowFilter === 'all') {
+                    startLng += 1.5; endLng += 1.5;
+                }
+            }
 
-        return { startLat, startLng, endLat, endLng, color, stroke: strokeValue, dashLength, dashGap, animateTime, p };
+            const activeTradeVol = Math.max(1, tradeVolume * (1 - tariffEffect * 0.8)); // 80% loss at 40% tariff
+            const strokeValue = Math.max(0.1, (activeTradeVol / 100) * 1.5);
+            const dashLength = Math.max(0.01, 0.5 - tariffEffect * 0.4);
+            const dashGap = 0.2 + tariffEffect;
+            const animateTime = 1500 + tariffEffect * 5000 + (type === 'export' ? 0 : type === 'import' ? 400 : 800);
+
+            return { startLat, startLng, endLat, endLng, color, stroke: strokeValue, dashLength, dashGap, animateTime, p };
+        };
+
+        if (flowFilter === 'all') return [getArc('export'), getArc('import'), getArc('fdi')];
+        return [getArc(flowFilter)];
     });
 
     const pointsData = PARTNERS.map((p) => {
@@ -310,7 +317,7 @@ export default function Thang12Page() {
                                         <div className={`text-2xl font-black ${gdpGrowthRate < 3 ? 'text-red-400' : 'text-emerald-300'}`}>+{gdpGrowthRate}%</div>
                                     </div>
                                     <p className="text-xs text-emerald-300/80 italic pt-2 border-t border-emerald-800">
-                                        Giáo trình Kinh tế Chính trị: Tự do hóa thương mại là xu thế tất yếu. Thuế quan càng thấp, dòng chảy thương mại càng mạnh, thúc đẩy lợi thế so sánh cạnh tranh.
+                                        Quan sát mô phỏng 3D: Khi rào cản thuế quan tăng lên, các vệt sáng giao thương sẽ mỏng đi và di chuyển chậm lại, đồng thời quy mô vầng sáng của các đối tác cũng bị thu hẹp.
                                     </p>
                                 </div>
                             </div>
@@ -321,40 +328,48 @@ export default function Thang12Page() {
                             {/* Overlay Stats */}
                             <AnimatePresence mode="wait">
                                 {selected && (
-                                    <motion.div key={selected.id} className="absolute top-4 right-4 z-20 w-72 bg-emerald-950/90 border border-emerald-600/50 rounded-xl p-4 shadow-2xl backdrop-blur-md"
-                                        initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} transition={{ type: "spring", stiffness: 300, damping: 25 }}>
-                                        <div className="flex justify-between items-start mb-2">
-                                            <h3 className="font-black text-xl text-white">{selected.name}</h3>
-                                            <button onClick={() => setSelected(null)} className="text-emerald-500 hover:text-white transition-colors bg-emerald-900 rounded-full w-6 h-6 flex items-center justify-center text-xs">✕</button>
-                                        </div>
+                                    <Draggable handle=".drag-handle">
+                                        <div className="absolute top-4 right-4 z-20">
+                                            <motion.div key={selected.id} className="w-72 bg-emerald-950/90 border border-emerald-600/50 rounded-xl p-4 shadow-2xl backdrop-blur-md cursor-auto pointer-events-auto"
+                                                initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} transition={{ type: "spring", stiffness: 300, damping: 25 }}>
 
-                                        <div className="grid grid-cols-2 gap-2 mb-3">
-                                            <div className="bg-green-900/40 rounded p-2 border border-green-800/50">
-                                                <div className="text-[10px] text-green-400 uppercase">Xuất khẩu</div>
-                                                <div className="font-bold text-green-100">{selected.exportAmt}B</div>
-                                            </div>
-                                            <div className="bg-red-900/40 rounded p-2 border border-red-800/50">
-                                                <div className="text-[10px] text-red-400 uppercase">Nhập khẩu</div>
-                                                <div className="font-bold text-red-100">{selected.importAmt}B</div>
-                                            </div>
-                                        </div>
+                                                <div className="drag-handle flex justify-between items-start mb-2 cursor-move bg-emerald-900/40 p-2 -mx-4 -mt-4 rounded-t-xl border-b border-emerald-800/50 mb-3 hover:bg-emerald-800/40 transition-colors" title="Kéo thả cửa sổ">
+                                                    <h3 className="font-black text-lg text-white flex items-center gap-2">
+                                                        <span className="text-emerald-400">⋮⋮</span> {selected.name}
+                                                    </h3>
+                                                    {/* Chú ý: Cần thêm onMouseDown sstop propagation để tránh drag khi ấn tắt */}
+                                                    <button onMouseDown={(e) => e.stopPropagation()} onClick={() => setSelected(null)} className="text-emerald-400 hover:text-white transition-colors bg-black/40 hover:bg-red-500/50 rounded-full w-6 h-6 flex items-center justify-center text-xs">✕</button>
+                                                </div>
 
-                                        <div className="mb-3 p-2 bg-amber-900/20 rounded border border-amber-800/30">
-                                            <div className="text-[10px] text-amber-400 uppercase fw-bold">Vốn FDI Tích lũy</div>
-                                            <div className="font-bold text-amber-100">~{selected.fdi} Tỷ USD</div>
-                                        </div>
+                                                <div className="grid grid-cols-2 gap-2 mb-3">
+                                                    <div className="bg-green-900/40 rounded p-2 border border-green-800/50">
+                                                        <div className="text-[10px] text-green-400 uppercase">Xuất khẩu</div>
+                                                        <div className="font-bold text-green-100">{selected.exportAmt}B</div>
+                                                    </div>
+                                                    <div className="bg-red-900/40 rounded p-2 border border-red-800/50">
+                                                        <div className="text-[10px] text-red-400 uppercase">Nhập khẩu</div>
+                                                        <div className="font-bold text-red-100">{selected.importAmt}B</div>
+                                                    </div>
+                                                </div>
 
-                                        <div className="space-y-3">
-                                            <div>
-                                                <div className="text-xs font-bold text-emerald-300 mb-1 flex items-center gap-1">🌟 Đóng góp Giá trị</div>
-                                                <p className="text-xs text-emerald-100/90 leading-relaxed">{selected.impact}</p>
-                                            </div>
-                                            <div>
-                                                <div className="text-xs font-bold text-red-300 mb-1 flex items-center gap-1">⚠️ Cảnh báo Rủi ro</div>
-                                                <p className="text-xs text-red-100/80 leading-relaxed italic border-l-2 border-red-500/50 pl-2">{selected.risk}</p>
-                                            </div>
+                                                <div className="mb-3 p-2 bg-amber-900/20 rounded border border-amber-800/30">
+                                                    <div className="text-[10px] text-amber-400 uppercase fw-bold">Vốn FDI Tích lũy</div>
+                                                    <div className="font-bold text-amber-100">~{selected.fdi} Tỷ USD</div>
+                                                </div>
+
+                                                <div className="space-y-3">
+                                                    <div>
+                                                        <div className="text-xs font-bold text-emerald-300 mb-1 flex items-center gap-1">🌟 Đóng góp Giá trị</div>
+                                                        <p className="text-xs text-emerald-100/90 leading-relaxed">{selected.impact}</p>
+                                                    </div>
+                                                    <div>
+                                                        <div className="text-xs font-bold text-red-300 mb-1 flex items-center gap-1">⚠️ Cảnh báo Rủi ro</div>
+                                                        <p className="text-xs text-red-100/80 leading-relaxed italic border-l-2 border-red-500/50 pl-2">{selected.risk}</p>
+                                                    </div>
+                                                </div>
+                                            </motion.div>
                                         </div>
-                                    </motion.div>
+                                    </Draggable>
                                 )}
                             </AnimatePresence>
 
