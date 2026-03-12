@@ -93,7 +93,7 @@ export default function Industry40Page() {
     const [humanScore, setHumanScore] = useState(0);
     const [robotScore, setRobotScore] = useState(0);
     const [products, setProducts] = useState([]);
-    
+
     // Auto-scroll ref
     const gameRef = useRef(null);
     // Human
@@ -246,7 +246,7 @@ export default function Industry40Page() {
         setTimeLeft(conf.duration); setToasts([]);
         setGamePhase("running");
         setTimeout(() => toast(`Bắt đầu! Chế độ: ${conf.label} ${conf.emoji}`, "system", "🚀", "Game Start"), 150);
-        
+
         // Auto-scroll to center the game board on mobile
         if (window.innerWidth < 1024 && gameRef.current) {
             setTimeout(() => {

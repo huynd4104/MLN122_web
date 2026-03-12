@@ -132,8 +132,8 @@ function DraggableCard({ card, status, onDropped }) {
             initial={{ opacity: 0, scale: 0.8, y: 16 }}
             animate={{ opacity: 1, scale: status === "correct" ? 1.08 : 1, backgroundColor: bgColor }}
             exit={{ opacity: 0, scale: 0, transition: { duration: 0.2 } }}
-            className="border rounded-xl px-3 py-2 select-none cursor-grab active:cursor-grabbing relative flex flex-col justify-center h-full"
-            style={{ borderColor: borderCol, minWidth: 110, touchAction: "none" }}
+            className="border rounded-xl px-2 py-1.5 sm:px-3 sm:py-2 select-none cursor-grab active:cursor-grabbing relative flex flex-col justify-center h-full"
+            style={{ borderColor: borderCol, minWidth: 100, touchAction: "none", minHeight: 48 }}
             draggable
             onDragStart={(e) => { e.dataTransfer.effectAllowed = "move"; e.dataTransfer.setData("cardId", String(card.id)); }}
             onTouchStart={handleTouchStart}
@@ -143,8 +143,8 @@ function DraggableCard({ card, status, onDropped }) {
             whileTap={{ scale: 0.94 }}
         >
             <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-1 sm:gap-1.5 w-full">
-                <span className="text-lg flex-shrink-0 leading-none">{card.emoji}</span>
-                <span className="text-[11px] sm:text-xs font-medium text-white leading-snug break-words">{card.text}</span>
+                <span className="text-xl sm:text-lg flex-shrink-0 leading-none">{card.emoji}</span>
+                <span className="text-[10px] sm:text-xs font-medium text-white leading-snug break-words">{card.text}</span>
             </div>
         </motion.div>
     );
@@ -283,6 +283,15 @@ function MiniGame() {
         }, 1000);
         return () => clearInterval(timerRef.current);
     }, [phase, doEndLevel]);
+
+    // ── View Scroll Effect ──
+    useEffect(() => {
+        if (phase === "playing" && window.innerWidth < 1024) {
+            setTimeout(() => {
+                document.getElementById("minigame-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+            }, 100);
+        }
+    }, [phase]);
 
     // ── Handle Drop ──
     const handleDropped = useCallback((cardId, bucketId) => {
@@ -594,9 +603,9 @@ function MiniGame() {
                 </div>
 
                 {/* ── Buckets ── */}
-                <div className="p-4 border-t border-blue-900/60" style={{ background: "rgba(3,4,40,0.97)" }}>
-                    <p className="text-blue-400 text-xs text-center mb-3 font-medium">— Giỏ phân loại —</p>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
+                <div className="p-2 sm:p-4 border-t border-blue-900/60 sticky bottom-0 z-30 shadow-[0_-10px_30px_rgba(0,0,0,0.5)]" style={{ background: "rgba(3,4,40,0.95)", backdropFilter: "blur(12px)" }}>
+                    <p className="text-blue-400 text-[10px] sm:text-xs text-center mb-2 font-medium">— Giỏ phân loại —</p>
+                    <div className="grid grid-cols-5 gap-1 sm:gap-2">
                         {FUNCTIONS.map(fn => {
                             const isShake = shakeBucket === fn.id;
                             const isCelebrate = celebrateBucket === fn.id;
@@ -605,9 +614,8 @@ function MiniGame() {
                             return (
                                 <motion.div key={fn.id}
                                     data-bucket-id={fn.id}
-                                    className={`rounded-xl border-2 ${fn.border} ${fn.bg} p-3 flex flex-col items-center gap-1 relative`}
+                                    className={`rounded-lg sm:rounded-xl border sm:border-2 ${fn.border} ${fn.bg} p-1.5 sm:p-3 flex flex-col items-center justify-center gap-1 relative`}
                                     style={{
-                                        minHeight: 88,
                                         boxShadow: isOver ? `0 0 22px 4px ${fn.borderColor}77` : "none",
                                         transition: "box-shadow 0.15s",
                                     }}
@@ -627,8 +635,9 @@ function MiniGame() {
                                             </motion.div>
                                         )}
                                     </AnimatePresence>
-                                    <div className="text-2xl pointer-events-none">{fn.icon}</div>
-                                    <div className="text-white font-bold text-xs text-center leading-tight pointer-events-none">{fn.label}</div>
+                                    <div className="text-xl sm:text-2xl pointer-events-none">{fn.icon}</div>
+                                    <div className="text-white font-bold text-[8.5px] sm:text-xs text-center leading-[1.1] pointer-events-none sm:hidden">{fn.label.replace('Phương tiện ', '')}</div>
+                                    <div className="text-white font-bold text-xs text-center leading-tight pointer-events-none hidden sm:block">{fn.label}</div>
                                 </motion.div>
                             );
                         })}
@@ -729,7 +738,9 @@ export default function EuroPage() {
                 </motion.section>
 
                 {/* Mini Game */}
-                <MiniGame />
+                <div id="minigame-section" className="scroll-mt-4" style={{ minHeight: "85vh" }}>
+                    <MiniGame />
+                </div>
 
             </div>
         </div>
