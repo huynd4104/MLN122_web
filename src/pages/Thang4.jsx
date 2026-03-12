@@ -63,7 +63,7 @@ const TOAST_CLS = {
 function ToastStack({ toasts }) {
     const displayToasts = toasts.slice(-3);
     return (
-        <div className="fixed top-24 md:top-20 right-4 z-[99999] flex flex-col gap-2 pointer-events-none" style={{ maxWidth: 290 }}>
+        <div className="fixed top-20 left-4 right-4 md:left-auto md:right-4 z-[99999] flex flex-col items-center md:items-end gap-2 pointer-events-none">
             <AnimatePresence>
                 {displayToasts.map(t => (
                     <motion.div key={t.id}
@@ -93,6 +93,9 @@ export default function Industry40Page() {
     const [humanScore, setHumanScore] = useState(0);
     const [robotScore, setRobotScore] = useState(0);
     const [products, setProducts] = useState([]);
+    
+    // Auto-scroll ref
+    const gameRef = useRef(null);
     // Human
     const [humanDisabled, setHumanDisabled] = useState(false);
     const [humanBuff, setHumanBuff] = useState(1);
@@ -243,6 +246,13 @@ export default function Industry40Page() {
         setTimeLeft(conf.duration); setToasts([]);
         setGamePhase("running");
         setTimeout(() => toast(`Bắt đầu! Chế độ: ${conf.label} ${conf.emoji}`, "system", "🚀", "Game Start"), 150);
+        
+        // Auto-scroll to center the game board on mobile
+        if (window.innerWidth < 1024 && gameRef.current) {
+            setTimeout(() => {
+                gameRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+        }
     };
 
     const endGame = () => {
@@ -389,8 +399,8 @@ export default function Industry40Page() {
                 </motion.section>
 
                 {/* ─── MINI GAME ─── */}
-                <motion.section initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}>
-                    <div className="rounded-2xl border border-blue-500/30 overflow-hidden relative" style={{ background: "rgba(13,27,75,0.75)", backdropFilter: "blur(14px)" }}>
+                <motion.section ref={gameRef} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}>
+                    <div className="rounded-2xl border border-blue-500/30 overflow-hidden relative scroll-mt-20" style={{ background: "rgba(13,27,75,0.75)", backdropFilter: "blur(14px)" }}>
 
                         {/* Floating event badge */}
                         <AnimatePresence>
@@ -436,10 +446,10 @@ export default function Industry40Page() {
                         {gamePhase === "idle" && (
                             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="px-6 pt-5 pb-2">
                                 <p className="text-blue-300 text-xs uppercase tracking-widest font-bold mb-3">Chọn độ khó:</p>
-                                <div className="flex gap-3 flex-wrap">
+                                <div className="flex flex-col sm:flex-row gap-3">
                                     {Object.entries(DIFF).map(([key, d]) => (
                                         <button key={key} onClick={() => { setDifficulty(key); setTimeLeft(d.duration); toast(`Chế độ ${d.label} được chọn ${d.emoji}`, "system", d.emoji); }}
-                                            className={diffBtnStyle(key)}>
+                                            className={`${diffBtnStyle(key)} flex-1 sm:flex-none text-left sm:text-center`}>
                                             {d.emoji} {d.label}
                                             <span className="block text-[10px] font-normal opacity-70">{d.desc}</span>
                                         </button>
@@ -496,6 +506,7 @@ export default function Industry40Page() {
                                     onClick={handleClick}
                                     whileTap={gamePhase === "running" && !humanDisabled ? { scale: 0.94 } : {}}
                                     className={`rounded-xl border p-4 flex flex-col justify-between select-none transition-all ${gamePhase === "running" && !humanDisabled ? "cursor-pointer hover:border-yellow-400/60 active:bg-yellow-900/30" : "cursor-not-allowed opacity-70"} ${humanDisabled ? "border-gray-600/40 bg-gray-900/40" : "border-yellow-400/30 bg-blue-900/40"}`}
+                                    style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
                                 >
                                     {/* Inspiration buff glow */}
                                     {humanBuff > 1 && <div className="absolute inset-0 rounded-xl bg-yellow-400/10 animate-pulse pointer-events-none" />}
