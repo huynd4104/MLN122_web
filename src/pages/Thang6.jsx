@@ -168,6 +168,22 @@ function GlobeSection({ selected, onSelect }) {
     const [ready, setReady] = useState(false);
     const autoRotateTimer = useRef(null);
 
+    const [dimensions, setDimensions] = useState({
+        width: typeof window !== "undefined" ? Math.min(window.innerWidth - 40, 520) : 480,
+        height: typeof window !== "undefined" ? Math.min(window.innerWidth < 640 ? 400 : 500, 500) : 480
+    });
+
+    useEffect(() => {
+        const handleResize = () => {
+            setDimensions({
+                width: Math.min(window.innerWidth - 40, 520),
+                height: Math.min(window.innerWidth < 640 ? 400 : 500, 500)
+            });
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     // Arcs: USA → each country
     const arcsData = COUNTRIES.map((c) => ({
         startLat: USA_COORD.lat,
@@ -230,8 +246,8 @@ function GlobeSection({ selected, onSelect }) {
             <Suspense fallback={null}>
                 <Globe
                     ref={globeRef}
-                    width={typeof window !== "undefined" ? Math.min(window.innerWidth - 40, 520) : 480}
-                    height={typeof window !== "undefined" ? Math.min(window.innerWidth < 640 ? 400 : 500, 500) : 480}
+                    width={dimensions.width}
+                    height={dimensions.height}
                     globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
                     backgroundColor="rgba(0,0,0,0)"
                     atmosphereColor="#22c55e"
@@ -273,6 +289,7 @@ export default function MarshallPlanPage() {
     const [moneyTrigger, setMoneyTrigger] = useState(0);
     const [activeTimeline, setActiveTimeline] = useState(null);
     const barRef = useRef(null);
+    const detailRef = useRef(null);
     const barInView = useInView(barRef, { once: true, margin: "-80px" });
 
     const countedAid = useCountUp(selected?.aid ?? 0, 1000, !!selected);
@@ -280,6 +297,13 @@ export default function MarshallPlanPage() {
     const handleSelect = useCallback((country) => {
         setSelected(country);
         setMoneyTrigger((t) => t + 1);
+        
+        // Auto scroll to detail panel on mobile screens
+        if (window.innerWidth < 1024 && detailRef.current) {
+            setTimeout(() => {
+                detailRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+        }
     }, []);
 
     return (
@@ -389,6 +413,7 @@ export default function MarshallPlanPage() {
                             <div key={t.year} className="relative flex flex-col items-center flex-1 min-w-[80px] z-10">
                                 <button
                                     onMouseEnter={() => setActiveTimeline(i)}
+                                    onClick={() => setActiveTimeline(i)}
                                     className="w-10 h-10 rounded-full border-2 flex items-center justify-center font-black text-xs transition-all duration-300 focus:outline-none"
                                     style={{
                                         borderColor: t.color,
@@ -447,7 +472,7 @@ export default function MarshallPlanPage() {
                         </div>
 
                         {/* Detail panel */}
-                        <div className="w-full lg:w-80 flex flex-col">
+                        <div ref={detailRef} className="w-full lg:w-80 flex flex-col scroll-mt-20">
                             <div className="p-4 border-b border-green-700/30">
                                 <h2 className="text-base font-black text-white">📋 Thông tin chi tiết</h2>
                                 <p className="text-green-400/70 text-xs mt-0.5">Click vào quốc gia trên globe</p>
