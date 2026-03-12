@@ -398,8 +398,17 @@ export default function Industry40Page() {
                     </div>
                 </motion.section>
 
+                {/* Video */}
+                <motion.section className="mt-16 pt-12 border-t border-slate-800 pb-8" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
+                    <div className="max-w-4xl mx-auto bg-slate-900/80 border border-slate-800 p-2 md:p-4 rounded-2xl shadow-2xl overflow-hidden backdrop-blur-sm">
+                        <div className="relative w-full aspect-video rounded-xl overflow-hidden ring-1 ring-slate-700/50 bg-black">
+                            <iframe className="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/Ft-Lr3f8XAY" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
+                        </div>
+                    </div>
+                </motion.section>
+
                 {/* ─── MINI GAME ─── */}
-                <motion.section ref={gameRef} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}>
+                <motion.section ref={gameRef} className="mt-8" initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}>
                     <div className="rounded-2xl border border-blue-500/30 overflow-hidden relative scroll-mt-20" style={{ background: "rgba(13,27,75,0.75)", backdropFilter: "blur(14px)" }}>
 
                         {/* Floating event badge */}
@@ -650,15 +659,6 @@ export default function Industry40Page() {
                                 </div>
                             </div>
                         ))}
-                    </div>
-                </motion.section>
-
-                {/* Video */}
-                <motion.section className="mt-16 pt-12 border-t border-slate-800 pb-8" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
-                    <div className="max-w-4xl mx-auto bg-slate-900/80 border border-slate-800 p-2 md:p-4 rounded-2xl shadow-2xl overflow-hidden backdrop-blur-sm">
-                        <div className="relative w-full aspect-video rounded-xl overflow-hidden ring-1 ring-slate-700/50 bg-black">
-                            <iframe className="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/Ft-Lr3f8XAY" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
-                        </div>
                     </div>
                 </motion.section>
             </div>
