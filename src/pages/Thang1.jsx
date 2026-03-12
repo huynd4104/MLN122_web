@@ -80,9 +80,13 @@ function DraggableCard({ card, status, onDropped }) {
     const ref = useRef(null);
     const touchStart = useRef(null);
     const cloneRef = useRef(null);
+    // Detect touch on first render to avoid a frame where draggable is still true
+    const [isTouch] = useState(() => typeof window !== "undefined" && ("ontouchstart" in window || navigator.maxTouchPoints > 0));
+    const draggingRef = useRef(false);
 
     const removeClone = useCallback(() => {
         if (cloneRef.current) { cloneRef.current.remove(); cloneRef.current = null; }
+        draggingRef.current = false;
     }, []);
 
     const handleTouchStart = useCallback((e) => {
@@ -90,25 +94,45 @@ function DraggableCard({ card, status, onDropped }) {
         const el = ref.current;
         if (!el) return;
         const rect = el.getBoundingClientRect();
-        touchStart.current = { offsetX: touch.clientX - rect.left, offsetY: touch.clientY - rect.top };
-        const clone = el.cloneNode(true);
-        clone.style.cssText = `position:fixed;top:${rect.top}px;left:${rect.left}px;width:${rect.width}px;opacity:0.9;pointer-events:none;z-index:9999;transform:scale(1.1) rotate(-2deg);border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,0.7);`;
-        document.body.appendChild(clone);
-        cloneRef.current = clone;
+        touchStart.current = {
+            offsetX: touch.clientX - rect.left,
+            offsetY: touch.clientY - rect.top,
+            startX: touch.clientX,
+            startY: touch.clientY,
+            rect,
+        };
     }, []);
 
     const handleTouchMove = useCallback((e) => {
-        e.preventDefault();
-        const clone = cloneRef.current; const ts = touchStart.current;
-        if (!clone || !ts) return;
+        const ts = touchStart.current;
+        if (!ts) return;
         const touch = e.touches[0];
+        const dx = Math.abs(touch.clientX - ts.startX);
+        const dy = Math.abs(touch.clientY - ts.startY);
+        if (!draggingRef.current && dx < 6 && dy < 6) return; // don't spawn ghost on long press without move
+
+        if (!draggingRef.current) {
+            const clone = ref.current?.cloneNode(true);
+            if (clone) {
+                clone.style.cssText = `position:fixed;top:${ts.rect.top}px;left:${ts.rect.left}px;width:${ts.rect.width}px;height:${ts.rect.height}px;opacity:0.9;pointer-events:none;z-index:9999;transform:scale(1.05) rotate(-2deg);border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,0.7);`;
+                document.body.appendChild(clone);
+                cloneRef.current = clone;
+                draggingRef.current = true;
+            }
+        }
+
+        const clone = cloneRef.current;
+        if (!clone) return;
+        e.preventDefault();
         clone.style.left = `${touch.clientX - ts.offsetX}px`;
         clone.style.top = `${touch.clientY - ts.offsetY}px`;
     }, []);
 
     const handleTouchEnd = useCallback((e) => {
         const touch = e.changedTouches[0];
+        const wasDragging = draggingRef.current;
         removeClone(); touchStart.current = null;
+        if (!wasDragging) return;
         const target = document.elementFromPoint(touch.clientX, touch.clientY);
         if (!target) return;
         const bucket = target.closest("[data-bucket-id]");
@@ -133,12 +157,22 @@ function DraggableCard({ card, status, onDropped }) {
             animate={{ opacity: 1, scale: status === "correct" ? 1.08 : 1, backgroundColor: bgColor }}
             exit={{ opacity: 0, scale: 0, transition: { duration: 0.2 } }}
             className="border rounded-xl px-2 py-1.5 sm:px-3 sm:py-2 select-none cursor-grab active:cursor-grabbing relative flex flex-col justify-center h-full"
-            style={{ borderColor: borderCol, minWidth: 100, touchAction: "none", minHeight: 48 }}
-            draggable
+            style={{
+                borderColor: borderCol,
+                minWidth: 100,
+                touchAction: "none",
+                minHeight: 48,
+                WebkitUserDrag: "none",
+                WebkitTouchCallout: "none",
+                userSelect: "none",
+            }}
+            draggable={!isTouch}
             onDragStart={(e) => { e.dataTransfer.effectAllowed = "move"; e.dataTransfer.setData("cardId", String(card.id)); }}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
+            onTouchCancel={removeClone}
+            onContextMenu={(e) => e.preventDefault()}
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.94 }}
         >
