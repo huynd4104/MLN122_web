@@ -297,7 +297,7 @@ export default function MarshallPlanPage() {
     const handleSelect = useCallback((country) => {
         setSelected(country);
         setMoneyTrigger((t) => t + 1);
-        
+
         // Auto scroll to detail panel on mobile screens
         if (window.innerWidth < 1024 && detailRef.current) {
             setTimeout(() => {
@@ -595,7 +595,7 @@ export default function MarshallPlanPage() {
                         <div className="relative w-full aspect-video rounded-xl overflow-hidden ring-1 ring-slate-700/50 bg-black">
                             <iframe
                                 className="absolute inset-0 w-full h-full"
-                                src="https://www.youtube.com/embed/BULMSp-wcbo"
+                                src="https://www.youtube.com/embed/TFts9IH178E"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                 allowFullScreen
                             ></iframe>
