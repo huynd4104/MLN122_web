@@ -251,10 +251,10 @@ export default function Home() {
                     </h1>
 
                     <p style={{
-                        fontSize: "15px", color: "rgba(255,255,255,0.35)",
-                        maxWidth: "480px", lineHeight: 1.7, fontWeight: 400,
+                        fontSize: "15px", color: "rgba(255,255,255,0.45)",
+                        maxWidth: "600px", lineHeight: "1.8", fontWeight: 400,
                     }}>
-                        Khám phá các sự kiện kinh tế quan trọng đã định hình thế giới hiện đại qua 12 chủ đề học tập chuyên sâu.
+                        Chào mừng bạn đến với <strong style={{ color: "rgba(255,255,255,0.9)" }}>12 Tháng Học Tập Tương Tác</strong> – hành trình khám phá Lịch sử Kinh tế Thế giới một cách sống động. Chúng tôi không chỉ giải thích chi tiết về các sự kiện quan trọng, mà còn tích hợp các trò chơi tương tác, hoạt động thực tiễn và mô hình trực quan giúp bạn dễ dàng hình dung và quan sát dòng chảy kinh tế toàn cầu.
                     </p>
                 </motion.div>
 
